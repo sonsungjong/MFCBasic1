@@ -86,3 +86,9 @@ HCURSOR CMFCBasic102BasicClassDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+/*
+	기본 클래스
+	CWinApp : 윈도우 어플리케이션
+	CWnd : 하나의 다이얼로그 창
+	
+*/
