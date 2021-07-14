@@ -1,3 +1,3 @@
 # MFCBasic1
 
-MFC 기본함수
+MFC 프레임워크 기본함수 모음
