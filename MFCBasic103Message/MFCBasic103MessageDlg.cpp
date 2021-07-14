@@ -1,11 +1,11 @@
 ﻿
-// MFCBasic102BasicClassDlg.cpp: 구현 파일
+// MFCBasic103MessageDlg.cpp: 구현 파일
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCBasic102BasicClass.h"
-#include "MFCBasic102BasicClassDlg.h"
+#include "MFCBasic103Message.h"
+#include "MFCBasic103MessageDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -13,30 +13,30 @@
 #endif
 
 
-// CMFCBasic102BasicClassDlg 대화 상자
+// CMFCBasic103MessageDlg 대화 상자
 
 
 
-CMFCBasic102BasicClassDlg::CMFCBasic102BasicClassDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCBASIC102BASICCLASS_DIALOG, pParent)
+CMFCBasic103MessageDlg::CMFCBasic103MessageDlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_MFCBASIC103MESSAGE_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CMFCBasic102BasicClassDlg::DoDataExchange(CDataExchange* pDX)
+void CMFCBasic103MessageDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CMFCBasic102BasicClassDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CMFCBasic103MessageDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 END_MESSAGE_MAP()
 
 
-// CMFCBasic102BasicClassDlg 메시지 처리기
+// CMFCBasic103MessageDlg 메시지 처리기
 
-BOOL CMFCBasic102BasicClassDlg::OnInitDialog()
+BOOL CMFCBasic103MessageDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -54,7 +54,7 @@ BOOL CMFCBasic102BasicClassDlg::OnInitDialog()
 //  아래 코드가 필요합니다.  문서/뷰 모델을 사용하는 MFC 애플리케이션의 경우에는
 //  프레임워크에서 이 작업을 자동으로 수행합니다.
 
-void CMFCBasic102BasicClassDlg::OnPaint()
+void CMFCBasic103MessageDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -81,29 +81,16 @@ void CMFCBasic102BasicClassDlg::OnPaint()
 
 // 사용자가 최소화된 창을 끄는 동안에 커서가 표시되도록 시스템에서
 //  이 함수를 호출합니다.
-HCURSOR CMFCBasic102BasicClassDlg::OnQueryDragIcon()
+HCURSOR CMFCBasic103MessageDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
 /*
-	Win : 윈도우즈 OS
-	Wnd : 창
-	
-	기본 클래스
-	CWinApp : 윈도우즈 응용프로그램 만드는 작업
-		- InitApplication : 윈도우 클래스 등록
-		- ExitApplication : 윈도우 클래스 등록
-		- InitInstance : 메인 윈도우 생성
-		- ExitInstance : 메인 윈도우 생성
-		- Run : 응용 프로그램 메시지 처리
+	MFC 메시지 처리
+	MFC는 main함수에서 다른 함수를 호출하는 방식으로 프로그램이 진행되지 않고 운영체제가 보내주는 메시지를 처리하는 방식으로 작업이 진행된다.
+	따라서, 메시지를 처리하는 방식으로 작업을 구성해야 한다.
 
-		CWinApp 클래스를 상속받아서 오버라이딩으로 원하는 기능을 작업
-		InitApplication -> InitInstance -> Run -> ExitInstance -> ExitApplication
+	MFC가 어떻게 메시지를 처리하는지에 대한 설명
 
-	CWnd : 다이얼로그 창
-		- 보여지는 컨트롤들
-		- 버튼, 에디트 컨트롤, 리스트박스, 리스트컨트롤, 콤보박스 등
-
-	대화상자기반 -> 정보상자 해제 -> 매니페스트만 체크
 */
