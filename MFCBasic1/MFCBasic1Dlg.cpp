@@ -87,5 +87,13 @@ HCURSOR CMFCBasic1Dlg::OnQueryDragIcon()
 }
 
 /*
-	
+	MFC : Microsoft Fundation Class
+	윈도우즈 응용 프로그램 개발 전용
+	문법공부는 정독하지말고 빠르게 빠르게해서 반복하는게 좋음
+	필요한 부분만 빨리 보고 실전에 사용되는 기술을 공부하는게 좋다
+	문법: C, C++ // 기술 : Win32, MFC
+
+	김성엽의 Windows 프로그래밍 이야기 -> MFC
+	Win32 프로그래밍의 시작 혹은 타이머까지 보고 MFC
+	고급기술 구현을 위해선 어차피 Win32로 프로그래밍 해야함
 */
