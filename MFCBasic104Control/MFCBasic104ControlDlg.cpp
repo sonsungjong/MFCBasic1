@@ -82,5 +82,7 @@ HCURSOR CMFCBasic104ControlDlg::OnQueryDragIcon()
 }
 
 /*
-	
+	대화상자 리소스 편집
+
+	22:40
 */
