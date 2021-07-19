@@ -28,9 +28,11 @@ void CMFCBasic103MessageDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
+// WindowsProc을 감춤, 메시지 전용
 BEGIN_MESSAGE_MAP(CMFCBasic103MessageDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	//ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -86,6 +88,24 @@ HCURSOR CMFCBasic103MessageDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+// 가상함수
+LRESULT CMFCBasic103MessageDlg::WindowProc(unsigned int message, WPARAM wParam, LPARAM lParam)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (message == WM_LBUTTONDOWN) {
+		CClientDC dc(this);			// 현재 윈도우에 이 대화상자의 포인터를 넘김
+
+		// 마우스 좌표 추적
+		int x = lParam & 0x0000FFFF;			// 하위 16비트 값 분리
+		int y = (lParam >> 16) & 0x0000FFFF;			// 상위 16비트 값 분리
+
+		if (wParam & MK_CONTROL) dc.Ellipse(x-50, y-50, x+50, y+50);
+		else dc.Rectangle(x - 50, y - 50, x + 50, y + 50);
+	}
+
+	return CDialogEx::WindowProc(message, wParam, lParam);
+}
+
 /*
 	MFC 메시지 처리
 	MFC는 main함수에서 다른 함수를 호출하는 방식으로 프로그램이 진행되지 않고 운영체제가 보내주는 메시지를 처리하는 방식으로 작업이 진행된다.
@@ -93,4 +113,19 @@ HCURSOR CMFCBasic103MessageDlg::OnQueryDragIcon()
 
 	MFC가 어떻게 메시지를 처리하는지에 대한 설명
 
+	wParam : 중복키
+	nFlags : 중복키
+*/
+/*
+// 메시지 변수
+void CMFCBasic103MessageDlg::OnLButtonDown(unsigned int nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	CClientDC dc(this);
+
+	if (nFlags & MK_CONTROL) dc.Ellipse(point.x - 50, point.y - 50, point.x + 50, point.y + 50);
+	else dc.Rectangle(point.x - 50, point.y - 50, point.x + 50, point.y + 50);
+
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
 */
