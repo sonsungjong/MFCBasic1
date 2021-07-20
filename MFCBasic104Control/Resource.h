@@ -5,7 +5,6 @@
 #define IDD_MFCBASIC104CONTROL_DIALOG   102
 #define IDR_MAINFRAME                   128
 #define IDC_INPUT_MSG_EDIT              1000
-#define IDC_BUTTON1                     1001
 #define IDC_SHOW_MSG_BTN                1001
 
 // Next default values for new objects

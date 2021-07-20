@@ -26,6 +26,7 @@ void CMFCBasic104ControlDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMFCBasic104ControlDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_SHOW_MSG_BTN, &CMFCBasic104ControlDlg::OnBnClickedShowMsgBtn)
 END_MESSAGE_MAP()
 
 
@@ -84,5 +85,21 @@ HCURSOR CMFCBasic104ControlDlg::OnQueryDragIcon()
 /*
 	대화상자 리소스 편집
 
-	22:40
+	On : 메시지 처리 함수라는 접두어표시
+	Bn : 버튼
+	Clicked : 클릭됨
 */
+
+void CMFCBasic104ControlDlg::OnBnClickedShowMsgBtn()
+{
+	// TODO: Add your control notification handler code here
+	wchar_t str[64];		// C++
+	CString show_str;		// MFC
+
+	GetDlgItemText(IDC_INPUT_MSG_EDIT, str, 64);
+	show_str.Format(L"사용자가 입력한 문자열 : %s", str);
+	// show_str = L"사용자가 입력한 문자열 : " + (CString)str;	 //대입연산자 오버로딩 활용
+
+	//MessageBox(str);		// Win32
+	AfxMessageBox(show_str);		// MFC
+}
