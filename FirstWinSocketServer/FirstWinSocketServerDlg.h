@@ -7,6 +7,10 @@
 // CFirstWinSocketServerDlg dialog
 class CFirstWinSocketServerDlg : public CDialogEx
 {
+protected:
+	const char* ipconfig = "192.168.211.21";
+	SOCKET mh_listen_socket;		// 클라이언트 접속 처리할 때 사용할 소켓
+	SOCKET mh_client_socket;		// 한 개의 클라이언트만 접속을 허락
 // Construction
 public:
 	CFirstWinSocketServerDlg(CWnd* pParent = nullptr);	// standard constructor
@@ -39,5 +43,9 @@ public:
 	CListBox m_event_list;
 	afx_msg void OnDestroy();
 	afx_msg void OnLbnSelchangeEventList();
-	afx_msg void OnBnClickedWaitRecvBtn();
+protected:
+	afx_msg LRESULT OnAcceptProc(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSocketMessage(WPARAM wParam, LPARAM lParam);
+public:
+	afx_msg void OnBnClickedOk();
 };

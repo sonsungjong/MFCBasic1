@@ -9,6 +9,7 @@
 #include "afxdialogex.h"
 // Socket 관련 함수를 사용하기 위해 헤더파일과 라이브러리를 포함시킨다.
 #include <WinSock2.h>
+#include <WS2tcpip.h>		// InetPton 함수 사용을 위해 추가
 #pragma comment(lib, "WS2_32.lib")
 
 #ifdef _DEBUG
@@ -27,6 +28,8 @@ CFirstWinSocketServerDlg::CFirstWinSocketServerDlg(CWnd* pParent /*=nullptr*/)
 
 	WSADATA temp;
 	WSAStartup(0x0202, &temp);		// 소켓 라이브러리를 사용 가능 상태로 만든다. (0x0202 == 2.2)
+
+	mh_client_socket = INVALID_SOCKET;	// -1, 0xFFFFFFFF, ~0
 }
 
 void CFirstWinSocketServerDlg::DoDataExchange(CDataExchange* pDX)
@@ -40,7 +43,9 @@ BEGIN_MESSAGE_MAP(CFirstWinSocketServerDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_DESTROY()
 	ON_LBN_SELCHANGE(IDC_EVENT_LIST, &CFirstWinSocketServerDlg::OnLbnSelchangeEventList)
-	ON_BN_CLICKED(IDC_WAIT_RECV_BTN, &CFirstWinSocketServerDlg::OnBnClickedWaitRecvBtn)
+	ON_MESSAGE(25001, &CFirstWinSocketServerDlg::OnAcceptProc)
+	ON_MESSAGE(25002, &CFirstWinSocketServerDlg::OnSocketMessage)
+	ON_BN_CLICKED(IDOK, &CFirstWinSocketServerDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -56,6 +61,25 @@ BOOL CFirstWinSocketServerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	// 소켓을 네트워크 장치에 바인딩하기 위해 정보를 저장할 변수
+	// IP 주소 체계, 프로그램 식별 번호(포트번호)
+	sockaddr_in addr_data = { AF_INET, htons(1900), };		// 네트워크 카드정보를 셋팅
+	// IP 주소 설정
+	addr_data.sin_addr.s_addr = inet_addr(ipconfig);		// 핸드폰 구매를 위한 정보작성
+
+	// IPPROTO_TCP
+	mh_listen_socket = socket(AF_INET, SOCK_STREAM, 0);	// socket : 핸드폰구매
+
+	// addr_data에 설정된 정보를 사용하여 소켓을 네트워크 시스템에 연결
+	bind(mh_listen_socket, (sockaddr*)&addr_data, sizeof(addr_data));		// binb : 핸드폰 개통
+	// 접속을 처리할 단위 설정, 클라이언트로 부터 접속을 받음
+	listen(mh_listen_socket, 1);		// listen : 핸드폰 발신전용 -> 수신설정
+
+	// 비동기 accept
+	WSAAsyncSelect(mh_listen_socket, m_hWnd, 25001, FD_ACCEPT);
+	// mh_listen_socket에 사용자가 접속을 시도(FD_ACCEPT)했을 때
+	// 현재 대화 상자(m_hWnd)에 25001번 메시지가 발생하도록 비동기를 설정한다.
+	// 비동기 혹은 쓰레드를 통해 accept를 하면 된다.
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -96,13 +120,17 @@ HCURSOR CFirstWinSocketServerDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
 void CFirstWinSocketServerDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
 	// TODO: Add your message handler code here
+	closesocket(mh_listen_socket);		// 리슨 소켓을 제거한다.
+
+	// 클라이언트가 접속한 상태라면 통신용 소켓도 제거
+	if (mh_client_socket != INVALID_SOCKET)
+		closesocket(mh_client_socket);
+
 	WSACleanup();		// 소켓 라이브러리를 그만 사용하도록 설정한다.
 }
 
@@ -114,6 +142,60 @@ void CFirstWinSocketServerDlg::OnLbnSelchangeEventList()
 
 }
 
+// 25001번 함수
+afx_msg LRESULT CFirstWinSocketServerDlg::OnAcceptProc(WPARAM wParam, LPARAM lParam)
+{
+	// 접속한 클라이언트의 정보를 저장할 구조체를 초기화
+	sockaddr_in addr_data = { 0, };
+	// 구조체 크기 저장
+	int data_size = sizeof(addr_data);
+	// 클라이언트 소켓의 접속을 허락 (복제 소켓 생성)
+	SOCKET h_client_socket = accept(mh_listen_socket, (sockaddr*)&addr_data, &data_size);
+
+	wchar_t temp_ip_address[32];
+	// addr_data 변수에 정수 형태로 저장되있는 IP 주소를 문자열 형태로 변경해서 temp_ip_address 에 저장
+	InetNtop(AF_INET, &addr_data.sin_addr, temp_ip_address, 32);		// 클라이언트의 IP보관
+	AddEventString(temp_ip_address + CString(L" 에서 서버에 접속을 시도하고 있습니다."));
+
+	CString str;
+	if (mh_client_socket != INVALID_SOCKET) {		// 접속중일 경우
+		AddEventString(L"이미 접속한 클라이언트가 있어서 접속을 거부하였습니다.");
+		closesocket(h_client_socket);		// 클라이언트와 통신하려 만든 소켓을 제거
+	}
+	else {
+		AddEventString(L"클라이언트가 접속하였습니다.");
+		// 현재 접속한 클라이언트의 핸들 값을 멤버 변수에 보관해서 접속을 유지시킴, 해당 핸들로 통신
+		mh_client_socket = h_client_socket;
+		// 무한 루프를 제거하고 비동기로 체크할 때 mh_client_socket 에서 체크해야할 사항2
+		// 1. 데이터가 수신된 경우 2. 클라이언트가 접속을 해제한 경우
+		// 두가지 사항을 비동기로 설정하여 상황이 발생할 때만 25002번 메시지가 대화상자에 발생하도록 셋팅
+		WSAAsyncSelect(mh_client_socket, m_hWnd, 25002, FD_READ | FD_CLOSE);		// 감시는 or를 사용하여 한번에 체크해줘야함. FD_READ | FD_CLOSE
+
+	}
+	return 0;
+}
+
+// 25002번 함수 (서버가 메시지를 수신하거나 클라이언트가 끊어지거나)
+afx_msg LRESULT CFirstWinSocketServerDlg::OnSocketMessage(WPARAM wParam, LPARAM lParam)
+{
+	// lParam 의 하위비트에 이 메시지(25002)를 발생시킨 이벤트 종류가 저장되어 있음
+	if (LOWORD(lParam) == FD_READ) {		// 데이터 수신 시
+		int temp = 0;
+		recv(mh_client_socket, (char*)&temp, 4, 0);		// 수신한 4byte값을 얻음
+
+		CString str;
+		str.Format(L"%d", temp);		// 정수값을 문자열로 변환
+		AddEventString(str);		// 리스트 박스에 출력
+	}
+	else if (LOWORD(lParam) == FD_CLOSE){		// 상대편 종료
+		closesocket(mh_client_socket);		// 클라이언트와 통신하던 소켓 제거
+		mh_client_socket = INVALID_SOCKET;		// 소켓을 사용안함으로 설정 (중복제거 방지)
+		AddEventString(L"클라이언트가 접속을 해제했습니다.");
+	}
+
+	return 0;
+}
+
 /*
 	#include <WinSock2.h>
 	#pragma comment(lib, "WS2_32.lib")
@@ -122,42 +204,12 @@ void CFirstWinSocketServerDlg::OnLbnSelchangeEventList()
 	WSAStartup(0x0202, &temp);		// 사용시작
 
 	WSACleanup();		// 해제
-*/
 
-
-void CFirstWinSocketServerDlg::OnBnClickedWaitRecvBtn()
-{
-	// 소켓을 네트워크 장치에 바인딩하기 위해 정보를 저장할 변수
-	// IP 주소 체계, 프로그램 식별 번호(포트번호)
-	sockaddr_in addr_data = {AF_INET, htons(1900), };		// 네트워크 카드정보를 셋팅
-	// IP 주소 설정
-	addr_data.sin_addr.s_addr = inet_addr("192.168.0.60");		// 핸드폰 구매를 위한 정보작성
-	
-	// IPPROTO_TCP
-	SOCKET h_listen_socket = socket(AF_INET, SOCK_STREAM, 0);	// socket : 핸드폰구매
-
-	// addr_data에 설정된 정보를 사용하여 소켓을 네트워크 시스템에 연결
-	bind(h_listen_socket, (sockaddr*)&addr_data, sizeof(addr_data));		// binb : 핸드폰 개통
-	// 접속을 처리할 단위 설정, 클라이언트로 부터 접속을 받음
-	listen(h_listen_socket, 1);		// listen : 핸드폰 발신전용 -> 수신설정
-
-	CString str;
-	int addr_data_size = sizeof(addr_data), temp, read_bytes;
-	// 클라이언트 소켓의 접속을 허락한다. --복제 소켓 생성
-
-	SOCKET h_client_socket = accept(h_listen_socket, (sockaddr*)&addr_data, &addr_data_size);		// accept : 전화를 받는 행위 (대표전화 + 실제받을 전화1개)
-	while (1) {
-		read_bytes = recv(h_client_socket, (char*)&temp, 4, 0);		// 일정시간동안 데이터를 받아 temp변수에 넣음. (4byte)
-		if (read_bytes == 4) {		// 받은값이 4byte 라면
-			str.Format(L"%d", temp);		// 정숫값을 문자열로 변환한다.
-			AddEventString(str);				// 리스트 박스에 출력한다.
-			break;
-		}
-	}
-	closesocket(h_client_socket);		// 클라이언트와 통신하던 소켓을 제거한다. 전화끊음
-	closesocket(h_listen_socket);		// 리슨 소켓을 제거한다.
-}
-
-/*
 	socket -> bind -> listen -> accept -> recv -> closesocket
 */
+
+void CFirstWinSocketServerDlg::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	//CDialogEx::OnOK();
+}
