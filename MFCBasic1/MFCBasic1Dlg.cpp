@@ -96,4 +96,16 @@ HCURSOR CMFCBasic1Dlg::OnQueryDragIcon()
 	김성엽의 Windows 프로그래밍 이야기 -> MFC
 	Win32 프로그래밍의 시작 혹은 타이머까지 보고 MFC
 	고급기술 구현을 위해선 어차피 Win32로 프로그래밍 해야함
+
+	MFC 앱 -> 대화상자기반 -> 정보상자 해제 -> 안사용하는 것들 모두 해제
+
+	<<MFC 라이프사이클>>
+	WM_CREATE
+	WM_SIZE
+	WM_INITDIALOG
+	WM_SIZE (윈도우 크기 변경함수 사용시)
+	WM_PAINT
+
+	WM_CLOSE
+	WM_DESTROY
 */
