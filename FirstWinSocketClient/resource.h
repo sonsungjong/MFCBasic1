@@ -6,6 +6,7 @@
 #define IDR_MAINFRAME                   128
 #define IDC_SEND_BTN                    1000
 #define IDC_NUM_EDIT                    1002
+#define IDC_CHAT_EDIT                   1002
 #define IDC_CONNECT_BTN                 1003
 #define IDC_DISCONNECT_BTN              1004
 #define IDC_EVENT_LIST                  1005

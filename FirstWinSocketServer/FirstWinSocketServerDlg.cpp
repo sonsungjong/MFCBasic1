@@ -180,12 +180,14 @@ afx_msg LRESULT CFirstWinSocketServerDlg::OnSocketMessage(WPARAM wParam, LPARAM 
 {
 	// lParam 의 하위비트에 이 메시지(25002)를 발생시킨 이벤트 종류가 저장되어 있음
 	if (LOWORD(lParam) == FD_READ) {		// 데이터 수신 시
-		int temp = 0;
-		recv(mh_client_socket, (char*)&temp, 4, 0);		// 수신한 4byte값을 얻음
+		unsigned short body_size;
+		recv(mh_client_socket, (char*)&body_size, 2, 0);			// 수신받은 데이터에서 2byte값을 얻는다.
 
-		CString str;
-		str.Format(L"%d", temp);		// 정수값을 문자열로 변환
-		AddEventString(str);		// 리스트 박스에 출력
+		char* p_recv_data = new char[body_size];
+		recv(mh_client_socket, p_recv_data, body_size, 0);		// 수신받은 body_size 바이트값을 얻는다.
+
+		AddEventString((wchar_t*)p_recv_data);		// 리스트 박스에 출력
+		delete[] p_recv_data;
 	}
 	else if (LOWORD(lParam) == FD_CLOSE){		// 상대편 종료
 		closesocket(mh_client_socket);		// 클라이언트와 통신하던 소켓 제거

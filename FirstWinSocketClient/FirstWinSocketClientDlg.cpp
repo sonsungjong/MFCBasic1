@@ -120,13 +120,24 @@ void CFirstWinSocketClientDlg::OnBnClickedSendBtn()
 {
 	// 서버와 연결된 상태이면서 소켓 사용이 가능하면 정수값을 전송
 	if (m_is_connected == 2 && mh_socket != INVALID_SOCKET) {
-		int num = GetDlgItemInt(IDC_NUM_EDIT);		// 입력한 정수값을 얻음
-		// mh_socket 소켓을 사용하여 서버로 정수값을 보냄
-		send(mh_socket, (char*)&num, sizeof(int), 0);
+		//CString str;
+		//GetDlgItemText(IDC_CHAT_EDIT, str);
+		//int send_data_size = (str.GetLength() + 1) * 2;
+		int send_data_size = (GetDlgItem(IDC_CHAT_EDIT)->GetWindowTextLength() + 1) * 2;
+
+		char* p_send_data = new char[2 + send_data_size];
+		*(unsigned short*)p_send_data = send_data_size;
+
+		//memcpy(p_send_data + 2, (const wchar_t*)str, send_data_size);
+		GetDlgItemText(IDC_CHAT_EDIT, (wchar_t*)(p_send_data + 2), send_data_size / 2);
+		
+		// mh_socket 소켓을 사용하여 서버로 문자열을 보냄
+		send(mh_socket, p_send_data, 2+send_data_size, 0);
+		
+
 		// 전송 결과를 리스트 박스에 보여줌
-		CString str;
-		str.Format(L"서버로 정수값(%d)을 전송했습니다.", num);
-		AddEventString(str);
+		AddEventString(L"서버로 ("+CString((wchar_t*)(p_send_data+2))+L")을 전송했습니다.");
+		delete[] p_send_data;
 	}
 }
 

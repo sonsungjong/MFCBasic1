@@ -8,7 +8,7 @@
 class CFirstWinSocketServerDlg : public CDialogEx
 {
 protected:
-	const char* ipconfig = "192.168.211.21";
+	const char* ipconfig = "192.168.0.60";		// 내 IP
 	SOCKET mh_listen_socket;		// 클라이언트 접속 처리할 때 사용할 소켓
 	SOCKET mh_client_socket;		// 한 개의 클라이언트만 접속을 허락
 // Construction
