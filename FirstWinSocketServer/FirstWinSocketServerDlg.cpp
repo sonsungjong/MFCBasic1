@@ -19,8 +19,6 @@
 
 // CFirstWinSocketServerDlg dialog
 
-
-
 CFirstWinSocketServerDlg::CFirstWinSocketServerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FIRSTWINSOCKETSERVER_DIALOG, pParent)
 {
@@ -112,6 +110,27 @@ void CFirstWinSocketServerDlg::OnPaint()
 		CDialogEx::OnPaint();
 	}
 }
+int CFirstWinSocketServerDlg::ReceiveData(SOCKET ah_socket, char* ap_data, int a_size) {
+	int read_size, total_size = 0, retry_count = 0;
+	CString str;
+	// a_size 크기만큼 다 수신될때까지 반복시킨다.
+	while (total_size < a_size) {
+		// 남은 크기를 수신
+		read_size = recv(ah_socket, ap_data + total_size, a_size - total_size, 0);
+		if (read_size == SOCKET_ERROR || read_size == 0) {		// 읽기 실패
+			Sleep(10);			// 10ms 대기
+			retry_count++;		// 재시도 횟수 증가
+			if (retry_count > 300) break;			// 300회 재시도 후에도 실패하면 작업중단
+		}
+		else {		// 읽기 완료
+			retry_count = 0;		// 재시도 횟수 초기화
+			total_size += read_size;		// 수신한 데이터의 크기를 합산
+			str.Format(L"데이터 수신 중 : %d", read_size);		// 수신 바이트크기 출력
+			AddEventString(str);
+		}
+	}
+	return total_size;		// 전체 수신한 바이트크기 리턴
+}
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
@@ -180,14 +199,38 @@ afx_msg LRESULT CFirstWinSocketServerDlg::OnSocketMessage(WPARAM wParam, LPARAM 
 {
 	// lParam 의 하위비트에 이 메시지(25002)를 발생시킨 이벤트 종류가 저장되어 있음
 	if (LOWORD(lParam) == FD_READ) {		// 데이터 수신 시
-		unsigned short body_size;
-		recv(mh_client_socket, (char*)&body_size, 2, 0);			// 수신받은 데이터에서 2byte값을 얻는다.
 
-		char* p_recv_data = new char[body_size];
-		recv(mh_client_socket, p_recv_data, body_size, 0);		// 수신받은 body_size 바이트값을 얻는다.
+		WSAAsyncSelect(mh_client_socket, m_hWnd, 25002, FD_CLOSE);
 
-		AddEventString((wchar_t*)p_recv_data);		// 리스트 박스에 출력
-		delete[] p_recv_data;
+		char key, message_id;
+		// 첫 바이트를 읽어서 정상적인 키 값이 들어왔는지 확인한다.
+		recv(mh_client_socket, &key, 1, 0);
+		if (key == 27) {		// 27인 경우에만 처리
+			//Message ID를 읽는다.
+			recv(mh_client_socket, &message_id, 1, 0);
+
+			unsigned short body_size;
+			// 수신 데이터 중 2byte를 먼저 읽어 Body 데이터의 크기를 알아낸다.
+			recv(mh_client_socket, (char*)&body_size, 2, 0);
+			// Body 데이터를 수신하기 위해 메모리를 할당
+			char* p_recv_data = new char[body_size];
+			// 수신된 Body 데이터를 읽는다.
+			//int read_bytes = recv(mh_client_socket, p_recv_data, body_size, 0);
+			int read_bytes = ReceiveData(mh_client_socket, p_recv_data, body_size);			// 읽은 데이터크기와 수신한 데이터크기가 다를 수 있으니 반복문
+
+			CString str;
+			str.Format(L"데이터 수신 크기 : %d", read_bytes);
+			AddEventString(str);
+
+			// message_id값이 1이면 채팅정보로 정의, -> 리스트 박스에 문자열 추가
+			if (message_id == 1) {
+				// 수신된 문자열을 리스트박스에 출력
+				AddEventString((wchar_t*)p_recv_data);
+			}
+			// Body데이터 수신에 사용한 메모리를 해제
+			delete[] p_recv_data;
+			WSAAsyncSelect(mh_client_socket, m_hWnd, 25002, FD_READ | FD_CLOSE);
+		}
 	}
 	else if (LOWORD(lParam) == FD_CLOSE){		// 상대편 종료
 		closesocket(mh_client_socket);		// 클라이언트와 통신하던 소켓 제거

@@ -1,4 +1,3 @@
-
 // FirstWinSocketServerDlg.h : header file
 //
 
@@ -8,7 +7,7 @@
 class CFirstWinSocketServerDlg : public CDialogEx
 {
 protected:
-	const char* ipconfig = "192.168.0.60";		// 내 IP
+	const char* ipconfig = "192.168.219.21";		// 내 IP
 	SOCKET mh_listen_socket;		// 클라이언트 접속 처리할 때 사용할 소켓
 	SOCKET mh_client_socket;		// 한 개의 클라이언트만 접속을 허락
 // Construction
@@ -48,4 +47,5 @@ protected:
 	afx_msg LRESULT OnSocketMessage(WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnBnClickedOk();
+	int ReceiveData(SOCKET ah_socket, char* ap_data, int a_size);
 };

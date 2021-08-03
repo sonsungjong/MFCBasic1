@@ -8,13 +8,32 @@
 #include "FirstWinSocketClientDlg.h"
 #include "afxdialogex.h"
 
+// 소켓 라이브러리와 헤더파일 추가
+/*
 #include <WinSock2.h>
 #pragma comment(lib, "WS2_32.lib")
-
+*/
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+// 서버에 접속한 결과가 나오면 호출되는 함수
+void MyClientSocket::ConnectedProcess() {
+	if (m_is_connected) ((CFirstWinSocketClientDlg*)mp_notify_wnd)->AddEventString(L"서버에 접속했습니다.");
+	else ((CFirstWinSocketClientDlg*)mp_notify_wnd)->AddEventString(L"서버에 접속하지 못했습니다.");
+}
+
+// 수신된 데이터를 어떻게 처리할 것인지 정의하는 함수
+int MyClientSocket::ProcessNetMessage()
+{
+	
+	return 1;
+}
+
+// 접속이 해제된 경우에 호출되는 함수
+void MyClientSocket::ClosedProcess(int a_error_flag) {
+	if (!a_error_flag) ((CFirstWinSocketClientDlg*)mp_notify_wnd)->AddEventString(L"서버에서 접속을 해제했습니다.");
+}
 
 // CFirstWinSocketClientDlg dialog
 
@@ -25,11 +44,11 @@ CFirstWinSocketClientDlg::CFirstWinSocketClientDlg(CWnd* pParent /*=nullptr*/)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-	WSADATA temp;
-	WSAStartup(0x0202, &temp);			// 소켓 라이브러리 사용 가능 상태로 만들기
+	//WSADATA temp;
+	//WSAStartup(0x0202, &temp);			// 소켓 라이브러리 사용 가능 상태로 만들기
 
-	mh_socket = INVALID_SOCKET;		// 소켓 핸들 초기화 (-1 or 0xFFFFFFFF)
-	m_is_connected = 0;						// 접속 상태 초기화
+	//mh_socket = INVALID_SOCKET;		// 소켓 핸들 초기화 (-1 or 0xFFFFFFFF)
+	//m_is_connected = 0;						// 접속 상태 초기화
 }
 
 void CFirstWinSocketClientDlg::DoDataExchange(CDataExchange* pDX)
@@ -48,6 +67,7 @@ BEGIN_MESSAGE_MAP(CFirstWinSocketClientDlg, CDialogEx)
 	ON_MESSAGE(26001, &CFirstWinSocketClientDlg::OnConnected)
 	ON_MESSAGE(26002, &CFirstWinSocketClientDlg::OnSocketMessage)
 	ON_BN_CLICKED(IDOK, &CFirstWinSocketClientDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BigData_Btn, &CFirstWinSocketClientDlg::OnBnClickedBigdataBtn)
 END_MESSAGE_MAP()
 
 
@@ -111,33 +131,24 @@ void CFirstWinSocketClientDlg::OnDestroy()
 
 	// TODO: Add your message handler code here
 	// 서버와 접속 상태라면 접속에 사용하던 소켓을 제거
-	if (mh_socket != INVALID_SOCKET) closesocket(mh_socket);
-	WSACleanup();		// 소켓 라이브러리를 중지
+	//if (mh_socket != INVALID_SOCKET) closesocket(mh_socket);
+	//WSACleanup();		// 소켓 라이브러리를 중지
 }
 
 
 void CFirstWinSocketClientDlg::OnBnClickedSendBtn()
 {
 	// 서버와 연결된 상태이면서 소켓 사용이 가능하면 정수값을 전송
-	if (m_is_connected == 2 && mh_socket != INVALID_SOCKET) {
-		//CString str;
-		//GetDlgItemText(IDC_CHAT_EDIT, str);
-		//int send_data_size = (str.GetLength() + 1) * 2;
-		int send_data_size = (GetDlgItem(IDC_CHAT_EDIT)->GetWindowTextLength() + 1) * 2;
+	if(m_client_socket.IsConnect()) {
+		CString str;
+		// EditControl에서 문자열을 얻는다.
+		GetDlgItemText(IDC_CHAT_EDIT, str);
 
-		char* p_send_data = new char[2 + send_data_size];
-		*(unsigned short*)p_send_data = send_data_size;
-
-		//memcpy(p_send_data + 2, (const wchar_t*)str, send_data_size);
-		GetDlgItemText(IDC_CHAT_EDIT, (wchar_t*)(p_send_data + 2), send_data_size / 2);
-		
-		// mh_socket 소켓을 사용하여 서버로 문자열을 보냄
-		send(mh_socket, p_send_data, 2+send_data_size, 0);
-		
+		// 서버로 채팅 문자열을 전송한다.
+		m_client_socket.SendFrameData(1, (const wchar_t*)str, (str.GetLength() + 1) * 2);
 
 		// 전송 결과를 리스트 박스에 보여줌
-		AddEventString(L"서버로 ("+CString((wchar_t*)(p_send_data+2))+L")을 전송했습니다.");
-		delete[] p_send_data;
+		AddEventString(L"서버로 ("+str+L")을 전송했습니다.");
 	}
 }
 
@@ -153,39 +164,28 @@ void CFirstWinSocketClientDlg::AddEventString(const wchar_t* ap_string)
 
 void CFirstWinSocketClientDlg::OnBnClickedConnectBtn()
 {
-	if (mh_socket == INVALID_SOCKET) {			// 소켓 생성 여부 체크
-		sockaddr_in addr_data = { AF_INET, htons(1900), };
-		addr_data.sin_addr.s_addr = inet_addr(ipconfig);			// 접속할 서버 IP
-
-		mh_socket = socket(AF_INET, SOCK_STREAM, 0);		// 서버에 접속해서 정수값을 전송할 소켓 생성
-		// 서버 접속에 사용하는 connect 함수가 서버에 문제가 있거나 네트워크에 문제가 있으면
-		// 최대 28초간 '응답 없음' 상태가 될 수 있기 때문에 접속을 체크해주는 비동기 설정을 한다.
-		// mh_socket 에 FD_CONNECT 이벤트가 발생하면 현재 대화 상자에 26001번 메시지를 발생시킴
-		WSAAsyncSelect(mh_socket, m_hWnd, 26001, FD_CONNECT);
-		// 서버에 접속을 시도
-		connect(mh_socket, (sockaddr*)&addr_data, sizeof(addr_data));
-		m_is_connected = 1;			// 접속 시도중으로 상태를 변경
+	if (!m_client_socket.IsConnect()) {			// 소켓 생성 여부 체크
+		//  지정한 ip와 port를 사용해서 서버에 접속 시도
+		m_client_socket.ConnectToServer(L"192.168.219.21", 1900, this, 26001, 26002);
 		AddEventString(L"서버에 접속을 시도합니다.");
 	}
 	else {
 		// 접속을 시도중이거나 접속이 된 상태라는 것을 보여준다
-		if (m_is_connected == 2)	AddEventString(L"이미 접속 중 입니다");
-		else AddEventString(L"서버에 접속을 시도하고 있습니다. 기다려주세요...");
+		AddEventString(L"서버에 접속을 시도하고 있거나 접속된 상태입니다.");
 	}
 }
 
 void CFirstWinSocketClientDlg::OnBnClickedDisconnectBtn()
 {
 	// 소켓이 만들어져 있을 때 소켓을 제거하는 작업
-	if (mh_socket != INVALID_SOCKET) {
-		m_is_connected = 0;		// 접속 해제 상태로 변경
-		closesocket(mh_socket);		// 종료된 소켓 제거
-		mh_socket = INVALID_SOCKET;		// 소켓 변수 초기화
+	if (m_client_socket.IsConnect()) {
+		m_client_socket.CloseSocket();
 		AddEventString(L"서버와 접속을 해제했습니다.");
 	}
 	else AddEventString(L"서버와 연결되어 있지 않습니다.");
 }
 
+/*
 // 26001
 afx_msg LRESULT CFirstWinSocketClientDlg::OnConnected(WPARAM wParam, LPARAM lParam)
 {
@@ -203,7 +203,6 @@ afx_msg LRESULT CFirstWinSocketClientDlg::OnConnected(WPARAM wParam, LPARAM lPar
 		AddEventString(L"서버에 접속했습니다.");
 		m_is_connected = 2;			// 접속 상태로 변경
 	}
-
 	return 1;
 }
 
@@ -221,10 +220,31 @@ afx_msg LRESULT CFirstWinSocketClientDlg::OnSocketMessage(WPARAM wParam, LPARAM 
 	}
 	return 1;
 }
-
+*/
 
 void CFirstWinSocketClientDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	//CDialogEx::OnOK();
+}
+
+
+void CFirstWinSocketClientDlg::OnBnClickedBigdataBtn()
+{
+	// TODO: Add your control notification handler code here
+	int send_data_size = 35 * 1024;				// 초과한 데이터를 전송 35kb
+	char* p_send_data = new char[send_data_size];
+	m_client_socket.SendFrameData(2, p_send_data, send_data_size);		// 서버로 문자열 전송
+	delete[] p_send_data;		// 테스트에 사용한 메모리 해제
+}
+
+
+// 메시지 발생 시 호출되는 함수
+LRESULT CFirstWinSocketClientDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	// 소켓 객체가 메시지를 처리할 수 있도록 함수를 호출(26001, 26002)
+	m_client_socket.MessageProc(message, wParam, lParam);
+
+	return CDialogEx::WindowProc(message, wParam, lParam);
 }

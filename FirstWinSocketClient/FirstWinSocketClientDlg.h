@@ -3,15 +3,27 @@
 //
 
 #pragma once
+#include "WinSocketClient.h"
 
+class MyClientSocket : public WinSocketClient
+{
+public:
+	virtual void ConnectedProcess();			// 서버에 접속한 결과가 나오면 호출되는 함수
+	virtual int ProcessNetMessage();			// ProcessNetMessage() 함수를 재정의해서 수신된 데이터를 어떻게 처리할 것인지 작업
+	virtual void ClosedProcess(int a_error_flag);			// 접속이 해제된 경우에 호출되는 함수
+};
 
 // CFirstWinSocketClientDlg dialog
 class CFirstWinSocketClientDlg : public CDialogEx
 {
 protected:
-	const char* ipconfig = "192.168.0.60";			// 서버의 IP
+	MyClientSocket m_client_socket;		// 서버와 통신에 사용할 소켓 객체
+
+	/*
+	const char* ipconfig = "192.168.219.21";			// 서버의 IP
 	SOCKET mh_socket;			// 서버에 접속해서 통신할 소켓
 	char m_is_connected;			// 접속 상태 ( 0:접속안됨, 1:접속중, 2:접속됨)
+	*/
 
 // Construction
 public:
@@ -49,4 +61,6 @@ protected:
 	afx_msg LRESULT OnSocketMessage(WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedBigdataBtn();
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 };
