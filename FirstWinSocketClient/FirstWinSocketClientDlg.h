@@ -57,8 +57,8 @@ public:
 	afx_msg void OnBnClickedConnectBtn();
 	afx_msg void OnBnClickedDisconnectBtn();
 protected:
-	afx_msg LRESULT OnConnected(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnSocketMessage(WPARAM wParam, LPARAM lParam);
+	//afx_msg LRESULT OnConnected(WPARAM wParam, LPARAM lParam);
+	//afx_msg LRESULT OnSocketMessage(WPARAM wParam, LPARAM lParam);
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedBigdataBtn();

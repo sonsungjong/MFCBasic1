@@ -26,7 +26,8 @@ void MyClientSocket::ConnectedProcess() {
 // 수신된 데이터를 어떻게 처리할 것인지 정의하는 함수
 int MyClientSocket::ProcessNetMessage()
 {
-	
+	// 여기에 수신된 데이터를 처리
+
 	return 1;
 }
 
@@ -64,8 +65,8 @@ BEGIN_MESSAGE_MAP(CFirstWinSocketClientDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_SEND_BTN, &CFirstWinSocketClientDlg::OnBnClickedSendBtn)
 	ON_BN_CLICKED(IDC_CONNECT_BTN, &CFirstWinSocketClientDlg::OnBnClickedConnectBtn)
 	ON_BN_CLICKED(IDC_DISCONNECT_BTN, &CFirstWinSocketClientDlg::OnBnClickedDisconnectBtn)
-	ON_MESSAGE(26001, &CFirstWinSocketClientDlg::OnConnected)
-	ON_MESSAGE(26002, &CFirstWinSocketClientDlg::OnSocketMessage)
+	//ON_MESSAGE(26001, &CFirstWinSocketClientDlg::OnConnected)
+	//ON_MESSAGE(26002, &CFirstWinSocketClientDlg::OnSocketMessage)
 	ON_BN_CLICKED(IDOK, &CFirstWinSocketClientDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BigData_Btn, &CFirstWinSocketClientDlg::OnBnClickedBigdataBtn)
 END_MESSAGE_MAP()
@@ -166,7 +167,7 @@ void CFirstWinSocketClientDlg::OnBnClickedConnectBtn()
 {
 	if (!m_client_socket.IsConnect()) {			// 소켓 생성 여부 체크
 		//  지정한 ip와 port를 사용해서 서버에 접속 시도
-		m_client_socket.ConnectToServer(L"192.168.219.21", 1900, this, 26001, 26002);
+		m_client_socket.ConnectToServer(L"192.168.12.21", 1900, this, 26001, 26002);
 		AddEventString(L"서버에 접속을 시도합니다.");
 	}
 	else {
@@ -232,12 +233,13 @@ void CFirstWinSocketClientDlg::OnBnClickedOk()
 void CFirstWinSocketClientDlg::OnBnClickedBigdataBtn()
 {
 	// TODO: Add your control notification handler code here
-	int send_data_size = 35 * 1024;				// 초과한 데이터를 전송 35kb
-	char* p_send_data = new char[send_data_size];
-	m_client_socket.SendFrameData(2, p_send_data, send_data_size);		// 서버로 문자열 전송
-	delete[] p_send_data;		// 테스트에 사용한 메모리 해제
+	if (m_client_socket.IsConnect()) {
+		int send_data_size = 35 * 1024;				// 초과한 데이터를 전송 35kb
+		char* p_send_data = new char[send_data_size];
+		m_client_socket.SendFrameData(2, p_send_data, send_data_size);		// 서버로 문자열 전송
+		delete[] p_send_data;		// 테스트에 사용한 메모리 해제
+	}
 }
-
 
 // 메시지 발생 시 호출되는 함수
 LRESULT CFirstWinSocketClientDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
