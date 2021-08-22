@@ -29,6 +29,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic108Calculators", "M
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic109ListControl", "MFCBasic109ListControl\MFCBasic109ListControl.vcxproj", "{3F998195-5C44-40AD-A29B-EBAEC4BB0418}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic110LButtonDown", "MFCBasic110LButtonDown\MFCBasic110LButtonDown.vcxproj", "{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCReal001", "MFCReal001\MFCReal001.vcxproj", "{47552A62-780A-4582-82CA-FA1C5C08E640}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -141,6 +145,22 @@ Global
 		{3F998195-5C44-40AD-A29B-EBAEC4BB0418}.Release|x64.Build.0 = Release|x64
 		{3F998195-5C44-40AD-A29B-EBAEC4BB0418}.Release|x86.ActiveCfg = Release|Win32
 		{3F998195-5C44-40AD-A29B-EBAEC4BB0418}.Release|x86.Build.0 = Release|Win32
+		{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}.Debug|x64.ActiveCfg = Debug|x64
+		{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}.Debug|x64.Build.0 = Debug|x64
+		{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}.Debug|x86.ActiveCfg = Debug|Win32
+		{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}.Debug|x86.Build.0 = Debug|Win32
+		{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}.Release|x64.ActiveCfg = Release|x64
+		{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}.Release|x64.Build.0 = Release|x64
+		{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}.Release|x86.ActiveCfg = Release|Win32
+		{7B1F5C78-779B-4CA2-AC92-7BD0E68DAF3C}.Release|x86.Build.0 = Release|Win32
+		{47552A62-780A-4582-82CA-FA1C5C08E640}.Debug|x64.ActiveCfg = Debug|x64
+		{47552A62-780A-4582-82CA-FA1C5C08E640}.Debug|x64.Build.0 = Debug|x64
+		{47552A62-780A-4582-82CA-FA1C5C08E640}.Debug|x86.ActiveCfg = Debug|Win32
+		{47552A62-780A-4582-82CA-FA1C5C08E640}.Debug|x86.Build.0 = Debug|Win32
+		{47552A62-780A-4582-82CA-FA1C5C08E640}.Release|x64.ActiveCfg = Release|x64
+		{47552A62-780A-4582-82CA-FA1C5C08E640}.Release|x64.Build.0 = Release|x64
+		{47552A62-780A-4582-82CA-FA1C5C08E640}.Release|x86.ActiveCfg = Release|Win32
+		{47552A62-780A-4582-82CA-FA1C5C08E640}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
