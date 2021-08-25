@@ -109,8 +109,6 @@ HCURSOR CMFCBasic109ListControlDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
 void CMFCBasic109ListControlDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here

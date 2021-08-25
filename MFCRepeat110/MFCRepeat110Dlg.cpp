@@ -1,11 +1,11 @@
 
-// MFCBasic110LButtonDownDlg.cpp : implementation file
+// MFCRepeat110Dlg.cpp : implementation file
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCBasic110LButtonDown.h"
-#include "MFCBasic110LButtonDownDlg.h"
+#include "MFCRepeat110.h"
+#include "MFCRepeat110Dlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -13,23 +13,23 @@
 #endif
 
 
-// CMFCBasic110LButtonDownDlg dialog
+// CMFCRepeat110Dlg dialog
 
 
-// 객체 생성자
-CMFCBasic110LButtonDownDlg::CMFCBasic110LButtonDownDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCBASIC110LBUTTONDOWN_DIALOG, pParent)
+
+CMFCRepeat110Dlg::CMFCRepeat110Dlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_MFCREPEAT110_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_rect.SetRect(10, 10, 100, 100);
 }
 
-void CMFCBasic110LButtonDownDlg::DoDataExchange(CDataExchange* pDX)
+void CMFCRepeat110Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CMFCBasic110LButtonDownDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CMFCRepeat110Dlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_LBUTTONDOWN()
@@ -38,9 +38,9 @@ BEGIN_MESSAGE_MAP(CMFCBasic110LButtonDownDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CMFCBasic110LButtonDownDlg message handlers
+// CMFCRepeat110Dlg message handlers
 
-BOOL CMFCBasic110LButtonDownDlg::OnInitDialog()
+BOOL CMFCRepeat110Dlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -58,10 +58,10 @@ BOOL CMFCBasic110LButtonDownDlg::OnInitDialog()
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CMFCBasic110LButtonDownDlg::OnPaint()
+void CMFCRepeat110Dlg::OnPaint()
 {
-	CPaintDC dc(this); // device context for painting
-	if (IsIconic())			// 최소화
+		CPaintDC dc(this); // device context for painting
+	if (IsIconic())
 	{
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
@@ -86,49 +86,44 @@ void CMFCBasic110LButtonDownDlg::OnPaint()
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CMFCBasic110LButtonDownDlg::OnQueryDragIcon()
+HCURSOR CMFCRepeat110Dlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
 
 
-void CMFCBasic110LButtonDownDlg::OnLButtonDown(UINT nFlags, CPoint point)
+void CMFCRepeat110Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// if(m_rect.PtInRect(point))
-	if (point.x >= m_rect.left && point.y >= m_rect.top &&
-		point.x <= m_rect.right && point.y <= m_rect.bottom) 
+	// TODO: Add your message handler code here and/or call default
+	if (m_rect.PtInRect(point))
 	{
-		m_is_clicked = 1;
+		m_clicked_flag = m_clicked_flag ^ 1;
 		m_prev_pos = point;
-		SetCapture();			// 마우스가 벗어나도 메시지를 계속 보내줌
+		SetCapture();
 	}
 
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
 
-void CMFCBasic110LButtonDownDlg::OnLButtonUp(UINT nFlags, CPoint point)
+void CMFCRepeat110Dlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	if (m_is_clicked == 1) {
-		m_is_clicked = 0;
-		ReleaseCapture();		// SetCapture 함수를 해제
-	}
+	m_clicked_flag = m_clicked_flag ^ m_clicked_flag;
+	ReleaseCapture();
 
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
 
 
-void CMFCBasic110LButtonDownDlg::OnMouseMove(UINT nFlags, CPoint point)
+void CMFCRepeat110Dlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	if (m_is_clicked == 1) {
-		// CPoint move_pos = point - m_prev_pos;
-		CPoint move_pos;
-		move_pos.x = point.x - m_prev_pos.x;
-		move_pos.y = point.y - m_prev_pos.y;
-		
+	if (m_clicked_flag != 0) 
+	{
+		CPoint move_pos = point - m_prev_pos;
+
 		m_rect.left += move_pos.x;
 		m_rect.top += move_pos.y;
 		m_rect.right += move_pos.x;

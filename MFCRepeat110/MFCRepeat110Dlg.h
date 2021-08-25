@@ -1,25 +1,25 @@
 
-// MFCBasic110LButtonDownDlg.h : header file
+// MFCRepeat110Dlg.h : header file
 //
 
 #pragma once
 
 
-// CMFCBasic110LButtonDownDlg dialog
-class CMFCBasic110LButtonDownDlg : public CDialogEx
+// CMFCRepeat110Dlg dialog
+class CMFCRepeat110Dlg : public CDialogEx
 {
 protected:
 	CRect m_rect;
+	int m_clicked_flag = m_clicked_flag ^ m_clicked_flag;
 	CPoint m_prev_pos;
-	char m_is_clicked = 0;
-	
+
 // Construction
 public:
-	CMFCBasic110LButtonDownDlg(CWnd* pParent = nullptr);	// standard constructor
+	CMFCRepeat110Dlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCBASIC110LBUTTONDOWN_DIALOG };
+	enum { IDD = IDD_MFCREPEAT110_DIALOG };
 #endif
 
 	protected:
