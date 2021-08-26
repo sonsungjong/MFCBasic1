@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{33787181-085F-4216-8AC4-F668113D6C8B}</ProjectGuid>
+    <ProjectGuid>{1AC061CE-D9E7-4BF5-BC71-2AB92486EC59}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
-    <RootNamespace>MFCRepeat110</RootNamespace>
+    <RootNamespace>MFCBasic113ALPHA</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -184,15 +184,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="MFCRepeat110.h" />
-    <ClInclude Include="MFCRepeat110Dlg.h" />
+    <ClInclude Include="MFCBasic113ALPHA.h" />
+    <ClInclude Include="MFCBasic113ALPHADlg.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MFCRepeat110.cpp" />
-    <ClCompile Include="MFCRepeat110Dlg.cpp" />
+    <ClCompile Include="MFCBasic113ALPHA.cpp" />
+    <ClCompile Include="MFCBasic113ALPHADlg.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -201,13 +201,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFCRepeat110.rc" />
+    <ResourceCompile Include="MFCBasic113ALPHA.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFCRepeat110.rc2" />
+    <None Include="res\MFCBasic113ALPHA.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MFCRepeat110.ico" />
+    <Image Include="res\MFCBasic113ALPHA.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

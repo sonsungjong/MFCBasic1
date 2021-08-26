@@ -1,41 +1,41 @@
 
-// MFCRepeat110.cpp : Defines the class behaviors for the application.
+// MFCBasic114CPtrArray.cpp : Defines the class behaviors for the application.
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCRepeat110.h"
-#include "MFCRepeat110Dlg.h"
+#include "MFCBasic114CPtrArray.h"
+#include "MFCBasic114CPtrArrayDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CMFCRepeat110App
+// CMFCBasic114CPtrArrayApp
 
-BEGIN_MESSAGE_MAP(CMFCRepeat110App, CWinApp)
+BEGIN_MESSAGE_MAP(CMFCBasic114CPtrArrayApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// CMFCRepeat110App construction
+// CMFCBasic114CPtrArrayApp construction
 
-CMFCRepeat110App::CMFCRepeat110App()
+CMFCBasic114CPtrArrayApp::CMFCBasic114CPtrArrayApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
 
-// The one and only CMFCRepeat110App object
+// The one and only CMFCBasic114CPtrArrayApp object
 
-CMFCRepeat110App theApp;
+CMFCBasic114CPtrArrayApp theApp;
 
 
-// CMFCRepeat110App initialization
+// CMFCBasic114CPtrArrayApp initialization
 
-BOOL CMFCRepeat110App::InitInstance()
+BOOL CMFCBasic114CPtrArrayApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -66,7 +66,7 @@ BOOL CMFCRepeat110App::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	CMFCRepeat110Dlg dlg;
+	CMFCBasic114CPtrArrayDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

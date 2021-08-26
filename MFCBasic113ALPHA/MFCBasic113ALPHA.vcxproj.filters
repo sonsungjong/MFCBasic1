@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MFCRepeat110.h">
+    <ClInclude Include="MFCBasic113ALPHA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MFCRepeat110Dlg.h">
+    <ClInclude Include="MFCBasic113ALPHADlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -35,10 +35,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MFCRepeat110.cpp">
+    <ClCompile Include="MFCBasic113ALPHA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MFCRepeat110Dlg.cpp">
+    <ClCompile Include="MFCBasic113ALPHADlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -46,17 +46,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFCRepeat110.rc">
+    <ResourceCompile Include="MFCBasic113ALPHA.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFCRepeat110.rc2">
+    <None Include="res\MFCBasic113ALPHA.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MFCRepeat110.ico">
+    <Image Include="res\MFCBasic113ALPHA.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

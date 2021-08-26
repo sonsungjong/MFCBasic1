@@ -1,11 +1,11 @@
 
-// MFCRepeat110Dlg.cpp : implementation file
+// MFCBasic113ALPHADlg.cpp : implementation file
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCRepeat110.h"
-#include "MFCRepeat110Dlg.h"
+#include "MFCBasic113ALPHA.h"
+#include "MFCBasic113ALPHADlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -13,34 +13,31 @@
 #endif
 
 
-// CMFCRepeat110Dlg dialog
+// CMFCBasic113ALPHADlg dialog
 
 
 
-CMFCRepeat110Dlg::CMFCRepeat110Dlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCREPEAT110_DIALOG, pParent)
+CMFCBasic113ALPHADlg::CMFCBasic113ALPHADlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_MFCBASIC113ALPHA_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	m_rect.SetRect(10, 10, 100, 100);
 }
 
-void CMFCRepeat110Dlg::DoDataExchange(CDataExchange* pDX)
+void CMFCBasic113ALPHADlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CMFCRepeat110Dlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CMFCBasic113ALPHADlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_LBUTTONDOWN()
-	ON_WM_LBUTTONUP()
-	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 
-// CMFCRepeat110Dlg message handlers
+// CMFCBasic113ALPHADlg message handlers
 
-BOOL CMFCRepeat110Dlg::OnInitDialog()
+BOOL CMFCBasic113ALPHADlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -50,6 +47,9 @@ BOOL CMFCRepeat110Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	// Layered 속성을 True로 변경한 후 작업
+	SetLayeredWindowAttributes(0, 255, LWA_ALPHA);			// 투명도 조절
+	// SetLayeredWindowAttributes(RGB(255, 1, 7), 0, LWA_COLORKEY);			// 해당 색상을 투명화
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -58,7 +58,7 @@ BOOL CMFCRepeat110Dlg::OnInitDialog()
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CMFCRepeat110Dlg::OnPaint()
+void CMFCBasic113ALPHADlg::OnPaint()
 {
 		CPaintDC dc(this); // device context for painting
 	if (IsIconic())
@@ -79,60 +79,30 @@ void CMFCRepeat110Dlg::OnPaint()
 	}
 	else
 	{
-		dc.Rectangle(m_rect);
-		//CDialogEx::OnPaint();
+		dc.FillSolidRect(10, 10, 200, 200, RGB(255, 1, 7));
+		
+		CDialogEx::OnPaint();
 	}
 }
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CMFCRepeat110Dlg::OnQueryDragIcon()
+HCURSOR CMFCBasic113ALPHADlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
 
 
-void CMFCRepeat110Dlg::OnLButtonDown(UINT nFlags, CPoint point)
+void CMFCBasic113ALPHADlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	if (m_rect.PtInRect(point))
-	{
-		m_clicked_flag = m_clicked_flag ^ 1;
-		m_prev_pos = point;
-		SetCapture();
+	int wnd_style = ::GetWindowLong(m_hWnd, GWL_EXSTYLE);
+	if (!(wnd_style & WS_EX_LAYERED)) {
+		::SetWindowLong(m_hWnd, GWL_EXSTYLE, wnd_style | WS_EX_LAYERED);
 	}
+
+	SetLayeredWindowAttributes(RGB(255, 1, 7), 0, LWA_COLORKEY);
 
 	CDialogEx::OnLButtonDown(nFlags, point);
-}
-
-
-void CMFCRepeat110Dlg::OnLButtonUp(UINT nFlags, CPoint point)
-{
-	// TODO: Add your message handler code here and/or call default
-	m_clicked_flag = m_clicked_flag ^ m_clicked_flag;
-	ReleaseCapture();
-
-	CDialogEx::OnLButtonUp(nFlags, point);
-}
-
-
-void CMFCRepeat110Dlg::OnMouseMove(UINT nFlags, CPoint point)
-{
-	// TODO: Add your message handler code here and/or call default
-	if (m_clicked_flag != 0) 
-	{
-		CPoint move_pos = point - m_prev_pos;
-
-		m_rect.left += move_pos.x;
-		m_rect.top += move_pos.y;
-		m_rect.right += move_pos.x;
-		m_rect.bottom += move_pos.y;
-
-		m_prev_pos = point;
-
-		Invalidate();
-	}
-
-	CDialogEx::OnMouseMove(nFlags, point);
 }

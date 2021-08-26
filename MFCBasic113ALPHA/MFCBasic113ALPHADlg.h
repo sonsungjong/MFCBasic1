@@ -1,25 +1,20 @@
 
-// MFCRepeat110Dlg.h : header file
+// MFCBasic113ALPHADlg.h : header file
 //
 
 #pragma once
 
 
-// CMFCRepeat110Dlg dialog
-class CMFCRepeat110Dlg : public CDialogEx
+// CMFCBasic113ALPHADlg dialog
+class CMFCBasic113ALPHADlg : public CDialogEx
 {
-protected:
-	CRect m_rect;
-	int m_clicked_flag = m_clicked_flag ^ m_clicked_flag;
-	CPoint m_prev_pos;
-
 // Construction
 public:
-	CMFCRepeat110Dlg(CWnd* pParent = nullptr);	// standard constructor
+	CMFCBasic113ALPHADlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCREPEAT110_DIALOG };
+	enum { IDD = IDD_MFCBASIC113ALPHA_DIALOG };
 #endif
 
 	protected:
@@ -37,6 +32,4 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };

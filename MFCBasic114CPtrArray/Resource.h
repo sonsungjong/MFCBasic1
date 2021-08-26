@@ -1,9 +1,9 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by MFCRepeat110.rc
+// Used by MFCBasic114CPtrArray.rc
 //
 #define IDR_MAINFRAME					128
-#define IDD_MFCREPEAT110_DIALOG				102
+#define IDD_MFCBASIC114CPTRARRAY_DIALOG				102
 
 // Next default values for new objects
 //
