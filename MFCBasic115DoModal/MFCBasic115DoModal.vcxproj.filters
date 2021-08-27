@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MFCBasic116Dialog2.h">
+    <ClInclude Include="MFCBasic115DoModal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MFCBasic116Dialog2Dlg.h">
+    <ClInclude Include="MFCBasic115DoModalDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -33,30 +33,42 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Dialog1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MFCBasic116Dialog2.cpp">
+    <ClCompile Include="MFCBasic115DoModal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MFCBasic116Dialog2Dlg.cpp">
+    <ClCompile Include="MFCBasic115DoModalDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFCBasic116Dialog2.rc">
+    <ResourceCompile Include="MFCBasic115DoModal.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFCBasic116Dialog2.rc2">
+    <None Include="res\MFCBasic115DoModal.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MFCBasic116Dialog2.ico">
+    <Image Include="res\MFCBasic115DoModal.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -1,41 +1,41 @@
 
-// MFCBasic116Dialog2.cpp : Defines the class behaviors for the application.
+// MFCBasic116Modaless.cpp : Defines the class behaviors for the application.
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCBasic116Dialog2.h"
-#include "MFCBasic116Dialog2Dlg.h"
+#include "MFCBasic116Modaless.h"
+#include "MFCBasic116ModalessDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CMFCBasic116Dialog2App
+// CMFCBasic116ModalessApp
 
-BEGIN_MESSAGE_MAP(CMFCBasic116Dialog2App, CWinApp)
+BEGIN_MESSAGE_MAP(CMFCBasic116ModalessApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// CMFCBasic116Dialog2App construction
+// CMFCBasic116ModalessApp construction
 
-CMFCBasic116Dialog2App::CMFCBasic116Dialog2App()
+CMFCBasic116ModalessApp::CMFCBasic116ModalessApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
 
-// The one and only CMFCBasic116Dialog2App object
+// The one and only CMFCBasic116ModalessApp object
 
-CMFCBasic116Dialog2App theApp;
+CMFCBasic116ModalessApp theApp;
 
 
-// CMFCBasic116Dialog2App initialization
+// CMFCBasic116ModalessApp initialization
 
-BOOL CMFCBasic116Dialog2App::InitInstance()
+BOOL CMFCBasic116ModalessApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -66,7 +66,7 @@ BOOL CMFCBasic116Dialog2App::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	CMFCBasic116Dialog2Dlg dlg;
+	CMFCBasic116ModalessDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

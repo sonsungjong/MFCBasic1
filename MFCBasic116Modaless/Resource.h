@@ -1,9 +1,9 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by MFCBasic116Dialog2.rc
+// Used by MFCBasic116Modaless.rc
 //
 #define IDR_MAINFRAME					128
-#define IDD_MFCBASIC116DIALOG2_DIALOG				102
+#define IDD_MFCBASIC116MODALESS_DIALOG				102
 
 // Next default values for new objects
 //

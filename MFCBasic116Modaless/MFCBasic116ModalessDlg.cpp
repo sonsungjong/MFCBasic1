@@ -1,11 +1,11 @@
 
-// MFCBasic116Dialog2Dlg.cpp : implementation file
+// MFCBasic116ModalessDlg.cpp : implementation file
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCBasic116Dialog2.h"
-#include "MFCBasic116Dialog2Dlg.h"
+#include "MFCBasic116Modaless.h"
+#include "MFCBasic116ModalessDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -13,30 +13,30 @@
 #endif
 
 
-// CMFCBasic116Dialog2Dlg dialog
+// CMFCBasic116ModalessDlg dialog
 
 
 
-CMFCBasic116Dialog2Dlg::CMFCBasic116Dialog2Dlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCBASIC116DIALOG2_DIALOG, pParent)
+CMFCBasic116ModalessDlg::CMFCBasic116ModalessDlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_MFCBASIC116MODALESS_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CMFCBasic116Dialog2Dlg::DoDataExchange(CDataExchange* pDX)
+void CMFCBasic116ModalessDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CMFCBasic116Dialog2Dlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CMFCBasic116ModalessDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 END_MESSAGE_MAP()
 
 
-// CMFCBasic116Dialog2Dlg message handlers
+// CMFCBasic116ModalessDlg message handlers
 
-BOOL CMFCBasic116Dialog2Dlg::OnInitDialog()
+BOOL CMFCBasic116ModalessDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -54,7 +54,7 @@ BOOL CMFCBasic116Dialog2Dlg::OnInitDialog()
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CMFCBasic116Dialog2Dlg::OnPaint()
+void CMFCBasic116ModalessDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -81,7 +81,7 @@ void CMFCBasic116Dialog2Dlg::OnPaint()
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CMFCBasic116Dialog2Dlg::OnQueryDragIcon()
+HCURSOR CMFCBasic116ModalessDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }

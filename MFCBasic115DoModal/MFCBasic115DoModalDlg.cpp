@@ -1,11 +1,11 @@
 
-// MFCBasic115Dialog1Dlg.cpp : implementation file
+// MFCBasic115DoModalDlg.cpp : implementation file
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCBasic115Dialog1.h"
-#include "MFCBasic115Dialog1Dlg.h"
+#include "MFCBasic115DoModal.h"
+#include "MFCBasic115DoModalDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -13,31 +13,32 @@
 #endif
 
 
-// CMFCBasic115Dialog1Dlg dialog
+// CMFCBasic115DoModalDlg dialog
 
 
 
-CMFCBasic115Dialog1Dlg::CMFCBasic115Dialog1Dlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCBASIC115DIALOG1_DIALOG, pParent)
+CMFCBasic115DoModalDlg::CMFCBasic115DoModalDlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_MFCBASIC115DOMODAL_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CMFCBasic115Dialog1Dlg::DoDataExchange(CDataExchange* pDX)
+void CMFCBasic115DoModalDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CMFCBasic115Dialog1Dlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CMFCBasic115DoModalDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_SHOW_DLG_BTN, &CMFCBasic115Dialog1Dlg::OnBnClickedShowDlgBtn)
+	ON_BN_CLICKED(IDC_SHOW_DLG_BTN, &CMFCBasic115DoModalDlg::OnBnClickedShowDlgBtn)
+	ON_BN_CLICKED(IDC_SHOW_NUM_DLG, &CMFCBasic115DoModalDlg::OnBnClickedShowNumDlg)
 END_MESSAGE_MAP()
 
 
-// CMFCBasic115Dialog1Dlg message handlers
+// CMFCBasic115DoModalDlg message handlers
 
-BOOL CMFCBasic115Dialog1Dlg::OnInitDialog()
+BOOL CMFCBasic115DoModalDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -55,7 +56,7 @@ BOOL CMFCBasic115Dialog1Dlg::OnInitDialog()
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CMFCBasic115Dialog1Dlg::OnPaint()
+void CMFCBasic115DoModalDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -82,17 +83,28 @@ void CMFCBasic115Dialog1Dlg::OnPaint()
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CMFCBasic115Dialog1Dlg::OnQueryDragIcon()
+HCURSOR CMFCBasic115DoModalDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-#include "NewDlg.h"
-
-void CMFCBasic115Dialog1Dlg::OnBnClickedShowDlgBtn()
+// 대화상자 오픈
+void CMFCBasic115DoModalDlg::OnBnClickedShowDlgBtn()
 {
-	// 새 대화상자의 클래스 만들기 (새 대화상자 더블클릭) --> include "헤더파일"
-	NewDlg ins_dlg;
-	ins_dlg.DoModal();
-	// 12:30
+	Dialog1 dialog1;			// 리소스에서 다이얼로그 추가 후 클래스 추가하여 제작
+	dialog1.DoModal();		// 정형대화상자 실행
+}
+
+// 대화상자간 데이터 전달
+void CMFCBasic115DoModalDlg::OnBnClickedShowNumDlg()
+{
+	int num = GetDlgItemInt(IDC_PARENT_EDIT);
+	Dialog2 dialog2;
+	dialog2.SetNum(num);			// dialog2의 변수에 백업
+	int result = dialog2.DoModal();
+
+	if (result == IDOK) {
+		num = dialog2.GetNum();
+		SetDlgItemInt(IDC_PARENT_EDIT, num);
+	}
 }

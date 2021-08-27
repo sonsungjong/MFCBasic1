@@ -1,20 +1,21 @@
 
-// MFCBasic116Dialog2Dlg.h : header file
+// MFCBasic115DoModalDlg.h : header file
 //
 
 #pragma once
+#include "Dialog1.h"
+#include "Dialog2.h"
 
-
-// CMFCBasic116Dialog2Dlg dialog
-class CMFCBasic116Dialog2Dlg : public CDialogEx
+// CMFCBasic115DoModalDlg dialog
+class CMFCBasic115DoModalDlg : public CDialogEx
 {
 // Construction
 public:
-	CMFCBasic116Dialog2Dlg(CWnd* pParent = nullptr);	// standard constructor
+	CMFCBasic115DoModalDlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCBASIC116DIALOG2_DIALOG };
+	enum { IDD = IDD_MFCBASIC115DOMODAL_DIALOG };
 #endif
 
 	protected:
@@ -30,4 +31,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedShowDlgBtn();
+	afx_msg void OnBnClickedShowNumDlg();
 };

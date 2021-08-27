@@ -1,41 +1,41 @@
 
-// MFCBasic115Dialog1.cpp : Defines the class behaviors for the application.
+// MFCBasic115DoModal.cpp : Defines the class behaviors for the application.
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCBasic115Dialog1.h"
-#include "MFCBasic115Dialog1Dlg.h"
+#include "MFCBasic115DoModal.h"
+#include "MFCBasic115DoModalDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CMFCBasic115Dialog1App
+// CMFCBasic115DoModalApp
 
-BEGIN_MESSAGE_MAP(CMFCBasic115Dialog1App, CWinApp)
+BEGIN_MESSAGE_MAP(CMFCBasic115DoModalApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// CMFCBasic115Dialog1App construction
+// CMFCBasic115DoModalApp construction
 
-CMFCBasic115Dialog1App::CMFCBasic115Dialog1App()
+CMFCBasic115DoModalApp::CMFCBasic115DoModalApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
 
-// The one and only CMFCBasic115Dialog1App object
+// The one and only CMFCBasic115DoModalApp object
 
-CMFCBasic115Dialog1App theApp;
+CMFCBasic115DoModalApp theApp;
 
 
-// CMFCBasic115Dialog1App initialization
+// CMFCBasic115DoModalApp initialization
 
-BOOL CMFCBasic115Dialog1App::InitInstance()
+BOOL CMFCBasic115DoModalApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
@@ -66,7 +66,7 @@ BOOL CMFCBasic115Dialog1App::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	CMFCBasic115Dialog1Dlg dlg;
+	CMFCBasic115DoModalDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
