@@ -1,11 +1,11 @@
 
-// MFCBasic116ModalessDlg.cpp : implementation file
+// MFCBasic116ModalessInnerDlg.cpp : implementation file
 //
 
 #include "pch.h"
 #include "framework.h"
-#include "MFCBasic116Modaless.h"
-#include "MFCBasic116ModalessDlg.h"
+#include "MFCBasic116ModalessInner.h"
+#include "MFCBasic116ModalessInnerDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -13,34 +13,33 @@
 #endif
 
 
-// CMFCBasic116ModalessDlg dialog
+// CMFCBasic116ModalessInnerDlg dialog
 
 
 
-CMFCBasic116ModalessDlg::CMFCBasic116ModalessDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCBASIC116MODALESS_DIALOG, pParent)
+CMFCBasic116ModalessInnerDlg::CMFCBasic116ModalessInnerDlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_MFCBASIC116MODALESSINNER_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CMFCBasic116ModalessDlg::DoDataExchange(CDataExchange* pDX)
+void CMFCBasic116ModalessInnerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CMFCBasic116ModalessDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CMFCBasic116ModalessInnerDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BTN_SHOW, &CMFCBasic116ModalessDlg::OnBnClickedBtnShow)
 	ON_WM_DESTROY()
-	ON_MESSAGE(44444, &CMFCBasic116ModalessDlg::On44444)
-	ON_BN_CLICKED(IDC_BTN_START, &CMFCBasic116ModalessDlg::OnBnClickedBtnStart)
+	ON_BN_CLICKED(IDOK, &CMFCBasic116ModalessInnerDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BTN_PARENT, &CMFCBasic116ModalessInnerDlg::OnBnClickedBtnParent)
 END_MESSAGE_MAP()
 
 
-// CMFCBasic116ModalessDlg message handlers
+// CMFCBasic116ModalessInnerDlg message handlers
 
-BOOL CMFCBasic116ModalessDlg::OnInitDialog()
+BOOL CMFCBasic116ModalessInnerDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -50,6 +49,9 @@ BOOL CMFCBasic116ModalessDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	mp_innerDlg1 = new InnerDlg1;
+	mp_innerDlg1->Create(IDD_INNER_DLG1, this);
+	mp_innerDlg1->SetWindowPos(NULL, 0, 80, 0, 0, SWP_NOSIZE);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -58,7 +60,7 @@ BOOL CMFCBasic116ModalessDlg::OnInitDialog()
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CMFCBasic116ModalessDlg::OnPaint()
+void CMFCBasic116ModalessInnerDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -85,47 +87,34 @@ void CMFCBasic116ModalessDlg::OnPaint()
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CMFCBasic116ModalessDlg::OnQueryDragIcon()
+HCURSOR CMFCBasic116ModalessInnerDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
 
 
-void CMFCBasic116ModalessDlg::OnBnClickedBtnShow()
-{
-	// TODO: Add your control notification handler code here
-	if (mp_dialog1 == NULL) {
-		mp_dialog1 = new Dialog1;
-		mp_dialog1->Create(IDD_DIALOG1, this);
-	}
-}
-
-
-void CMFCBasic116ModalessDlg::OnDestroy()
+void CMFCBasic116ModalessInnerDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
 	// TODO: Add your message handler code here
-	if (mp_dialog1 != NULL) {
-		delete mp_dialog1;
+	if (mp_innerDlg1 != NULL) {
+		delete mp_innerDlg1;
 	}
 }
 
-// 자식 비정형대화상자 닫기
-afx_msg LRESULT CMFCBasic116ModalessDlg::On44444(WPARAM wParam, LPARAM lParam)
-{
-	delete mp_dialog1;
-	mp_dialog1 = NULL;
-	return 0;
-}
 
-// 비정형상자에 정수값 전달
-void CMFCBasic116ModalessDlg::OnBnClickedBtnStart()
+void CMFCBasic116ModalessInnerDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	if (mp_dialog1 != NULL) {
-		int num = GetDlgItemInt(IDC_EDIT_START);
-		mp_dialog1->SetDlgItemInt(IDC_EDIT_NUM, num);
-	}
+	//CDialogEx::OnOK();
+}
+
+
+void CMFCBasic116ModalessInnerDlg::OnBnClickedBtnParent()
+{
+	// TODO: Add your control notification handler code here
+	int num = GetDlgItemInt(IDC_EDIT_PARENT);
+	mp_innerDlg1->SetDlgItemInt(IDC_EDIT_CHILD, num);
 }

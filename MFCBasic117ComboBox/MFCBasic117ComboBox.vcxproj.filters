@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MFCBasic116Modaless.h">
+    <ClInclude Include="MFCBasic117ComboBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MFCBasic116ModalessDlg.h">
+    <ClInclude Include="MFCBasic117ComboBoxDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -33,36 +33,30 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dialog1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MFCBasic116Modaless.cpp">
+    <ClCompile Include="MFCBasic117ComboBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MFCBasic116ModalessDlg.cpp">
+    <ClCompile Include="MFCBasic117ComboBoxDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dialog1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFCBasic116Modaless.rc">
+    <ResourceCompile Include="MFCBasic117ComboBox.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFCBasic116Modaless.rc2">
+    <None Include="res\MFCBasic117ComboBox.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MFCBasic116Modaless.ico">
+    <Image Include="res\MFCBasic117ComboBox.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

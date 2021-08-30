@@ -1,15 +1,14 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by MFCBasic116Modaless.rc
+// Used by MFCBasic116ModalessInner.rc
 //
-#define IDD_MFCBASIC116MODALESS_DIALOG  102
+#define IDD_MFCBASIC116MODALESSINNER_DIALOG 102
 #define IDR_MAINFRAME                   128
-#define IDD_DIALOG1                     129
-#define IDC_EDIT_NUM                    1000
-#define IDC_BTN_SET                     1001
-#define IDC_BTN_SHOW                    1002
-#define IDC_EDIT_START                  1005
-#define IDC_BTN_START                   1006
+#define IDD_INNER_DLG1                  130
+#define IDC_BTN_CHILD                   1002
+#define IDC_EDIT_CHILD                  1003
+#define IDC_EDIT_PARENT                 1004
+#define IDC_BTN_PARENT                  1006
 
 // Next default values for new objects
 // 
