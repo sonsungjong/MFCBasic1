@@ -31,6 +31,7 @@ void CMFCBasic117ComboBoxDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMFCBasic117ComboBoxDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_SHOW_BTN, &CMFCBasic117ComboBoxDlg::OnBnClickedShowBtn)
 END_MESSAGE_MAP()
 
 
@@ -86,3 +87,20 @@ HCURSOR CMFCBasic117ComboBoxDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CMFCBasic117ComboBoxDlg::OnBnClickedShowBtn()
+{
+	// TODO: Add your control notification handler code here
+	int num[11];
+	CString str, total_str;
+
+	for(int i = 0; i< sizeof(num)/sizeof(int); i++){
+		num[i] = GetDlgItemInt(IDC_EDIT1 +i);
+
+		str.Format(L"%d, ", num[i]);
+		total_str += str;
+	}
+
+	SetDlgItemText(IDC_NUM_EDIT, total_str);
+}

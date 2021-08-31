@@ -8,6 +8,8 @@
 // CMFCBasic117ComboBoxDlg dialog
 class CMFCBasic117ComboBoxDlg : public CDialogEx
 {
+protected:
+
 // Construction
 public:
 	CMFCBasic117ComboBoxDlg(CWnd* pParent = nullptr);	// standard constructor
@@ -30,4 +32,6 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedShowBtn();
 };

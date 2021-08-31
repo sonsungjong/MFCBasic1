@@ -38,7 +38,7 @@ BOOL CMFCBasic102BasicClassApp::InitInstance()
 	CWinApp::InitInstance();
 	CMFCBasic102BasicClassDlg dlg;
 	m_pMainWnd = &dlg;
-	INT_PTR nResponse = dlg.DoModal();
+	dlg.DoModal();
 
 	return FALSE;
 }
