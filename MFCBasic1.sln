@@ -55,6 +55,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic121Gradation", "MFC
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic122Timer", "MFCBasic122Timer\MFCBasic122Timer.vcxproj", "{02EB1254-B8F1-4010-A1C9-9D86D4A7F0F4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic123Timer2", "MFCBasic123Timer2\MFCBasic123Timer2.vcxproj", "{266F4A6E-8AEB-44E5-865B-7257257612ED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic124MemoryDC", "MFCBasic124MemoryDC\MFCBasic124MemoryDC.vcxproj", "{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -271,6 +275,22 @@ Global
 		{02EB1254-B8F1-4010-A1C9-9D86D4A7F0F4}.Release|x64.Build.0 = Release|x64
 		{02EB1254-B8F1-4010-A1C9-9D86D4A7F0F4}.Release|x86.ActiveCfg = Release|Win32
 		{02EB1254-B8F1-4010-A1C9-9D86D4A7F0F4}.Release|x86.Build.0 = Release|Win32
+		{266F4A6E-8AEB-44E5-865B-7257257612ED}.Debug|x64.ActiveCfg = Debug|x64
+		{266F4A6E-8AEB-44E5-865B-7257257612ED}.Debug|x64.Build.0 = Debug|x64
+		{266F4A6E-8AEB-44E5-865B-7257257612ED}.Debug|x86.ActiveCfg = Debug|Win32
+		{266F4A6E-8AEB-44E5-865B-7257257612ED}.Debug|x86.Build.0 = Debug|Win32
+		{266F4A6E-8AEB-44E5-865B-7257257612ED}.Release|x64.ActiveCfg = Release|x64
+		{266F4A6E-8AEB-44E5-865B-7257257612ED}.Release|x64.Build.0 = Release|x64
+		{266F4A6E-8AEB-44E5-865B-7257257612ED}.Release|x86.ActiveCfg = Release|Win32
+		{266F4A6E-8AEB-44E5-865B-7257257612ED}.Release|x86.Build.0 = Release|Win32
+		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Debug|x64.ActiveCfg = Debug|x64
+		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Debug|x64.Build.0 = Debug|x64
+		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Debug|x86.ActiveCfg = Debug|Win32
+		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Debug|x86.Build.0 = Debug|Win32
+		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Release|x64.ActiveCfg = Release|x64
+		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Release|x64.Build.0 = Release|x64
+		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Release|x86.ActiveCfg = Release|Win32
+		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
