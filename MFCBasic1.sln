@@ -59,6 +59,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic123Timer2", "MFCBas
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic124MemoryDC", "MFCBasic124MemoryDC\MFCBasic124MemoryDC.vcxproj", "{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic125CImageDC", "MFCBasic125CImageDC\MFCBasic125CImageDC.vcxproj", "{E64C9398-C800-436E-8B33-AA63980A17D6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic126BitmapBrush", "MFCBasic126BitmapBrush\MFCBasic126BitmapBrush.vcxproj", "{6631100B-AFA4-42BC-810C-0D07C8ED9F57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -291,6 +295,22 @@ Global
 		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Release|x64.Build.0 = Release|x64
 		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Release|x86.ActiveCfg = Release|Win32
 		{3DC3B642-58C1-4DE6-8030-2E5DAA31F11A}.Release|x86.Build.0 = Release|Win32
+		{E64C9398-C800-436E-8B33-AA63980A17D6}.Debug|x64.ActiveCfg = Debug|x64
+		{E64C9398-C800-436E-8B33-AA63980A17D6}.Debug|x64.Build.0 = Debug|x64
+		{E64C9398-C800-436E-8B33-AA63980A17D6}.Debug|x86.ActiveCfg = Debug|Win32
+		{E64C9398-C800-436E-8B33-AA63980A17D6}.Debug|x86.Build.0 = Debug|Win32
+		{E64C9398-C800-436E-8B33-AA63980A17D6}.Release|x64.ActiveCfg = Release|x64
+		{E64C9398-C800-436E-8B33-AA63980A17D6}.Release|x64.Build.0 = Release|x64
+		{E64C9398-C800-436E-8B33-AA63980A17D6}.Release|x86.ActiveCfg = Release|Win32
+		{E64C9398-C800-436E-8B33-AA63980A17D6}.Release|x86.Build.0 = Release|Win32
+		{6631100B-AFA4-42BC-810C-0D07C8ED9F57}.Debug|x64.ActiveCfg = Debug|x64
+		{6631100B-AFA4-42BC-810C-0D07C8ED9F57}.Debug|x64.Build.0 = Debug|x64
+		{6631100B-AFA4-42BC-810C-0D07C8ED9F57}.Debug|x86.ActiveCfg = Debug|Win32
+		{6631100B-AFA4-42BC-810C-0D07C8ED9F57}.Debug|x86.Build.0 = Debug|Win32
+		{6631100B-AFA4-42BC-810C-0D07C8ED9F57}.Release|x64.ActiveCfg = Release|x64
+		{6631100B-AFA4-42BC-810C-0D07C8ED9F57}.Release|x64.Build.0 = Release|x64
+		{6631100B-AFA4-42BC-810C-0D07C8ED9F57}.Release|x86.ActiveCfg = Release|Win32
+		{6631100B-AFA4-42BC-810C-0D07C8ED9F57}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

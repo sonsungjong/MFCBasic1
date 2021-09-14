@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CMFCBasic124MemoryDCDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -53,6 +54,12 @@ BOOL CMFCBasic124MemoryDCDlg::OnInitDialog()
 	h = r.Height();
 	maxR = 40;
 	minR = 10;
+
+	CClientDC dc(this);
+	m_mem_dc.CreateCompatibleDC(&dc);
+	m_mem_bmp.CreateCompatibleBitmap(&dc, w, h);
+	m_mem_dc.SelectObject(&m_mem_bmp);
+
 	srand((unsigned int)time(NULL));
 	mp = m_circleList;
 
@@ -63,7 +70,7 @@ BOOL CMFCBasic124MemoryDCDlg::OnInitDialog()
 		mp->color = RGB(rand() % 256, rand() % 256, rand() % 256);
 	}
 
-	SetTimer(1, 200, NULL);
+	SetTimer(1, 50, NULL);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -93,16 +100,8 @@ void CMFCBasic124MemoryDCDlg::OnPaint()
 	}
 	else
 	{
-		mp = m_circleList;
-		p_oldBrush = dc.GetCurrentBrush();
-		for (int i = 0; i < MAX_COUNT; i++, mp++) {
-			fill_brush.CreateSolidBrush(mp->color);
-			dc.SelectObject(&fill_brush);
-
-			dc.Ellipse(mp->x - mp->r, mp->y - mp->r, mp->x + mp->r, mp->y + mp->r);
-			fill_brush.DeleteObject();
-		}
-		dc.SelectObject(p_oldBrush);
+		
+		dc.BitBlt(0, 0, w, h, &m_mem_dc, 0, 0, SRCCOPY);
 		//CDialogEx::OnPaint();
 	}
 }
@@ -120,9 +119,11 @@ void CMFCBasic124MemoryDCDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
 	if (nIDEvent == 1) {
-		w = r.Width();
-		h = r.Height();
 		mp = m_circleList;
+		p_oldBrush = m_mem_dc.GetCurrentBrush();
+
+		m_mem_dc.FillSolidRect(0, 0, w, h, RGB(220, 220, 220));
+
 		for (int i = 0; i < MAX_COUNT; ++i, ++mp) {
 			mp->r--;
 			if (mp->r == 0) {
@@ -131,8 +132,13 @@ void CMFCBasic124MemoryDCDlg::OnTimer(UINT_PTR nIDEvent)
 				mp->r = (rand() % maxR) + minR;
 				mp->color = RGB(rand() % 256, rand() % 256, rand() % 256);
 			}
+		fill_brush.CreateSolidBrush(mp->color);
+		m_mem_dc.SelectObject(&fill_brush);
+		m_mem_dc.Ellipse(mp->x - mp->r, mp->y - mp->r, mp->x + mp->r, mp->y + mp->r);
+		fill_brush.DeleteObject();
 		}
-		Invalidate();
+		m_mem_dc.SelectObject(p_oldBrush);
+		Invalidate(FALSE);
 	}
 	//CDialogEx::OnTimer(nIDEvent);
 }
@@ -144,4 +150,25 @@ void CMFCBasic124MemoryDCDlg::OnDestroy()
 
 	// TODO: Add your message handler code here
 	KillTimer(1);
+
+	m_mem_bmp.DeleteObject();
+	m_mem_dc.DeleteDC();
+}
+
+
+// 대화상자 크기변경
+void CMFCBasic124MemoryDCDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+
+	// TODO: Add your message handler code here
+	if ((cx != w || cy != h) && w && h) {
+		w = cx;
+		h = cy;
+		m_mem_bmp.DeleteObject();
+
+		CClientDC dc(this);
+		m_mem_bmp.CreateCompatibleBitmap(&dc, w, h);
+		m_mem_dc.SelectObject(&m_mem_bmp);
+	}
 }
