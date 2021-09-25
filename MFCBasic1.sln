@@ -69,6 +69,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic202CImage", "MFCBas
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic203ImageWindow", "MFCBasic203ImageWindow\MFCBasic203ImageWindow.vcxproj", "{AC7D9A1F-2199-4919-825C-1F30513E2DDD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic204CheckArea", "MFCBasic204CheckArea\MFCBasic204CheckArea.vcxproj", "{9181395A-142B-46D1-86CB-942AE8002AA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -341,6 +343,14 @@ Global
 		{AC7D9A1F-2199-4919-825C-1F30513E2DDD}.Release|x64.Build.0 = Release|x64
 		{AC7D9A1F-2199-4919-825C-1F30513E2DDD}.Release|x86.ActiveCfg = Release|Win32
 		{AC7D9A1F-2199-4919-825C-1F30513E2DDD}.Release|x86.Build.0 = Release|Win32
+		{9181395A-142B-46D1-86CB-942AE8002AA9}.Debug|x64.ActiveCfg = Debug|x64
+		{9181395A-142B-46D1-86CB-942AE8002AA9}.Debug|x64.Build.0 = Debug|x64
+		{9181395A-142B-46D1-86CB-942AE8002AA9}.Debug|x86.ActiveCfg = Debug|Win32
+		{9181395A-142B-46D1-86CB-942AE8002AA9}.Debug|x86.Build.0 = Debug|Win32
+		{9181395A-142B-46D1-86CB-942AE8002AA9}.Release|x64.ActiveCfg = Release|x64
+		{9181395A-142B-46D1-86CB-942AE8002AA9}.Release|x64.Build.0 = Release|x64
+		{9181395A-142B-46D1-86CB-942AE8002AA9}.Release|x86.ActiveCfg = Release|Win32
+		{9181395A-142B-46D1-86CB-942AE8002AA9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
