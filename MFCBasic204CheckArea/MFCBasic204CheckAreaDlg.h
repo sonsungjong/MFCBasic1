@@ -3,14 +3,19 @@
 //
 
 #pragma once
-
+#define BOX_COUNT		18
 
 // CMFCBasic204CheckAreaDlg dialog
 class CMFCBasic204CheckAreaDlg : public CDialogEx
 {
 protected:
 	CBrush m_brush, m_select_brush;
+	CBrush* mp_old_brush;
 	CPen m_pen, m_select_pen;
+	CPen* mp_old_pen;
+
+	int m_idx_x = -1;
+	int m_idx_y = -1;
 
 // Construction
 public:
@@ -34,4 +39,6 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };

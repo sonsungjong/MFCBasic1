@@ -24,7 +24,7 @@ CMFCBasic204CheckAreaDlg::CMFCBasic204CheckAreaDlg(CWnd* pParent /*=nullptr*/)
 
 	m_brush.CreateSolidBrush(RGB(0, 80, 200));
 	m_select_brush.CreateSolidBrush(RGB(0, 200, 255));
-	m_pen.CreatePen(PS_SOLID, 1, RGB(0, 0, 255));
+	m_pen.CreatePen(PS_SOLID, 1, RGB(0, 0, 128));
 	m_select_pen.CreatePen(PS_SOLID, 1, RGB(0, 255, 255));
 }
 
@@ -36,6 +36,7 @@ void CMFCBasic204CheckAreaDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMFCBasic204CheckAreaDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -80,14 +81,25 @@ void CMFCBasic204CheckAreaDlg::OnPaint()
 	}
 	else
 	{
-		
 		//CDialogEx::OnPaint();
-		dc.Rectangle(0, 0, 101, 100);
-		dc.Rectangle(100, 0, 201, 100);
-		dc.Rectangle(200, 0, 301, 100);
-		dc.Rectangle(300, 0, 401, 100);
-		dc.Rectangle(400, 0, 501, 100);
-		dc.Rectangle(500, 0, 601, 100);
+		mp_old_brush = dc.SelectObject(&m_brush);
+		mp_old_pen = dc.SelectObject(&m_pen);
+
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 6; x++)
+			{
+				dc.Rectangle(x*100, y*100, 101+x*100, 101+y*100);
+			}
+		}
+		
+		if (m_idx_x != -1 && m_idx_y != -1) {
+			dc.SelectObject(&m_select_brush);
+			dc.SelectObject(&m_select_pen);
+			dc.Rectangle(m_idx_x * 100, m_idx_y*100, 101 + m_idx_x * 100, 101 + m_idx_y * 100);
+		}
+
+		dc.SelectObject(mp_old_brush);		// 복구
+		dc.SelectObject(mp_old_pen);			// 복구
 	}
 }
 
@@ -98,3 +110,31 @@ HCURSOR CMFCBasic204CheckAreaDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CMFCBasic204CheckAreaDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (point.y >= 300 || point.x >= 600) {
+		m_idx_x = -1;
+		m_idx_y = -1;
+	}
+
+	for (int i = 0; i < 6; i++) {
+		if (point.x < 100 + i * 100) {
+			m_idx_x = i;
+			break;
+		}
+	}
+	for (int j = 0; j < 3; j++) {
+		if (point.y < 100 + j * 100) {
+			m_idx_y = j;
+			break;
+		}
+	}
+		
+	Invalidate();
+	
+
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
