@@ -37,30 +37,12 @@ BEGIN_MESSAGE_MAP(CMFCImageProcessingDlg, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &CMFCImageProcessingDlg::OnBnClickedCancel)
 	ON_WM_HSCROLL()
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_PIPE_CHECK_BTN, &CMFCImageProcessingDlg::OnBnClickedPipeCheckBtn)
 END_MESSAGE_MAP()
 
 
 // CMFCImageProcessingDlg message handlers
-void CMFCImageProcessingDlg::ModifyGrayPattern()
-{
-	UINT8* p_start_image = mp_cur_image, * p_end_image = mp_cur_image + m_line_size;
-	int temp;
-	while (p_start_image < p_end_image) {
-		temp = *p_start_image + *(p_start_image + 1) + *(p_start_image + 2);
-		temp = temp / 3;
 
-		if (temp < m_min || temp > m_max) {
-			*(UINT32*)p_start_image = 0xFF000000;			// unsigned int 4바이트
-			p_start_image += 4;
-		}
-		else {
-			*p_start_image++ = temp;
-			*p_start_image++ = temp;
-			*p_start_image++ = temp;
-			p_start_image++;
-		}
-	}
-}
 
 BOOL CMFCImageProcessingDlg::OnInitDialog()
 {
@@ -72,8 +54,11 @@ BOOL CMFCImageProcessingDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	mp_point_list = new POINT[100000];
+
 	m_min_slider.SetRange(0, 255);
 	m_max_slider.SetRange(0, 255);
+	m_min_slider.SetPos(m_min);
 	m_max_slider.SetPos(m_max);
 	SetDlgItemInt(IDC_MIN_EDIT, m_min);
 	SetDlgItemInt(IDC_MAX_EDIT, m_max);
@@ -88,7 +73,7 @@ BOOL CMFCImageProcessingDlg::OnInitDialog()
 	m_image_size = bmp_info.bmHeight * bmp_info.bmWidthBytes;
 
 	// 바이트순서: BGRA, 4바이트값 : 0xAARRGGBB
-	mp_cur_image = (unsigned char*)m_img.GetBits();
+	mp_cur_image = (UINT8*)m_img.GetBits();
 	mp_cur_image -= (m_image_cy - 1) * m_line_size;
 
 	mp_org_image = new UINT8[m_image_size];
@@ -104,7 +89,7 @@ BOOL CMFCImageProcessingDlg::OnInitDialog()
 
 void CMFCImageProcessingDlg::OnPaint()
 {
-		CPaintDC dc(this); // device context for painting
+	CPaintDC dc(this); // device context for painting
 	if (IsIconic())
 	{
 
@@ -125,7 +110,6 @@ void CMFCImageProcessingDlg::OnPaint()
 	{
 		//CDialogEx::OnPaint();
 		m_img.Draw(dc, 0, 0);
-		ModifyGrayPattern();
 	}
 }
 
@@ -161,7 +145,7 @@ void CMFCImageProcessingDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScr
 			SetDlgItemInt(IDC_MIN_EDIT, m_min);
 		}
 		else if (pScrollBar->GetDlgCtrlID() == IDC_MAX_SLIDER) {
-			m_min = m_max_slider.GetPos();
+			m_max = m_max_slider.GetPos();
 			SetDlgItemInt(IDC_MAX_EDIT, m_max);
 		}
 		if (m_min < m_max) {
@@ -181,4 +165,91 @@ void CMFCImageProcessingDlg::OnDestroy()
 
 	// TODO: Add your message handler code here
 	delete[] mp_org_image;
+	delete[] mp_point_list;
+}
+
+int CMFCImageProcessingDlg::CheckObjectPos(RECT* p_target_rect, int a_x, int a_y,
+	unsigned int a_org_color, unsigned int a_change_color,
+	unsigned int* ap_image_data, int a_image_width, int a_image_height)
+{
+	UINT* p_check;
+	//POINT*
+
+	return 0;
+}
+
+void CMFCImageProcessingDlg::OnBnClickedPipeCheckBtn()
+{
+	// TODO: Add your control notification handler code here
+	RECT r;
+	int pos;
+
+	UINT32* p_pos = (UINT32*)mp_cur_image;
+	UINT32* p_end_pattern = (UINT32*)(mp_cur_image + m_image_size);
+	int temp, count = 0;
+	RECT temp_rect[10000];
+
+	while (p_pos < p_end_pattern) {
+		if (*p_pos == 0xFFFFFFFF) {
+			pos = p_pos - (UINT32*)mp_cur_image;
+			if (CheckObjectPos(&r, pos % m_image_cx, pos / m_image_cx, 0xFFFFFFFF, 0xFFFFFFFE, (UINT32*)mp_cur_image, m_image_cx, m_image_cy) > 120) {
+				temp = m_image_cy - r.top;
+				r.top = m_image_cy - r.bottom;
+				r.bottom = temp;
+				if (r.right - r.left < 45)
+					temp_rect[count++] = r;
+			}
+		}
+		p_pos++;
+	}
+
+	HDC h_dc = m_img.GetDC();
+	::SelectObject(h_dc, ::GetStockObject(NULL_BRUSH));
+	::SelectObject(h_dc, ::GetStockObject(DC_PEN));
+	::SetDCPenColor(h_dc, RGB(0, 255, 0));
+
+	for (int i = 0; i < count; i++) {
+		::Rectangle(h_dc, temp_rect[i].top, temp_rect[i].top, temp_rect[i].right, temp_rect[i].bottom);
+	}
+
+	m_img.ReleaseDC();
+	Invalidate(0);
+}
+
+void CMFCImageProcessingDlg::ModifyGrayPattern()
+{
+	UINT8 *p_start_image = mp_cur_image, *p_end_image = mp_cur_image + m_image_size;
+	int temp;
+	while (p_start_image < p_end_image) {
+		temp = *p_start_image + *(p_start_image + 1) + *(p_start_image + 2);
+		temp = temp / 3;
+
+		if (temp < m_min || temp > m_max) {
+			*(UINT32*)p_start_image = 0xFF000000;			// unsigned int 4바이트
+			p_start_image += 4;
+		}
+		else {
+			if (*p_start_image < *(p_start_image + 1) && *p_start_image < *(p_start_image + 2)) {
+				if (abs(*p_start_image - *(p_start_image + 1)) < 20 &&
+					abs(*p_start_image - *(p_start_image + 2)) < 20 &&
+					abs(*(p_start_image + 1) - *(p_start_image + 2)) < 20)
+				{
+					*p_start_image++ = 0xFF;
+					*p_start_image++ = 0xFF;
+					*p_start_image++ = 0xFF;
+					p_start_image++;
+				}
+				else
+				{
+					*(UINT32*)p_start_image = 0xFF000000;
+					p_start_image += 4;
+				}
+			}
+			else
+			{
+				*(UINT32*)p_start_image = 0xFF000000;
+				p_start_image += 4;
+			}
+		}
+	}
 }
