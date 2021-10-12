@@ -1,11 +1,9 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by MFCBasic206DotEditor.rc
+// Used by MFCBasic207OMOCK.rc
 //
-#define IDD_MFCBASIC206DOTEDITOR_DIALOG 102
+#define IDD_MFCBASIC207OMOCK_DIALOG     102
 #define IDR_MAINFRAME                   128
-#define IDC_LEFT_COLOR_BTN              1000
-#define IDC_RIGHT_COLOR_BTN             1001
 
 // Next default values for new objects
 // 
@@ -13,7 +11,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1002
+#define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
