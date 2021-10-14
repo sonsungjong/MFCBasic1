@@ -3,13 +3,17 @@
 //
 
 #pragma once
-
+#define X_COUNT					19
+#define Y_COUNT					19
+#define GRID_LEN					30					// GRID_LENGTH
 
 // CMFCBasic207OMOCKDlg dialog
 class CMFCBasic207OMOCKDlg : public CDialogEx
 {
 protected:
-
+	CPen m_grid_pen;
+	unsigned char m_step = 0;			// 0:Èæµ¹, 1:¹éµ¹
+	//38:45
 
 // Construction
 public:
@@ -35,4 +39,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };
