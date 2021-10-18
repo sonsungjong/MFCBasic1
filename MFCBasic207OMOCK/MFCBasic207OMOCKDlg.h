@@ -13,7 +13,7 @@ class CMFCBasic207OMOCKDlg : public CDialogEx
 protected:
 	CPen m_grid_pen;
 	unsigned char m_step = 0;			// 0:흑돌, 1:백돌
-	//38:45
+	char m_dol[Y_COUNT][X_COUNT];		// 0:돌없음, 1:흑돌있음, 2:백돌있음
 
 // Construction
 public:

@@ -21,6 +21,7 @@ CMFCBasic207OMOCKDlg::CMFCBasic207OMOCKDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MFCBASIC207OMOCK_DIALOG, pParent), m_grid_pen(PS_SOLID, 1, RGB(144, 90, 40))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	memset(m_dol, 0, sizeof(m_dol));
 }
 
 void CMFCBasic207OMOCKDlg::DoDataExchange(CDataExchange* pDX)
@@ -78,6 +79,7 @@ void CMFCBasic207OMOCKDlg::OnPaint()
 	}
 	else
 	{
+		CBrush* p_old_brush = dc.GetCurrentBrush();
 		CPen* p_old_pen = dc.SelectObject(&m_grid_pen);
 		for (int i = 0; i < Y_COUNT; i++)
 		{
@@ -92,6 +94,19 @@ void CMFCBasic207OMOCKDlg::OnPaint()
 			dc.LineTo(GRID_LEN /2+(X_COUNT-1) * GRID_LEN, GRID_LEN /2+i * GRID_LEN);
 		}
 
+		for (int y = 0; y < Y_COUNT; y++)
+		{
+			for (int x = 0; x < X_COUNT; x++)
+			{
+				if (m_dol[y][x])			// m_dol[y][x] != 0
+				{
+					if (m_dol[y][x] == 1) dc.SelectStockObject(BLACK_BRUSH);
+					else dc.SelectStockObject(WHITE_BRUSH);
+					dc.Ellipse(x * GRID_LEN, y * GRID_LEN, GRID_LEN + x * GRID_LEN, GRID_LEN + y * GRID_LEN);
+				}
+			}
+		}
+		dc.SelectObject(p_old_brush);
 		dc.SelectObject(p_old_pen);
 		//CDialogEx::OnPaint();
 	}
@@ -120,18 +135,21 @@ void CMFCBasic207OMOCKDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	int y = point.y / GRID_LEN;		// 간격만큼 나누면 인덱스가 나옴
 
 	if (x < X_COUNT && y < Y_COUNT) {
-		CClientDC dc(this);
+		if (m_dol[y][x] == 0) {
+			m_dol[y][x] = m_step + 1;
+			CClientDC dc(this);
 
-		CGdiObject* p_old_brush;
-		CPen* p_old_pen = dc.SelectObject(&m_grid_pen);
+			CGdiObject* p_old_brush;
+			CPen* p_old_pen = dc.SelectObject(&m_grid_pen);
 
-		if (m_step == 0) p_old_brush=dc.SelectStockObject(BLACK_BRUSH);
-		else p_old_brush=dc.SelectStockObject(WHITE_BRUSH);
+			if (m_step == 0) p_old_brush=dc.SelectStockObject(BLACK_BRUSH);
+			else p_old_brush=dc.SelectStockObject(WHITE_BRUSH);
 
-		dc.Ellipse(x* GRID_LEN, y* GRID_LEN, x* GRID_LEN + GRID_LEN, y* GRID_LEN + GRID_LEN);
-		dc.SelectObject(p_old_brush);
-		dc.SelectObject(p_old_pen);
-		m_step = !m_step;
+			dc.Ellipse(x* GRID_LEN, y* GRID_LEN, x* GRID_LEN + GRID_LEN, y* GRID_LEN + GRID_LEN);
+			dc.SelectObject(p_old_brush);
+			dc.SelectObject(p_old_pen);
+			m_step = !m_step;
+		}
 	}
 
 	CDialogEx::OnLButtonDown(nFlags, point);

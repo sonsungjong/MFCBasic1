@@ -79,6 +79,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCCapture", "MFCCapture\MF
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic207OMOCK", "MFCBasic207OMOCK\MFCBasic207OMOCK.vcxproj", "{E7441FD7-F2DA-401A-87B4-186F679E40F2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project1", "Project1\Project1.vcxproj", "{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic208PairCard", "MFCBasic208PairCard\MFCBasic208PairCard.vcxproj", "{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -391,6 +395,22 @@ Global
 		{E7441FD7-F2DA-401A-87B4-186F679E40F2}.Release|x64.Build.0 = Release|x64
 		{E7441FD7-F2DA-401A-87B4-186F679E40F2}.Release|x86.ActiveCfg = Release|Win32
 		{E7441FD7-F2DA-401A-87B4-186F679E40F2}.Release|x86.Build.0 = Release|Win32
+		{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}.Debug|x64.ActiveCfg = Debug|x64
+		{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}.Debug|x64.Build.0 = Debug|x64
+		{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}.Debug|x86.ActiveCfg = Debug|Win32
+		{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}.Debug|x86.Build.0 = Debug|Win32
+		{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}.Release|x64.ActiveCfg = Release|x64
+		{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}.Release|x64.Build.0 = Release|x64
+		{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}.Release|x86.ActiveCfg = Release|Win32
+		{89CC3CBB-443A-4F6A-A898-DA0B43B606C6}.Release|x86.Build.0 = Release|Win32
+		{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}.Debug|x64.ActiveCfg = Debug|x64
+		{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}.Debug|x64.Build.0 = Debug|x64
+		{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}.Debug|x86.ActiveCfg = Debug|Win32
+		{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}.Debug|x86.Build.0 = Debug|Win32
+		{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}.Release|x64.ActiveCfg = Release|x64
+		{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}.Release|x64.Build.0 = Release|x64
+		{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}.Release|x86.ActiveCfg = Release|Win32
+		{D7890F88-9CB8-41C3-B19A-4A6D29A0D615}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
