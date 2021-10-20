@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CMFCBasic208PairCardDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CMFCBasic208PairCardDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CMFCBasic208PairCardDlg::OnBnClickedCancel)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -48,6 +49,32 @@ BOOL CMFCBasic208PairCardDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	CString str;
+
+	for (int i = 0; i < 19; i++) {
+		str.Format(L".\\card_image\\%03d.bmp", i);
+		m_card_image[i].Load(str);			// 19장의 카드를 읽음
+	}
+
+	for (int i = 0; i < 18; i++) {
+		m_table[i] = i+1;			// 카드번호
+		m_table[18+i] = i+1;
+	}
+
+	srand((unsigned int)time(NULL));
+	int first, second, temp;
+	for (int i = 0; i < 100; i++) {			// 카드섞기
+		first = rand() % 36;
+		second = rand() % 36;
+		if (first != second) {
+			// m_table[first] <-> m_table[second]
+			temp = m_table[first];
+			m_table[first] = m_table[second];
+			m_table[second] = temp;
+		}
+	}
+
+	SetTimer(1, 3000, NULL);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -58,9 +85,9 @@ BOOL CMFCBasic208PairCardDlg::OnInitDialog()
 
 void CMFCBasic208PairCardDlg::OnPaint()
 {
+	CPaintDC dc(this); // device context for painting
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // device context for painting
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
@@ -77,7 +104,20 @@ void CMFCBasic208PairCardDlg::OnPaint()
 	}
 	else
 	{
-		CDialogEx::OnPaint();
+		CString str;
+		int card_index = 0;
+		for (int i = 0; i < 36; i++)
+		{
+			if (m_view_flag == 1) {
+				card_index = m_table[i];
+			}
+			
+			m_card_image[card_index].Draw(dc, (i%6)*36, i/6*56);
+
+			str.Format(L"%d", m_table[i]);
+			dc.TextOutW(5 + (i % 6) * 36, 5 + i / 6 * 56, str);
+		}
+		//CDialogEx::OnPaint();
 	}
 }
 
@@ -101,4 +141,18 @@ void CMFCBasic208PairCardDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnCancel();
+}
+
+
+void CMFCBasic208PairCardDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (nIDEvent == 1) {
+		KillTimer(1);			// 1회용 타이머로 만듦
+		m_view_flag = 0;
+		Invalidate();
+	}
+	else {
+		CDialogEx::OnTimer(nIDEvent);
+	}
 }
