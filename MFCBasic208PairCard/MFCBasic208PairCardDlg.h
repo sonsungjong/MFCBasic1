@@ -9,14 +9,18 @@
 class CMFCBasic208PairCardDlg : public CDialogEx
 {
 private:
-	CImage m_card_image[19];			// 0:µÞ¸é, 1~18: Ä«µå
+	CImage m_card_image[19];			// 0:µÞ¸é, 1~18: ¾Õ¸é
 	char m_table[36];			// 18*2
 	char m_view_flag = 1;
+	char m_first_pos = -1;				// -1:¼±ÅÃ¾ÈµÊ, 0~35
+	char m_find_count = 0;
 
 // Construction
 public:
 	CMFCBasic208PairCardDlg(CWnd* pParent = nullptr);	// standard constructor
 
+	void EndOfGame(const wchar_t* ap_msg);
+	void StartGame();
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MFCBASIC208PAIRCARD_DIALOG };
@@ -39,4 +43,7 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedHintBtn();
+	CProgressCtrl m_time_progress;
 };
