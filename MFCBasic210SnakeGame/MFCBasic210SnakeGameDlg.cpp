@@ -37,6 +37,30 @@ END_MESSAGE_MAP()
 
 
 // CMFCBasic210SnakeGameDlg message handlers
+void CMFCBasic210SnakeGameDlg::DrawMap()					// 반복되는 코드
+{
+	m_draw_dc.SelectStockObject(DC_BRUSH);
+	m_draw_dc.SelectStockObject(DC_PEN);
+	m_draw_dc.SetDCPenColor(RGB(48, 48, 12));			// 어두운 노란색
+	//m_draw_dc.SetDCBrushColor(RGB(0,0,0));			// 검은색
+
+	for (int y = 0; y < 60; y++) {
+		for (int x = 0; x < 80; x++) {
+			if (m_count_map[y][x] >0) {
+				m_count_map[y][x]--;
+				if (m_count_map[y][x] == 0) m_table[y][x] = 0;
+			}
+			m_draw_dc.SetDCBrushColor(m_table[y][x]);										// 색깔
+			m_draw_dc.Rectangle(x * 10, y * 10, x * 10 + 11, y * 10 + 11);			// 격자
+		}
+	}
+}
+
+void CMFCBasic210SnakeGameDlg::GameOver()
+{
+	KillTimer(1);
+	MessageBox(_T("미션을 완료하지 못했습니다."), _T("Game Over"), MB_ICONSTOP);
+}
 
 BOOL CMFCBasic210SnakeGameDlg::OnInitDialog()
 {
@@ -60,19 +84,10 @@ BOOL CMFCBasic210SnakeGameDlg::OnInitDialog()
 		else i--;
 	}
 
-	m_table[m_pos.y][m_pos.x] = RGB(0, 255, 0);
+	//m_table[m_pos.y][m_pos.x] = RGB(0, 255, 0);
+    //m_count_map[m_pos.y][m_pos.x] = m_eat_count+1;
 
-	m_draw_dc.SelectStockObject(DC_BRUSH);
-	m_draw_dc.SelectStockObject(DC_PEN);
-	m_draw_dc.SetDCPenColor(RGB(48, 48, 12));			// 어두운 노란색
-	//m_draw_dc.SetDCBrushColor(RGB(0,0,0));			// 검은색
-
-	for (int y = 0; y < 60; y++) {
-		for (int x = 0; x < 80; x++) {
-			m_draw_dc.SetDCBrushColor(m_table[y][x]);			// 색깔
-			m_draw_dc.Rectangle(x * 10, y * 10, x * 10 + 11, y * 10 + 11);			// 격자
-		}
-	}
+	DrawMap();
 
 	SetTimer(1, 200, NULL);
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -133,5 +148,52 @@ void CMFCBasic210SnakeGameDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 	if (nIDEvent == 1) {
 
+		if (m_direction == 0) m_pos.x--;					// left
+		else if (m_direction == 1) m_pos.y--;			// up
+		else if (m_direction == 2) m_pos.x++;		// right
+		else m_pos.y++;		// down
+
+		if (m_pos.x >= 0 && m_pos.x <= 79 && m_pos.y >= 0 && m_pos.y <= 59) {
+			if (m_table[m_pos.y][m_pos.x] == RGB(255, 0, 0)) { 		// 빨간색이면
+				m_eat_count++;
+				SetDlgItemInt(IDC_EAT_COUNT_EDIT, m_eat_count);
+			}
+			else if (m_table[m_pos.y][m_pos.x]) {				// 검은색이 아니면 (녹색)
+				GameOver();
+				return;
+			}
+			m_table[m_pos.y][m_pos.x] = RGB(0, 255, 0);			// 바뀐위치에 녹색
+			m_count_map[m_pos.y][m_pos.x] = m_eat_count + 2;
+
+			DrawMap();
+
+			CClientDC dc(this);
+			m_draw_image.Draw(dc, 0, 0);					// dc만들어서 덮어버림
+		} else {
+			GameOver();
+		}
+		
+
 	}else CDialogEx::OnTimer(nIDEvent);
+}
+
+// 키보드 가로채기 PreTranslateMessage
+BOOL CMFCBasic210SnakeGameDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (pMsg->message == WM_KEYDOWN) {
+		if (pMsg->wParam >= VK_LEFT && pMsg->wParam <= VK_DOWN) {
+			int old_direction = m_direction;
+			m_direction = pMsg->wParam - VK_LEFT;
+			if (old_direction - m_direction > 0) {
+				if ((old_direction - m_direction) == 2) m_direction = old_direction;
+			}
+			else {
+				if ((m_direction - old_direction) == 2) m_direction = old_direction;
+			}
+			return TRUE;
+		}
+	}
+
+	return CDialogEx::PreTranslateMessage(pMsg);
 }
