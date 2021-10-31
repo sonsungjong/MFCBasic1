@@ -1,16 +1,17 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by MFCBasic210SnakeGame.rc
+// Used by MFCBasic211SnakeGameT.rc
 //
-#define IDD_MFCBASIC210SNAKEGAME_DIALOG 102
+#define IDD_MFCBASIC211SNAKEGAMET_DIALOG 102
 #define IDR_MAINFRAME                   128
+#define IDC_EDIT1                       1000
 #define IDC_EAT_COUNT_EDIT              1000
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        129
+#define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101

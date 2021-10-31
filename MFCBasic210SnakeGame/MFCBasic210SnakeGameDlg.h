@@ -4,7 +4,7 @@
 
 #pragma once
 
-
+// 시간복잡도 이득
 // CMFCBasic210SnakeGameDlg dialog
 class CMFCBasic210SnakeGameDlg : public CDialogEx
 {
