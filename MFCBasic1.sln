@@ -89,6 +89,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic210SnakeGame", "MFC
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic211SnakeGameT", "MFCBasic211SnakeGameT\MFCBasic211SnakeGameT.vcxproj", "{FBA801E0-3DC9-4DFE-8664-F19D7FB51516}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic212FileListView", "MFCBasic212FileListView\MFCBasic212FileListView.vcxproj", "{196FCC83-4A06-40DC-BE5E-93520380018E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -441,6 +443,14 @@ Global
 		{FBA801E0-3DC9-4DFE-8664-F19D7FB51516}.Release|x64.Build.0 = Release|x64
 		{FBA801E0-3DC9-4DFE-8664-F19D7FB51516}.Release|x86.ActiveCfg = Release|Win32
 		{FBA801E0-3DC9-4DFE-8664-F19D7FB51516}.Release|x86.Build.0 = Release|Win32
+		{196FCC83-4A06-40DC-BE5E-93520380018E}.Debug|x64.ActiveCfg = Debug|x64
+		{196FCC83-4A06-40DC-BE5E-93520380018E}.Debug|x64.Build.0 = Debug|x64
+		{196FCC83-4A06-40DC-BE5E-93520380018E}.Debug|x86.ActiveCfg = Debug|Win32
+		{196FCC83-4A06-40DC-BE5E-93520380018E}.Debug|x86.Build.0 = Debug|Win32
+		{196FCC83-4A06-40DC-BE5E-93520380018E}.Release|x64.ActiveCfg = Release|x64
+		{196FCC83-4A06-40DC-BE5E-93520380018E}.Release|x64.Build.0 = Release|x64
+		{196FCC83-4A06-40DC-BE5E-93520380018E}.Release|x86.ActiveCfg = Release|Win32
+		{196FCC83-4A06-40DC-BE5E-93520380018E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
