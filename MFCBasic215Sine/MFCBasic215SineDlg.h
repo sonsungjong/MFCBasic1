@@ -9,11 +9,16 @@
 class CMFCBasic215SineDlg : public CDialogEx
 {
 private:
+	CImage m_image;				// 메모리DC
+	CDC m_image_dc;
+
 	CRect m_rect;
 	CPoint m_center;					// 중심좌표를 기억할 포인트
 	
 	CPen m_grid_pen, m_sine_pen;
+	CBrush m_red_brush;
 
+	int m_step = 1;
 // Construction
 public:
 	CMFCBasic215SineDlg(CWnd* pParent = nullptr);	// standard constructor
@@ -38,4 +43,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnDestroy();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
