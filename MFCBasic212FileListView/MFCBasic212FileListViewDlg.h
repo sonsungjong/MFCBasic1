@@ -11,6 +11,8 @@ class CMFCBasic212FileListViewDlg : public CDialogEx
 // Construction
 public:
 	CMFCBasic212FileListViewDlg(CWnd* pParent = nullptr);	// standard constructor
+	void DirToList(CListBox* ap_list_box, CString a_path);
+	void ChangeDir(CListBox* ap_list_box, int a_path_ctrl_id);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -33,4 +35,6 @@ protected:
 public:
 	CListBox m_list1;
 	CListBox m_list2;
+	afx_msg void OnLbnDblclkList1();
+	afx_msg void OnLbnDblclkList2();
 };
