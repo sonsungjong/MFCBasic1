@@ -37,4 +37,8 @@ public:
 	CListBox m_list2;
 	afx_msg void OnLbnDblclkList1();
 	afx_msg void OnLbnDblclkList2();
+	afx_msg void OnBnClickedLeftToRight();
+	afx_msg void OnBnClickedCreateDir2();
+	afx_msg void OnBnClickedOpenDir2();
+	afx_msg void OnBnClickedDelBtn2();
 };

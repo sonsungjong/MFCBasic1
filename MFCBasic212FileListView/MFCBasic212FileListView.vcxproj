@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="InputNameDlg.h" />
     <ClInclude Include="MFCBasic212FileListView.h" />
     <ClInclude Include="MFCBasic212FileListViewDlg.h" />
     <ClInclude Include="pch.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="InputNameDlg.cpp" />
     <ClCompile Include="MFCBasic212FileListView.cpp" />
     <ClCompile Include="MFCBasic212FileListViewDlg.cpp" />
     <ClCompile Include="pch.cpp">
