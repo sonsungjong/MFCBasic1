@@ -59,11 +59,12 @@ BOOL CMFCBasic216SineCosDlg::OnInitDialog()
 	m_grid_pen.CreatePen(PS_DOT, 1, RGB(168, 168, 168));
 	m_sine_pen.CreatePen(PS_SOLID, 2, RGB(0, 200, 255));
 	m_cos_pen.CreatePen(PS_SOLID, 2, RGB(100, 255, 100));
+	m_circle_pen.CreatePen(PS_SOLID, 2, RGB(255, 255, 100));
 
 	m_red_brush.CreateSolidBrush(RGB(255, 0, 0));
 	m_green_brush.CreateSolidBrush(RGB(0, 200, 0));
-	m_image_dc.SelectObject(&m_red_brush);
-
+	m_yellow_brush.CreateSolidBrush(RGB(200, 200, 0));
+	
 	SetTimer(1, 10, NULL);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -122,14 +123,18 @@ void CMFCBasic216SineCosDlg::ShowSine()
 	m_image_dc.SelectObject(&m_sine_pen);
 
 	int degree, x, y;
+	int fix = m_center_pos.x - 360;			// Ω√¿€¡°
 	double radian;
 	for (x = 0; x < m_step; x++) {
-		degree = x - m_center_pos.x;
+		degree = x - 360;
 		radian = degree * PI / 180;
 		y = (int)(sin(radian) * -100) + m_center_pos.y;
-		if (x) m_image_dc.LineTo(x, y);
-		else m_image_dc.MoveTo(x, y);
+		if (x) m_image_dc.LineTo(x+fix, y);
+		else m_image_dc.MoveTo(x+fix, y);
 	}
+	x += fix;
+	m_sin_x = x;
+	m_sin_y = y;
 	m_image_dc.SelectObject(&m_red_brush);
 	m_image_dc.Ellipse(x - 20, y - 20, x + 20, y + 20);
 }
@@ -156,14 +161,18 @@ void CMFCBasic216SineCosDlg::ShowYCos()
 	m_image_dc.SelectObject(&m_cos_pen);
 
 	int degree, x, y;
+	int fix = m_center_pos.y - 360;
 	double radian;
 	for (y = 0; y < m_step; y++) {
-		degree = y - m_center_pos.y;
+		degree = y - 360;
 		radian = degree * PI / 180;
 		x = (int)(cos(radian) * 100) + m_center_pos.x;
-		if (y) m_image_dc.LineTo(x, y);
-		else m_image_dc.MoveTo(x, y);
+		if (y) m_image_dc.LineTo(x, y+fix);
+		else m_image_dc.MoveTo(x, y+fix);
 	}
+	y += fix;
+	m_cos_x = x;
+	m_cos_y = y;
 	m_image_dc.SelectObject(&m_green_brush);
 	m_image_dc.Ellipse(x - 20, y - 20, x + 20, y + 20);
 }
@@ -173,7 +182,7 @@ void CMFCBasic216SineCosDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 	if (nIDEvent == 1)
 	{
-		if (m_step < m_rect.right) m_step++;
+		if (m_step < 720) m_step++;
 		else m_step = 1;
 
 		m_image_dc.FillSolidRect(m_rect, RGB(0, 0, 0));
@@ -182,6 +191,21 @@ void CMFCBasic216SineCosDlg::OnTimer(UINT_PTR nIDEvent)
 		ShowSine();
 		//ShowCos();
 		ShowYCos();
+
+		m_image_dc.SelectObject(&m_circle_pen);
+		m_image_dc.SelectStockObject(NULL_BRUSH);
+		m_image_dc.Ellipse(m_center_pos.x - 100, m_center_pos.y - 100, m_center_pos.x + 100, m_center_pos.y + 100);
+
+		m_image_dc.SelectObject(&m_yellow_brush);
+		m_image_dc.Ellipse(m_cos_x - 20, m_sin_y - 20, m_cos_x + 20, m_sin_y + 20);
+
+		m_image_dc.SelectObject(&m_sine_pen);
+		m_image_dc.MoveTo(m_sin_x, m_sin_y);
+		m_image_dc.LineTo(m_cos_x, m_sin_y);
+
+		m_image_dc.SelectObject(&m_cos_pen);
+		m_image_dc.MoveTo(m_cos_x, m_cos_y);
+		m_image_dc.LineTo(m_cos_x, m_sin_y);
 
 		Invalidate(FALSE);
 	}
