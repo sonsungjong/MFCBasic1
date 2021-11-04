@@ -95,6 +95,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic215Sine", "MFCBasic
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic216SineCos", "MFCBasic216SineCos\MFCBasic216SineCos.vcxproj", "{C97E310A-1055-4018-A9F1-2F2C404AD2D1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic217Circle", "MFCBasic217Circle\MFCBasic217Circle.vcxproj", "{B61D97CB-DE91-4929-8051-49B9D2784383}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -471,6 +473,14 @@ Global
 		{C97E310A-1055-4018-A9F1-2F2C404AD2D1}.Release|x64.Build.0 = Release|x64
 		{C97E310A-1055-4018-A9F1-2F2C404AD2D1}.Release|x86.ActiveCfg = Release|Win32
 		{C97E310A-1055-4018-A9F1-2F2C404AD2D1}.Release|x86.Build.0 = Release|Win32
+		{B61D97CB-DE91-4929-8051-49B9D2784383}.Debug|x64.ActiveCfg = Debug|x64
+		{B61D97CB-DE91-4929-8051-49B9D2784383}.Debug|x64.Build.0 = Debug|x64
+		{B61D97CB-DE91-4929-8051-49B9D2784383}.Debug|x86.ActiveCfg = Debug|Win32
+		{B61D97CB-DE91-4929-8051-49B9D2784383}.Debug|x86.Build.0 = Debug|Win32
+		{B61D97CB-DE91-4929-8051-49B9D2784383}.Release|x64.ActiveCfg = Release|x64
+		{B61D97CB-DE91-4929-8051-49B9D2784383}.Release|x64.Build.0 = Release|x64
+		{B61D97CB-DE91-4929-8051-49B9D2784383}.Release|x86.ActiveCfg = Release|Win32
+		{B61D97CB-DE91-4929-8051-49B9D2784383}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
