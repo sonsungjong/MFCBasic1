@@ -16,7 +16,7 @@ protected:
 	CPoint m_center;
 
 	CPen m_grid_pen, m_green_pen, m_gray_pen;
-	CBrush m_green_brush, m_gray_brush;
+	CBrush m_green_brush, m_gray_brush, m_pie_brush;
 	int m_degree = 0, m_sub_degree = 75, m_grid_flag = 0;
 
 // Construction

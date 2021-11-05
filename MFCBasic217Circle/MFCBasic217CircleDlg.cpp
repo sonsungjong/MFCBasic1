@@ -65,6 +65,7 @@ BOOL CMFCBasic217CircleDlg::OnInitDialog()
 
 	m_green_brush.CreateSolidBrush(RGB(0, 200, 0));				// 어두운 녹색
 	m_gray_brush.CreateSolidBrush(RGB(120, 120, 120));				// 어두운 회색
+	m_pie_brush.CreateHatchBrush(HS_DIAGCROSS, RGB(0, 200, 0));				// 어두운 회색
 
 	SetBackgroundColor(RGB(0, 0, 0));			// 배경색 변경 : 검정
 
@@ -129,6 +130,7 @@ void CMFCBasic217CircleDlg::OnDestroy()
 	m_grid_pen.DeleteObject();
 	m_green_pen.DeleteObject();
 	m_green_brush.DeleteObject();
+	m_pie_brush.DeleteObject();
 }
 
 void CMFCBasic217CircleDlg::ShowGrid()
@@ -157,6 +159,20 @@ void CMFCBasic217CircleDlg::OnTimer(UINT_PTR nIDEvent)
 			m_image_dc.SelectStockObject(NULL_BRUSH);
 			m_image_dc.Ellipse(m_center.x - 200, m_center.y - 200, m_center.x + 200, m_center.y + 200);
 		}
+		else if (m_grid_flag == 2 || m_grid_flag == 3) {
+			double temp_radian = (m_degree - 30) * PI/180;
+			int start_x = (int)(cos(temp_radian) * 200) + m_center.x;
+			int start_y = (int)(sin(temp_radian) * -200) + m_center.y;
+			temp_radian = (m_degree + 30) * PI / 180;
+			int end_x = (int)(cos(temp_radian) * 200) + m_center.x;
+			int end_y = (int)(sin(temp_radian) * -200) + m_center.y;
+			if(m_grid_flag == 2)
+				m_image_dc.Arc(m_center.x - 200, m_center.y - 200, m_center.x + 200, m_center.y + 200, start_x, start_y, end_x, end_y);
+			else {
+				m_image_dc.SelectObject(&m_pie_brush);
+				m_image_dc.Pie(m_center.x - 200, m_center.y - 200, m_center.x + 200, m_center.y + 200, start_x, start_y, end_x, end_y);
+			}
+		}
 
 		// 좌표지정
 		double radian = m_degree * PI / 180;
@@ -178,7 +194,7 @@ void CMFCBasic217CircleDlg::OnTimer(UINT_PTR nIDEvent)
 		sub_x += x;
 
 		m_image_dc.SelectObject(&m_gray_pen);
-		if (m_grid_flag == 1) {
+		if (m_grid_flag) {
 			m_image_dc.SelectStockObject(NULL_BRUSH);
 			m_image_dc.Ellipse(x-75, y-75, x+75, y+75);
 		}
