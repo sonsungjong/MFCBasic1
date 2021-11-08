@@ -8,6 +8,10 @@
 // CMFCBasic221ScrollBar2Dlg dialog
 class CMFCBasic221ScrollBar2Dlg : public CDialogEx
 {
+protected:
+	CImage m_img;
+	CRect m_rect;
+
 // Construction
 public:
 	CMFCBasic221ScrollBar2Dlg(CWnd* pParent = nullptr);	// standard constructor
@@ -30,4 +34,9 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnBnClickedButton1();
 };
