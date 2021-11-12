@@ -107,6 +107,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic221ScrollBar2", "MF
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic222CircleWindow", "MFCBasic222CircleWindow\MFCBasic222CircleWindow.vcxproj", "{4B672AEE-96C3-4E20-87C2-E0FBDC379E1C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic223DonutWindow", "MFCBasic223DonutWindow\MFCBasic223DonutWindow.vcxproj", "{964A507A-8972-485A-BEFA-153B707B66ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -531,6 +533,14 @@ Global
 		{4B672AEE-96C3-4E20-87C2-E0FBDC379E1C}.Release|x64.Build.0 = Release|x64
 		{4B672AEE-96C3-4E20-87C2-E0FBDC379E1C}.Release|x86.ActiveCfg = Release|Win32
 		{4B672AEE-96C3-4E20-87C2-E0FBDC379E1C}.Release|x86.Build.0 = Release|Win32
+		{964A507A-8972-485A-BEFA-153B707B66ED}.Debug|x64.ActiveCfg = Debug|x64
+		{964A507A-8972-485A-BEFA-153B707B66ED}.Debug|x64.Build.0 = Debug|x64
+		{964A507A-8972-485A-BEFA-153B707B66ED}.Debug|x86.ActiveCfg = Debug|Win32
+		{964A507A-8972-485A-BEFA-153B707B66ED}.Debug|x86.Build.0 = Debug|Win32
+		{964A507A-8972-485A-BEFA-153B707B66ED}.Release|x64.ActiveCfg = Release|x64
+		{964A507A-8972-485A-BEFA-153B707B66ED}.Release|x64.Build.0 = Release|x64
+		{964A507A-8972-485A-BEFA-153B707B66ED}.Release|x86.ActiveCfg = Release|Win32
+		{964A507A-8972-485A-BEFA-153B707B66ED}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
