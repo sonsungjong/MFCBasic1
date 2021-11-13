@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+// TopMost 속성과 Layered 속성을 TRUE로 설정
 
 // CMFCBasic223DonutWindowDlg dialog
 class CMFCBasic223DonutWindowDlg : public CDialogEx

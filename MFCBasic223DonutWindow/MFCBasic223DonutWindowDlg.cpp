@@ -55,6 +55,8 @@ BOOL CMFCBasic223DonutWindowDlg::OnInitDialog()
 
 	SetBackgroundColor(RGB(255, 200, 0));
 
+	SetLayeredWindowAttributes(RGB(255, 1, 1), 80, LWA_ALPHA|LWA_COLORKEY);				// 80의 불투명도
+
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -64,9 +66,9 @@ BOOL CMFCBasic223DonutWindowDlg::OnInitDialog()
 
 void CMFCBasic223DonutWindowDlg::OnPaint()
 {
+		CPaintDC dc(this); // device context for painting
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // device context for painting
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
@@ -83,7 +85,22 @@ void CMFCBasic223DonutWindowDlg::OnPaint()
 	}
 	else
 	{
-		CDialogEx::OnPaint();
+		dc.SelectStockObject(DC_BRUSH);
+		dc.SetDCBrushColor(RGB(255, 1, 1));
+		dc.SelectStockObject(NULL_PEN);
+		dc.Ellipse(30, 30, 170, 170);
+
+		CPen grid_pen(PS_DOT, 1, RGB(0, 0, 128));
+		CPen* p_oldPen = dc.SelectObject(&grid_pen);
+		dc.SetBkMode(TRANSPARENT);			// 배경색을 제거
+		dc.MoveTo(100, 30);
+		dc.LineTo(100, 170);
+		dc.MoveTo(30, 100);
+		dc.LineTo(170, 100);
+		dc.SelectObject(p_oldPen);
+		grid_pen.DeleteObject();
+
+		//CDialogEx::OnPaint();
 	}
 }
 
