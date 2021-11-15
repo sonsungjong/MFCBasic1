@@ -13,6 +13,7 @@ protected: // create from serialization only
 
 // Attributes
 public:
+	// View에서 Document를 사용
 	CMFCBasic225CEditViewDoc* GetDocument() const;
 
 // Operations

@@ -39,13 +39,14 @@ CMFCBasic225CEditViewView::~CMFCBasic225CEditViewView()
 {
 }
 
+// View 생성 전에 호출되는 함수
 BOOL CMFCBasic225CEditViewView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 
 	BOOL bPreCreated = CEditView::PreCreateWindow(cs);
-	cs.style &= ~(ES_AUTOHSCROLL|WS_HSCROLL);	// Enable word-wrapping
+	//cs.style &= ~(ES_AUTOHSCROLL|WS_HSCROLL);	// 수평스크롤 없애기 코드
 
 	return bPreCreated;
 }
