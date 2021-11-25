@@ -119,6 +119,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic225CEditView", "MFC
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCEditControl", "MFCEditControl\MFCEditControl.vcxproj", "{C82E0B03-014A-4670-9CF0-A2DF7C3876F7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic226CSocketServer", "MFCBasic226CSocketServer\MFCBasic226CSocketServer.vcxproj", "{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic226CSocketClient", "MFCBasic226CSocketClient\MFCBasic226CSocketClient.vcxproj", "{B63CF978-4E78-4E76-A837-E04CACC33FC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -591,6 +595,22 @@ Global
 		{C82E0B03-014A-4670-9CF0-A2DF7C3876F7}.Release|x64.Build.0 = Release|x64
 		{C82E0B03-014A-4670-9CF0-A2DF7C3876F7}.Release|x86.ActiveCfg = Release|Win32
 		{C82E0B03-014A-4670-9CF0-A2DF7C3876F7}.Release|x86.Build.0 = Release|Win32
+		{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}.Debug|x64.ActiveCfg = Debug|x64
+		{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}.Debug|x64.Build.0 = Debug|x64
+		{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}.Debug|x86.ActiveCfg = Debug|Win32
+		{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}.Debug|x86.Build.0 = Debug|Win32
+		{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}.Release|x64.ActiveCfg = Release|x64
+		{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}.Release|x64.Build.0 = Release|x64
+		{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}.Release|x86.ActiveCfg = Release|Win32
+		{93B78E04-5FCF-4754-8A49-62E4DB4AA3D9}.Release|x86.Build.0 = Release|Win32
+		{B63CF978-4E78-4E76-A837-E04CACC33FC9}.Debug|x64.ActiveCfg = Debug|x64
+		{B63CF978-4E78-4E76-A837-E04CACC33FC9}.Debug|x64.Build.0 = Debug|x64
+		{B63CF978-4E78-4E76-A837-E04CACC33FC9}.Debug|x86.ActiveCfg = Debug|Win32
+		{B63CF978-4E78-4E76-A837-E04CACC33FC9}.Debug|x86.Build.0 = Debug|Win32
+		{B63CF978-4E78-4E76-A837-E04CACC33FC9}.Release|x64.ActiveCfg = Release|x64
+		{B63CF978-4E78-4E76-A837-E04CACC33FC9}.Release|x64.Build.0 = Release|x64
+		{B63CF978-4E78-4E76-A837-E04CACC33FC9}.Release|x86.ActiveCfg = Release|Win32
+		{B63CF978-4E78-4E76-A837-E04CACC33FC9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

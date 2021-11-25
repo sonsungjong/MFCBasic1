@@ -38,13 +38,14 @@ CMFCBasic225CEditViewDoc::~CMFCBasic225CEditViewDoc()
 {
 }
 
+// 새로만들기버튼
 BOOL CMFCBasic225CEditViewDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 	if (!m_viewList.IsEmpty())
 	{
-		// Document에서 View에 접근하는 코드
+		// Document에서 View를 작업할 때
 		reinterpret_cast<CEditView*>(m_viewList.GetHead())->SetWindowText(nullptr);
 	}
 
@@ -54,11 +55,8 @@ BOOL CMFCBasic225CEditViewDoc::OnNewDocument()
 	return TRUE;
 }
 
-
-
-
 // CMFCBasic225CEditViewDoc serialization
-// 파일을 저장하고 읽는 함수
+// 읽기 또는 저장하기
 void CMFCBasic225CEditViewDoc::Serialize(CArchive& ar)		// CArchive클래스로 읽기 또는 저장
 {
 	// CEditView contains an edit control which handles all serialization
