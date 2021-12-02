@@ -29,9 +29,6 @@ void MFCServerUser::OnReceive(int nErrorCode)
 	//AfxGetMainWnd();				// 현재 대화상자의 주소
 	AfxGetMainWnd()->SetDlgItemInt(IDC_VALUE_EDIT, data);				// 현재 대화상자의 주소
 
-	// 클라이언트에 전송완료 메시지를 응답하고 싶으면
-	// 6:45
-
 	CSocket::OnReceive(nErrorCode);
 }
 
