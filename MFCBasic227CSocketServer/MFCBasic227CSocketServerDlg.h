@@ -15,6 +15,7 @@ protected:
 // Construction
 public:
 	CMFCBasic227CSocketServerDlg(CWnd* pParent = nullptr);	// standard constructor
+	void AddEventString(const TCHAR* ap_string);						// 리스트박스는 문자열타입으로 관리
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -36,5 +37,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedSendBtn();
+	CListBox m_list1;
 };

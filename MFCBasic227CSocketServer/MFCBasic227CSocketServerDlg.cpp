@@ -23,16 +23,17 @@ CMFCBasic227CSocketServerDlg::CMFCBasic227CSocketServerDlg(CWnd* pParent /*=null
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
+
 void CMFCBasic227CSocketServerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST1, m_list1);
 }
 
 BEGIN_MESSAGE_MAP(CMFCBasic227CSocketServerDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CMFCBasic227CSocketServerDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDC_SEND_BTN, &CMFCBasic227CSocketServerDlg::OnBnClickedSendBtn)
 END_MESSAGE_MAP()
 
 
@@ -99,9 +100,8 @@ void CMFCBasic227CSocketServerDlg::OnBnClickedOk()
 	//CDialogEx::OnOK();
 }
 
-
-void CMFCBasic227CSocketServerDlg::OnBnClickedSendBtn()
+void CMFCBasic227CSocketServerDlg::AddEventString(const TCHAR* ap_string)
 {
-	// TODO: Add your control notification handler code here
-
+	int index = m_list1.InsertString(-1, ap_string);				// 맨끝에 추가하고 해당 인덱스를 저장
+	m_list1.SetCurSel(index);						// 해당 인덱스로 커서이동
 }

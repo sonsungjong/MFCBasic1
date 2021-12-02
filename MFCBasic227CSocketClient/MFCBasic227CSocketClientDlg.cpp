@@ -101,12 +101,14 @@ void CMFCBasic227CSocketClientDlg::OnBnClickedOk()
 
 void CMFCBasic227CSocketClientDlg::OnBnClickedSendBtn()
 {
-	int value = GetDlgItemInt(IDC_EDIT1);
-	//CSocket temp;
-	//temp.Create();
-	//temp.Connect(IP, PORT);
-	//temp.Send(&value, sizeof(int));
-	
-	// 양방향하려면 CSocket에서 상속받고 멤버변수로 사용
-	m_client.Send(&value, sizeof(int));
+	CString str;
+	GetDlgItemText(IDC_EDIT1, str);
+	unsigned int data_size = ((unsigned int)str.GetLength() + 1U) * 2U;
+	char* p_send_data = new char[sizeof(unsigned int) + data_size];					// 4byte헤더
+	*(unsigned int*)p_send_data = data_size;													// 헤더에 문자열 길이넣기
+	memcpy(p_send_data + sizeof(unsigned int), str.GetBuffer(), data_size);				// 4byte떨어진곳에 문자열 저장
+
+	m_client.Send(p_send_data, sizeof(unsigned int) +data_size);				// 유니코드여서 문자길이의 2배 사이즈
+
+	delete[] p_send_data;
 }
