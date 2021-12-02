@@ -16,6 +16,8 @@ protected:
 public:
 	CMFCBasic227CSocketClientDlg(CWnd* pParent = nullptr);	// standard constructor
 
+	void AddEventString(const TCHAR* ap_string);
+
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MFCBASIC227CSOCKETCLIENT_DIALOG };
@@ -37,4 +39,5 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedSendBtn();
+	CListBox m_list1;
 };

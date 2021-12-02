@@ -25,15 +25,36 @@ void SocketUser::OnReceive(int nErrorCode)
 {
 	// TODO: Add your specialized code here and/or call the base class
 	// Send() <-> Receive()
-	unsigned int data_size;
-	Receive(&data_size, sizeof(unsigned int));
+	DWORD temp_size;
+	if (IOCtl(FIONREAD, &temp_size)) {						// temp_size의 크기 확인
+		if (m_flag_header) {
+			if (temp_size >= sizeof(unsigned int)) {
+				Receive(&m_data_size, sizeof(unsigned int));
+				m_flag_header ^= m_flag_header;
+			}
+		}else{
+			if(temp_size >= m_data_size){
+				char* p_string = new char[m_data_size + sizeof(unsigned int)];
+				*(int*)p_string = m_data_size;
+				Receive(p_string+sizeof(unsigned int), m_data_size);								// 한번에 전송이 안됬을 경우 예외처리
 
-	TCHAR* p_string = new TCHAR[data_size];
-	Receive(p_string, data_size);								// 한번에 전송이 안됬을 경우 예외처리
+				((CMFCBasic227CSocketServerDlg*)AfxGetMainWnd())->AddEventString((TCHAR*)(p_string+sizeof(unsigned int)));			// 현재 대화상자의 주소 속에서 Edit1
 
-	((CMFCBasic227CSocketServerDlg*)AfxGetMainWnd())->AddEventString(p_string);			// 현재 대화상자의 주소 속에서 Edit1
+				SocketUser* p = NULL;
+				POSITION position = mp_user_list->GetHeadPosition();
+				while (position != NULL) {
+					p = (SocketUser*)mp_user_list->GetNext(position);
+					p->Send(p_string, m_data_size + sizeof(unsigned int));
+				}
 
-	delete[] p_string;
+				delete[] p_string;
+				m_flag_header = !m_flag_header;
+			}
+		}
+	}else {
+		((CMFCBasic227CSocketServerDlg*)AfxGetMainWnd())->AddEventString(_T("수신에 문제 발생"));
+	}
+
 	CSocket::OnReceive(nErrorCode);
 }
 

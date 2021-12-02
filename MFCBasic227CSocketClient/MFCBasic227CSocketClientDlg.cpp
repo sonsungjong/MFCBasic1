@@ -23,9 +23,11 @@ CMFCBasic227CSocketClientDlg::CMFCBasic227CSocketClientDlg(CWnd* pParent /*=null
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
+
 void CMFCBasic227CSocketClientDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST1, m_list1);
 }
 
 BEGIN_MESSAGE_MAP(CMFCBasic227CSocketClientDlg, CDialogEx)
@@ -103,6 +105,8 @@ void CMFCBasic227CSocketClientDlg::OnBnClickedSendBtn()
 {
 	CString str;
 	GetDlgItemText(IDC_EDIT1, str);
+	SetDlgItemText(IDC_EDIT1, _T(""));
+
 	unsigned int data_size = ((unsigned int)str.GetLength() + 1U) * 2U;
 	char* p_send_data = new char[sizeof(unsigned int) + data_size];					// 4byte헤더
 	*(unsigned int*)p_send_data = data_size;													// 헤더에 문자열 길이넣기
@@ -111,4 +115,10 @@ void CMFCBasic227CSocketClientDlg::OnBnClickedSendBtn()
 	m_client.Send(p_send_data, sizeof(unsigned int) +data_size);				// 유니코드여서 문자길이의 2배 사이즈
 
 	delete[] p_send_data;
+}
+
+void CMFCBasic227CSocketClientDlg::AddEventString(const TCHAR* ap_string)
+{
+	int index = m_list1.InsertString(-1, ap_string);
+	m_list1.SetCurSel(index);
 }

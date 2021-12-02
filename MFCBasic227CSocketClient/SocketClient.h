@@ -4,6 +4,10 @@
 
 class SocketClient : public CSocket
 {
+protected:
+	char m_flag_header = 1;
+	unsigned int m_data_size;
+
 public:
 	SocketClient();
 	virtual ~SocketClient();
