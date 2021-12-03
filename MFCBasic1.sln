@@ -127,6 +127,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic227CSocketClient", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic227CSocketServer", "MFCBasic227CSocketServer\MFCBasic227CSocketServer.vcxproj", "{2273EEEA-6A45-4D4F-98D6-D0642D3CB2E0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL101SubClassing", "MFCL101SubClassing\MFCL101SubClassing.vcxproj", "{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -631,6 +633,14 @@ Global
 		{2273EEEA-6A45-4D4F-98D6-D0642D3CB2E0}.Release|x64.Build.0 = Release|x64
 		{2273EEEA-6A45-4D4F-98D6-D0642D3CB2E0}.Release|x86.ActiveCfg = Release|Win32
 		{2273EEEA-6A45-4D4F-98D6-D0642D3CB2E0}.Release|x86.Build.0 = Release|Win32
+		{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}.Debug|x64.ActiveCfg = Debug|x64
+		{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}.Debug|x64.Build.0 = Debug|x64
+		{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}.Debug|x86.ActiveCfg = Debug|Win32
+		{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}.Debug|x86.Build.0 = Debug|Win32
+		{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}.Release|x64.ActiveCfg = Release|x64
+		{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}.Release|x64.Build.0 = Release|x64
+		{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}.Release|x86.ActiveCfg = Release|Win32
+		{0E2D8F60-4BF8-49A7-B3BA-A7DD30CAF12C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
