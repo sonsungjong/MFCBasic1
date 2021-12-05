@@ -3,11 +3,14 @@
 //
 
 #pragma once
-
+#include "SubClassingButton.h"
 
 // CMFCL101SubClassingDlg dialog
 class CMFCL101SubClassingDlg : public CDialogEx
 {
+protected:
+	SubClassingButton m_increase_btn, m_decrease_btn;
+	
 // Construction
 public:
 	CMFCL101SubClassingDlg(CWnd* pParent = nullptr);	// standard constructor
@@ -33,4 +36,5 @@ protected:
 public:
 	afx_msg void OnBnClickedIncBtn();
 	afx_msg void OnBnClickedDecBtn();
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 };

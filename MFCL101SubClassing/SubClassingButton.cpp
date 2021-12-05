@@ -33,7 +33,7 @@ END_MESSAGE_MAP()
 void SubClassingButton::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	SetTimer(1, 500, NULL);							// 1번타이머
+	SetTimer(1, 500, NULL);							// 1번타이머, 눌려있으며 0.5초 지나면 시작 (기능확장)
 
 	CButton::OnLButtonDown(nFlags, point);
 }
@@ -54,14 +54,13 @@ void SubClassingButton::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 	switch (nIDEvent)
 	{
-		case 1:
-			KillTimer(1);					// 0.5초후에 해제
-			SetTimer(2, 100, NULL);
+		case 1:											// 1번타이머
+			KillTimer(1);								// 0.5초후에 대기 후 제거하고
+			SetTimer(2, 100, NULL);				// 0.1초짜리 새로운 타이머 생성
 			break;
-		case 2:
+		case 2:											// 2번타이머
 			GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), 44000), (LPARAM)m_hWnd);
 			break;
-			// 24:00
 	}
 
 	CButton::OnTimer(nIDEvent);

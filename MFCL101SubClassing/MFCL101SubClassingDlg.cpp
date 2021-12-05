@@ -49,6 +49,8 @@ BOOL CMFCL101SubClassingDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	SetDlgItemInt(IDC_VALUE_EDIT, 0);
+	m_increase_btn.SubclassDlgItem(IDC_INC_BTN, this);
+	m_decrease_btn.SubclassDlgItem(IDC_DEC_BTN, this);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -104,4 +106,22 @@ void CMFCL101SubClassingDlg::OnBnClickedDecBtn()
 	// TODO: Add your control notification handler code here
 	int value = GetDlgItemInt(IDC_VALUE_EDIT);
 	SetDlgItemInt(IDC_VALUE_EDIT, value - 1);
+}
+
+
+BOOL CMFCL101SubClassingDlg::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (HIWORD(wParam) == 44000) {							// 리소스값
+		int value = GetDlgItemInt(IDC_VALUE_EDIT);
+		if (LOWORD(wParam) == IDC_INC_BTN) {			// 아이디값
+			value++;
+		}
+		else if (LOWORD(wParam) == IDC_DEC_BTN) {
+			value--;
+		}
+		SetDlgItemInt(IDC_VALUE_EDIT, value);
+	}
+
+	return CDialogEx::OnCommand(wParam, lParam);
 }
