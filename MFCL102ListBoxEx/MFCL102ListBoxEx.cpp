@@ -45,4 +45,3 @@ BOOL CMFCL102ListBoxExApp::InitInstance()
 	
 	return FALSE;
 }
-

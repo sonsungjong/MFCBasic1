@@ -3,7 +3,12 @@
 //
 
 #pragma once
-
+struct PersonData
+{
+	TCHAR name[32];
+	TCHAR phone[32];
+	int age;
+};
 
 // CMFCL102ListBoxExDlg dialog
 class CMFCL102ListBoxExDlg : public CDialogEx
@@ -30,4 +35,9 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedAddBtn();
+	CListBox m_data_list;
+	afx_msg void OnLbnSelchangeDataList();
+	afx_msg void OnDestroy();
 };
