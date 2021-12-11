@@ -1,8 +1,8 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by MFCL103ListBoxOwnerDraw.rc
+// Used by MFCL104ListBoxOwnerDrawLib.rc
 //
-#define IDD_MFCL103LISTBOXOWNERDRAW_DIALOG 102
+#define IDD_MFCL104LISTBOXOWNERDRAWLIB_DIALOG 102
 #define IDR_MAINFRAME                   128
 #define IDC_LIST1                       1000
 #define IDC_DATA_LIST                   1000
