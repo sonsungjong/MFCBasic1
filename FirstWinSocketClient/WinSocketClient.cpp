@@ -68,7 +68,7 @@ void WinSocketClient::SendFrameData(char a_msg_id, const void* ap_data, int a_si
 
 // 서버에 접속을 시도하는 함수. 접속할 서버의 ip와 port
 // 그리고 접속 결과를 알려줄 메시지 아이디와 데이터가 수신되었거나 접속이 해제되었을 때의 메시지 아이디를 설정
-void WinSocketClient::ConnectToServer(const wchar_t* ap_ip_address, int a_port, CWnd* ap_notify_wnd, int a_connect_id, int a_read_close_id)
+void WinSocketClient::ConnectToServer(const TCHAR* ap_ip_address, int a_port, CWnd* ap_notify_wnd, int a_connect_id, int a_read_close_id)
 {
 	if (mh_socket == INVALID_SOCKET) {
 		// 사용할 메시지 아이디 설정

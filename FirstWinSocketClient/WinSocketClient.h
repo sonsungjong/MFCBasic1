@@ -37,7 +37,7 @@ public:
 	void SendFrameData(char a_msg_id, const void* ap_data, int a_size);
 	// 서버에 접속을 시도하는 함수, 접속할 서버의 아이피와 포트
 	// 서버 접속에 대한 결과를 알려줄 메시지 아이디와 데이터가 수신되었거나 접속이 해제되었을 때의 메시지 아이디를 설정
-	void ConnectToServer(const wchar_t* ap_ip_address, int a_port, CWnd* ap_notify_wnd, int a_connect_id = 26001, int a_read_close_id = 26002);
+	void ConnectToServer(const TCHAR* ap_ip_address, int a_port, CWnd* ap_notify_wnd, int a_connect_id = 26001, int a_read_close_id = 26002);
 	// 통신을 사용하던 소켓을 제거하는 함수
 	void CloseSocket();
 	// 서버가 전송한 데이터를 수신할 때 사용하는 함수

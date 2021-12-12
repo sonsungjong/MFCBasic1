@@ -3,11 +3,15 @@
 //
 
 #pragma once
-
+#include "SJ_ListBox.h"
 
 // CMFCL104ListBoxOwnerDrawLibDlg dialog
 class CMFCL104ListBoxOwnerDrawLibDlg : public CDialogEx
 {
+private:
+	SJ_ListBox m_data_list;
+	//CListBox m_data_list;
+
 // Construction
 public:
 	CMFCL104ListBoxOwnerDrawLibDlg(CWnd* pParent = nullptr);	// standard constructor
@@ -32,5 +36,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
-	CListBox m_data_list;
+
+	//afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	//afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

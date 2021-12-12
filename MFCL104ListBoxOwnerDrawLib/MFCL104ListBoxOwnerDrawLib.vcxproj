@@ -188,6 +188,7 @@
     <ClInclude Include="MFCL104ListBoxOwnerDrawLibDlg.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SJ_ListBox.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>

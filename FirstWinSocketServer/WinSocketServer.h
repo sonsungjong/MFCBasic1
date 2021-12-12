@@ -9,7 +9,7 @@
 // 클라이언트 정보를 각각 저장할 구조체
 struct UserData {
 	SOCKET h_socket;						// 개별 클라이언트와 통신할 소켓핸들
-	wchar_t ip_address[16];				// 접속한 클라이언트 주소
+	TCHAR ip_address[16];				// 접속한 클라이언트 주소
 };
 
 class WinSocketServer

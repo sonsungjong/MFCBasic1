@@ -10,8 +10,12 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#pragma comment(lib, "SJ_ListBoxD.lib")
+#else
+#pragma comment(lib, "SJ_ListBox.lib")
 #endif
 
+#define MAX_TITLE_LINE 32
 
 // CMFCL104ListBoxOwnerDrawLibDlg dialog
 
@@ -26,7 +30,7 @@ CMFCL104ListBoxOwnerDrawLibDlg::CMFCL104ListBoxOwnerDrawLibDlg(CWnd* pParent /*=
 void CMFCL104ListBoxOwnerDrawLibDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_DATA_LIST, m_data_list);
+	//DDX_Control(pDX, IDC_DATA_LIST, m_data_list);
 }
 
 BEGIN_MESSAGE_MAP(CMFCL104ListBoxOwnerDrawLibDlg, CDialogEx)
@@ -48,13 +52,18 @@ BOOL CMFCL104ListBoxOwnerDrawLibDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	m_data_list.SubclassDlgItem(IDC_DATA_LIST, this);				// 내가 만든 클래스와 컨트롤을 연결
+	TCHAR* str = new TCHAR[MAX_TITLE_LINE];
+	for (int i = 0; i < 10; i++)
+	{
+		//int len = MAX_TITLE_LINE;						// 32
+		_stprintf_s(str, 9, _T("item - %d"), i);			// 내부에서 유니코드 메모리사이즈 처리
+		m_data_list.InsertString(i, str);
+	}
+	m_data_list.SetItemHeight(0, 22);					// 각 셸의 높이를 22
+	delete[] str;
+	return TRUE;
 }
-
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
 
 void CMFCL104ListBoxOwnerDrawLibDlg::OnPaint()
 {
@@ -81,17 +90,15 @@ void CMFCL104ListBoxOwnerDrawLibDlg::OnPaint()
 	}
 }
 
-// The system calls this function to obtain the cursor to display while the user drags
-//  the minimized window.
 HCURSOR CMFCL104ListBoxOwnerDrawLibDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-
-
 
 void CMFCL104ListBoxOwnerDrawLibDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	//CDialogEx::OnOK();
 }
+
+// 27:22
