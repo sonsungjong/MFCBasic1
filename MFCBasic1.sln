@@ -137,6 +137,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL103ListBoxOwnerDraw", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL104ListBoxOwnerDrawLib", "MFCL104ListBoxOwnerDrawLib\MFCL104ListBoxOwnerDrawLib.vcxproj", "{04620ABB-51D7-4A54-819D-4668B33AAF80}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ELCProject", "ELCProject\ELCProject.vcxproj", "{1DD42153-8422-4F63-AB8B-E36E0793DBE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -681,6 +683,14 @@ Global
 		{04620ABB-51D7-4A54-819D-4668B33AAF80}.Release|x64.Build.0 = Release|x64
 		{04620ABB-51D7-4A54-819D-4668B33AAF80}.Release|x86.ActiveCfg = Release|Win32
 		{04620ABB-51D7-4A54-819D-4668B33AAF80}.Release|x86.Build.0 = Release|Win32
+		{1DD42153-8422-4F63-AB8B-E36E0793DBE6}.Debug|x64.ActiveCfg = Debug|x64
+		{1DD42153-8422-4F63-AB8B-E36E0793DBE6}.Debug|x64.Build.0 = Debug|x64
+		{1DD42153-8422-4F63-AB8B-E36E0793DBE6}.Debug|x86.ActiveCfg = Debug|Win32
+		{1DD42153-8422-4F63-AB8B-E36E0793DBE6}.Debug|x86.Build.0 = Debug|Win32
+		{1DD42153-8422-4F63-AB8B-E36E0793DBE6}.Release|x64.ActiveCfg = Release|x64
+		{1DD42153-8422-4F63-AB8B-E36E0793DBE6}.Release|x64.Build.0 = Release|x64
+		{1DD42153-8422-4F63-AB8B-E36E0793DBE6}.Release|x86.ActiveCfg = Release|Win32
+		{1DD42153-8422-4F63-AB8B-E36E0793DBE6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
