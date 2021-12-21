@@ -5,6 +5,15 @@
 #pragma once
 #include "TW_DCP.h"
 
+#define GRID_INTERVAL				7					// grid АЃАн
+#define OR_GATE 0
+#define NOR_GATE 1
+#define XNOR_GATE 2
+#define XOR_GATE 3
+#define AND_GATE 4
+#define NAND_GATE 5
+#define NOT_GATE 6
+
 // CELCProjectDlg dialog
 class CELCProjectDlg : public CDialogEx
 {
@@ -16,6 +25,7 @@ private:
 // Construction
 public:
 	CELCProjectDlg(CWnd* pParent = nullptr);	// standard constructor
+	void DrawBoard();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -38,4 +48,5 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
+	afx_msg void OnBnClickedAddGateBtn(UINT a_ctrl_id);
 };

@@ -56,7 +56,8 @@ void DrawOrGate(TW_DCP* ap_dcp, int a_x)
 		{20.0f, 25.0f}, {18.0f, 15.0f},			// 컨트롤 좌표
 		{10.0f, 0.0f}										// 끝점
 	};
-
+	p_or_gate_path->AddBeziers(rear_position, 7);
+	p_or_gate_path->CloseFigure();
 	DrawGatePerMode(ap_dcp, p_or_gate_path, a_x);
 	ap_dcp->DestroyPath(p_or_gate_path);
 }
@@ -97,9 +98,9 @@ void DrawXnorGate(TW_DCP* ap_dcp, int a_x)
 	Gdiplus::GraphicsPath* p_xnor_gate_path = ap_dcp->CreatePath();
 	p_xnor_gate_path->StartFigure();
 
-	mp_xnor_gate_path->AddEllipse(82, 26, 10, 10);
+	p_xnor_gate_path->AddEllipse(82, 26, 10, 10);
 
-	mp_xnor_gate_path->AddLine(10, 0, 40, 0);
+	p_xnor_gate_path->AddLine(10, 0, 40, 0);
 
 	PointF front_pos[7] = {
 		{40.0f, 0.0f},  // 시작 점
@@ -109,8 +110,8 @@ void DrawXnorGate(TW_DCP* ap_dcp, int a_x)
 		{40.0f, 62.0f}  // 끝점
 	};
 
-	mp_xnor_gate_path->AddBeziers(front_pos, 7);
-	mp_xnor_gate_path->AddLine(40, 62, 10, 62);
+	p_xnor_gate_path->AddBeziers(front_pos, 7);
+	p_xnor_gate_path->AddLine(40, 62, 10, 62);
 
 	PointF rear_pos[7] = {
 		{10.0f, 62.0f},  // 시작 점
@@ -120,10 +121,10 @@ void DrawXnorGate(TW_DCP* ap_dcp, int a_x)
 		{10.0f, 0.0f}    // 끝점
 	};
 
-	mp_xnor_gate_path->AddBeziers(rear_pos, 7);
-	mp_xnor_gate_path->CloseFigure();
+	p_xnor_gate_path->AddBeziers(rear_pos, 7);
+	p_xnor_gate_path->CloseFigure();
 
-	mp_xnor_gate_path->StartFigure();
+	p_xnor_gate_path->StartFigure();
 	PointF tail_pos[13] = {
 		{0.0f, 62.0f},  // 시작 점
 		{8.0f, 46.0f}, {10.0f, 36.0f},  // 컨트롤 좌표
@@ -136,17 +137,20 @@ void DrawXnorGate(TW_DCP* ap_dcp, int a_x)
 		{0.0f, 62.0f}  // 시작 점
 	};
 
-	mp_xnor_gate_path->AddBeziers(tail_pos, 13);
-	mp_xnor_gate_path->CloseFigure();
+	p_xnor_gate_path->AddBeziers(tail_pos, 13);
+	p_xnor_gate_path->CloseFigure();
+
+	DrawGatePerMode(ap_dcp, p_xnor_gate_path, a_x);
+	ap_dcp->DestroyPath(p_xnor_gate_path);
 }
 
 // XOR 게이트용 벡터 패스를 구성한다.
-void CExamMFCDlg::MakeXorGate()
+void DrawXorGate(TW_DCP* ap_dcp, int a_x)
 {
-	mp_xor_gate_path = m_dcp.CreatePath();
+	Gdiplus::GraphicsPath* p_xor_gate_path = ap_dcp->CreatePath();
 
-	mp_xor_gate_path->StartFigure();
-	mp_xor_gate_path->AddLine(10, 0, 40, 0);
+	p_xor_gate_path->StartFigure();
+	p_xor_gate_path->AddLine(10, 0, 40, 0);
 
 	PointF front_pos[7] = {
 		{40.0f, 0.0f},  // 시작 점
@@ -156,8 +160,8 @@ void CExamMFCDlg::MakeXorGate()
 		{40.0f, 62.0f}  // 끝점
 	};
 
-	mp_xor_gate_path->AddBeziers(front_pos, 7);
-	mp_xor_gate_path->AddLine(40, 62, 10, 62);
+	p_xor_gate_path->AddBeziers(front_pos, 7);
+	p_xor_gate_path->AddLine(40, 62, 10, 62);
 
 	PointF rear_pos[7] = {
 		{10.0f, 62.0f},  // 시작 점
@@ -167,10 +171,10 @@ void CExamMFCDlg::MakeXorGate()
 		{10.0f, 0.0f}    // 끝점
 	};
 
-	mp_xor_gate_path->AddBeziers(rear_pos, 7);
-	mp_xor_gate_path->CloseFigure();
+	p_xor_gate_path->AddBeziers(rear_pos, 7);
+	p_xor_gate_path->CloseFigure();
 
-	mp_xor_gate_path->StartFigure();
+	p_xor_gate_path->StartFigure();
 	PointF tail_pos[13] = {
 		{0.0f, 62.0f},  // 시작 점
 		{8.0f, 46.0f}, {10.0f, 36.0f},  // 컨트롤 좌표
@@ -183,49 +187,60 @@ void CExamMFCDlg::MakeXorGate()
 		{0.0f, 62.0f}  // 시작 점
 	};
 
-	mp_xor_gate_path->AddBeziers(tail_pos, 13);
-	mp_xor_gate_path->CloseFigure();
+	p_xor_gate_path->AddBeziers(tail_pos, 13);
+	p_xor_gate_path->CloseFigure();
+	DrawGatePerMode(ap_dcp, p_xor_gate_path, a_x);
+	ap_dcp->DestroyPath(p_xor_gate_path);
 }
 
 // AND 게이트용 벡터 패스를 구성한다.
-void CExamMFCDlg::MakeAndGate()
+void DrawAndGate(TW_DCP* ap_dcp, int a_x)
 {
-	mp_and_gate_path = m_dcp.CreatePath();
+	Gdiplus::GraphicsPath* p_and_gate_path = ap_dcp->CreatePath();
 
-	mp_and_gate_path->StartFigure();
-	mp_and_gate_path->AddLine(10, 0, 40, 0);
+	p_and_gate_path->StartFigure();
+	p_and_gate_path->AddLine(10, 0, 40, 0);
 
-	mp_and_gate_path->AddArc(10, 0, 60, 62, 270, 180);
+	p_and_gate_path->AddArc(10, 0, 60, 62, 270, 180);
 
-	mp_and_gate_path->AddLine(40, 62, 10, 62);
-	mp_and_gate_path->AddLine(10, 62, 10, 0);
+	p_and_gate_path->AddLine(40, 62, 10, 62);
+	p_and_gate_path->AddLine(10, 62, 10, 0);
+	p_and_gate_path->CloseFigure();
+	DrawGatePerMode(ap_dcp, p_and_gate_path, a_x);
+	ap_dcp->DestroyPath(p_and_gate_path);
 }
 
 // NAND 게이트용 벡터 패스를 구성한다.
-void CExamMFCDlg::MakeNandGate()
+void DrawNandGate(TW_DCP* ap_dcp, int a_x)
 {
-	mp_nand_gate_path = m_dcp.CreatePath();
+	Gdiplus::GraphicsPath* p_nand_gate_path = ap_dcp->CreatePath();
 
-	mp_nand_gate_path->StartFigure();
+	p_nand_gate_path->StartFigure();
 
-	mp_nand_gate_path->AddEllipse(72, 26, 10, 10);
-	mp_nand_gate_path->AddLine(10, 0, 40, 0);
-	mp_nand_gate_path->AddArc(10, 0, 60, 62, 270, 180);
-	mp_nand_gate_path->AddLine(40, 62, 10, 62);
-	mp_nand_gate_path->AddLine(10, 62, 10, 0);
+	p_nand_gate_path->AddEllipse(72, 26, 10, 10);
+	p_nand_gate_path->AddLine(10, 0, 40, 0);
+	p_nand_gate_path->AddArc(10, 0, 60, 62, 270, 180);
+	p_nand_gate_path->AddLine(40, 62, 10, 62);
+	p_nand_gate_path->AddLine(10, 62, 10, 0);
+	p_nand_gate_path->CloseFigure();
+	DrawGatePerMode(ap_dcp, p_nand_gate_path, a_x);
+	ap_dcp->DestroyPath(p_nand_gate_path);
 }
 
 // NOT 게이트용 벡터 패스를 구성한다.
-void CExamMFCDlg::MakeNotGate()
+void DrawNotGate(TW_DCP* ap_dcp, int a_x)
 {
-	mp_not_gate_path = m_dcp.CreatePath();
+	Gdiplus::GraphicsPath* p_not_gate_path = ap_dcp->CreatePath();
 
-	mp_not_gate_path->StartFigure();
+	p_not_gate_path->StartFigure();
 
-	mp_not_gate_path->AddEllipse(72, 26, 10, 10);
-	mp_not_gate_path->AddLine(10, 0, 72, 31);
-	mp_not_gate_path->AddLine(72, 31, 10, 62);
-	mp_not_gate_path->AddLine(10, 62, 10, 0);
+	p_not_gate_path->AddEllipse(72, 26, 10, 10);
+	p_not_gate_path->AddLine(10, 0, 72, 31);
+	p_not_gate_path->AddLine(72, 31, 10, 62);
+	p_not_gate_path->AddLine(10, 62, 10, 0);
+	p_not_gate_path->CloseFigure();
+	DrawGatePerMode(ap_dcp, p_not_gate_path, a_x);
+	ap_dcp->DestroyPath(p_not_gate_path);
 }
 
 
@@ -234,4 +249,14 @@ void TWAPI_MakeGateImage(TW_DCP* ap_dcp)
 	DrawOrGate(ap_dcp, 0);
 	DrawNorGate(ap_dcp, 100);
 	DrawXnorGate(ap_dcp, 200);
+	DrawXorGate(ap_dcp, 300);
+	DrawAndGate(ap_dcp, 400);
+	DrawNandGate(ap_dcp, 500);
+	DrawNotGate(ap_dcp, 600);
+}
+
+void TWAPI_DrawGateImage(TW_DCP* ap_dcp, int a_x, int a_y, TW_DCP* ap_gate_dcp, int a_gate_id, int a_mode)
+{
+	Graphics* p_graphics = ap_dcp->GetGraphics();
+	p_graphics->DrawImage(*ap_gate_dcp, a_x, a_y, a_gate_id*100, a_mode*70, 100, 70, UnitPixel);
 }

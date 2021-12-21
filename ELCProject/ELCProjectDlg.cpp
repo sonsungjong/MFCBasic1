@@ -13,6 +13,7 @@
 #endif
 
 void TWAPI_MakeGateImage(TW_DCP* ap_dcp);
+void TWAPI_DrawGateImage(TW_DCP* ap_dcp, int a_x, int a_y, TW_DCP* ap_gate_dcp, int a_gate_id, int a_mode);
 
 // CELCProjectDlg dialog
 CELCProjectDlg::CELCProjectDlg(CWnd* pParent /*=nullptr*/)
@@ -31,6 +32,7 @@ BEGIN_MESSAGE_MAP(CELCProjectDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CELCProjectDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CELCProjectDlg::OnBnClickedCancel)
+	ON_CONTROL_RANGE(BN_CLICKED, IDC_ADD_OR_BTN, IDC_ADD_NOT_BTN, &CELCProjectDlg::OnBnClickedAddGateBtn)
 END_MESSAGE_MAP()
 
 
@@ -46,7 +48,8 @@ BOOL CELCProjectDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	GetClientRect(m_rect);
+	GetDlgItem(IDC_DRAW_RECT)->GetWindowRect(m_rect);
+	ScreenToClient(m_rect);
 	//GDI+ : 회로
 	m_dcp.CreateDCP(m_rect.Width(), m_rect.Height());
 	//GDI+ : 게이트 이미지
@@ -54,14 +57,31 @@ BOOL CELCProjectDlg::OnInitDialog()
 
 	// 어두운 회색
 	m_dcp.Clear(RGB24(18, 21, 29));
-	m_gate_dcp.Clear(RGB24(18, 21, 29));
 
 	TWAPI_MakeGateImage(&m_gate_dcp);
-	m_dcp.Draw(m_gate_dcp, 0, 0);
+
+	DrawBoard();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
+void CELCProjectDlg::DrawBoard()
+{
+	m_dcp.Clear(RGB24(18, 21, 29));
+	int y_step = m_rect.Height() / GRID_INTERVAL;
+	int x_step = m_rect.Width() / GRID_INTERVAL;
+	int x, y;
+
+	m_dcp.SetDCPenColor(Gdiplus::DashStyleSolid, 1, RGB32(32, 128, 128, 128));
+	for (y = 0; y < y_step; y++)
+	{
+		m_dcp.DrawLine(0, y * GRID_INTERVAL, m_rect.right, y * GRID_INTERVAL);
+	}
+	for (x = 0; x < x_step; x++)
+	{
+		m_dcp.DrawLine(x * GRID_INTERVAL, 0, x * GRID_INTERVAL, m_rect.bottom);
+	}
+}
 
 void CELCProjectDlg::OnPaint()
 {
@@ -96,8 +116,6 @@ HCURSOR CELCProjectDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
 void CELCProjectDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
@@ -109,4 +127,14 @@ void CELCProjectDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnCancel();
+}
+
+void CELCProjectDlg::OnBnClickedAddGateBtn(UINT a_ctrl_id)
+{
+	UINT gate_id = a_ctrl_id - IDC_ADD_OR_BTN;
+
+	DrawBoard();
+	TWAPI_DrawGateImage(&m_dcp, 28, 28, &m_gate_dcp, gate_id, 0);
+
+	InvalidateRect(m_rect, 0);
 }
