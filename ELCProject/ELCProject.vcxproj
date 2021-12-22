@@ -190,6 +190,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TW_DCP.h" />
+    <ClInclude Include="TW_DoubleLinkedList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ELCProject.cpp" />
@@ -202,6 +203,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TW_DCP.cpp" />
+    <ClCompile Include="TW_DoubleLinkedList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ELCProject.rc" />

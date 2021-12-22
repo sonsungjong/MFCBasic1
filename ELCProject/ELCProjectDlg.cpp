@@ -15,9 +15,15 @@
 void TWAPI_MakeGateImage(TW_DCP* ap_dcp);
 void TWAPI_DrawGateImage(TW_DCP* ap_dcp, int a_x, int a_y, TW_DCP* ap_gate_dcp, int a_gate_id, int a_mode);
 
+// 연결리스트 보관중인 게이트 정보 한개 제거할 때마다 호출
+void DeleteGate(void* ap_data)
+{
+	delete (GateData*)ap_data;
+}
+
 // CELCProjectDlg dialog
 CELCProjectDlg::CELCProjectDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_ELCPROJECT_DIALOG, pParent)
+	: CDialogEx(IDD_ELCPROJECT_DIALOG, pParent), m_gate_list(DeleteGate)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -33,6 +39,9 @@ BEGIN_MESSAGE_MAP(CELCProjectDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CELCProjectDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CELCProjectDlg::OnBnClickedCancel)
 	ON_CONTROL_RANGE(BN_CLICKED, IDC_ADD_OR_BTN, IDC_ADD_NOT_BTN, &CELCProjectDlg::OnBnClickedAddGateBtn)
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 
@@ -80,6 +89,17 @@ void CELCProjectDlg::DrawBoard()
 	for (x = 0; x < x_step; x++)
 	{
 		m_dcp.DrawLine(x * GRID_INTERVAL, 0, x * GRID_INTERVAL, m_rect.bottom);
+	}
+	node* p_node = m_gate_list.GetHead();
+	GateData* p_gate;
+	while (p_node) {
+		p_gate = (GateData*)p_node->p_data;
+		TWAPI_DrawGateImage(&m_dcp, p_gate->pos.x, p_gate->pos.y, &m_gate_dcp, p_gate->type, 0);
+		p_node = p_node->p_next;
+	}
+	if (mp_selected_gate) {
+		TWAPI_DrawGateImage(&m_dcp, mp_selected_gate->pos.x, mp_selected_gate->pos.y,
+			&m_gate_dcp, mp_selected_gate->type, 1);
 	}
 }
 
@@ -133,8 +153,73 @@ void CELCProjectDlg::OnBnClickedAddGateBtn(UINT a_ctrl_id)
 {
 	UINT gate_id = a_ctrl_id - IDC_ADD_OR_BTN;
 
+	// 추가할 게이트정보 저장할 메모리할당
+	GateData* p_gate = new GateData;
+	p_gate->type = gate_id;			// 게이트 종류
+	p_gate->label_index = 0;			// 사용 안함
+	p_gate->state = 0;				// 실행시 사용할 게이트 상태
+	p_gate->contact_count = 0;		// 선과 연결된 위치정보
+	p_gate->pos.x = ((m_rect.Width() - 100)/GRID_INTERVAL) / GRID_INTERVAL;
+	p_gate->pos.y = GRID_INTERVAL*5;
+
+	m_gate_list.AddNode(p_gate);		// 끝에 추가
 	DrawBoard();
-	TWAPI_DrawGateImage(&m_dcp, 28, 28, &m_gate_dcp, gate_id, 0);
+	//TWAPI_DrawGateImage(&m_dcp, 28, 28, &m_gate_dcp, gate_id, 0);
 
 	InvalidateRect(m_rect, 0);
+}
+
+void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (!m_is_clicked)
+	{
+		// 마우스 시작위치 보정
+		point.x -= m_rect.left;
+		point.y -= m_rect.top;
+
+		mp_selected_gate = nullptr;
+		node* p_node = m_gate_list.GetHead();
+		GateData* p_gate;
+		while (p_node) {
+			p_gate = (GateData*)p_node->p_data;
+			if (p_gate->pos.x <= point.x && point.x <= (p_gate->pos.x + 82)
+				&& p_gate->pos.y <= point.y && p_gate->pos.y <= (point.y + 70)) 
+			{
+				// 선택된 게이트 주소 저장
+				mp_selected_gate = p_gate;
+				m_is_clicked = 1;
+				SetCapture();
+				m_prev_position = point;
+				break;
+			}
+			p_node = p_node->p_next;
+		}	
+		DrawBoard();
+		InvalidateRect(m_rect, 0);
+	}
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
+
+
+void CELCProjectDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (m_is_clicked) { 
+		ReleaseCapture();
+		m_is_clicked = 0; 
+	}
+
+	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+
+void CELCProjectDlg::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (m_is_clicked) {
+		// 33분
+	}
+
+	CDialogEx::OnMouseMove(nFlags, point);
 }
