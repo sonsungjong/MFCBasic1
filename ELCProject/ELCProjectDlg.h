@@ -6,7 +6,7 @@
 #include "TW_DCP.h"
 #include "TW_DoubleLinkedList.h"
 
-#define GRID_INTERVAL				7					// grid 간격
+#define GRID_INTERVAL				8					// grid 간격
 #define OR_GATE 0
 #define NOR_GATE 1
 #define XNOR_GATE 2
@@ -67,4 +67,5 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

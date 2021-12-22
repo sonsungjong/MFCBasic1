@@ -18,7 +18,7 @@ Gdiplus::ARGB g_brush_color[MAX_MODE_COUNT] = {
 void DrawGatePerMode(TW_DCP* ap_dcp, Gdiplus::GraphicsPath* ap_path, int a_x)
 {
 	Matrix m;
-	m.Translate((float)(a_x+4), 4.0f);					// 이동
+	m.Translate((float)(a_x+4), 5.0f);					// 이동
 	ap_path->Transform(&m);
 	m.Reset();
 	m.Translate(0.0f, 70.0f);

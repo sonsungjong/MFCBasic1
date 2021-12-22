@@ -162,11 +162,11 @@ void CELCProjectDlg::OnBnClickedAddGateBtn(UINT a_ctrl_id)
 	p_gate->pos.x = ((m_rect.Width() - 100)/GRID_INTERVAL) / GRID_INTERVAL;
 	p_gate->pos.y = GRID_INTERVAL*5;
 
-	m_gate_list.AddNode(p_gate);		// 끝에 추가
-	DrawBoard();
-	//TWAPI_DrawGateImage(&m_dcp, 28, 28, &m_gate_dcp, gate_id, 0);
+m_gate_list.AddNode(p_gate);		// 끝에 추가
+DrawBoard();
+//TWAPI_DrawGateImage(&m_dcp, 28, 28, &m_gate_dcp, gate_id, 0);
 
-	InvalidateRect(m_rect, 0);
+InvalidateRect(m_rect, 0);
 }
 
 void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
@@ -184,7 +184,7 @@ void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		while (p_node) {
 			p_gate = (GateData*)p_node->p_data;
 			if (p_gate->pos.x <= point.x && point.x <= (p_gate->pos.x + 82)
-				&& p_gate->pos.y <= point.y && p_gate->pos.y <= (point.y + 70)) 
+				&& p_gate->pos.y <= point.y && point.y <= (p_gate->pos.y + 70))
 			{
 				// 선택된 게이트 주소 저장
 				mp_selected_gate = p_gate;
@@ -194,7 +194,7 @@ void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
 				break;
 			}
 			p_node = p_node->p_next;
-		}	
+		}
 		DrawBoard();
 		InvalidateRect(m_rect, 0);
 	}
@@ -205,9 +205,23 @@ void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CELCProjectDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	if (m_is_clicked) { 
+	if (m_is_clicked) {
+		point.x -= m_rect.left;
+		point.y -= m_rect.top;
+
+		int cx = point.x - m_prev_position.x;
+		int cy = point.y - m_prev_position.y;
+
+		mp_selected_gate->pos.x += cx;
+		mp_selected_gate->pos.y += cy;
+
+		mp_selected_gate->pos.x = ((mp_selected_gate->pos.x + GRID_INTERVAL / 2) / GRID_INTERVAL) * GRID_INTERVAL;
+		mp_selected_gate->pos.y = ((mp_selected_gate->pos.y + GRID_INTERVAL / 2) / GRID_INTERVAL) * GRID_INTERVAL;
+		DrawBoard();
+		InvalidateRect(m_rect, 0);
+
 		ReleaseCapture();
-		m_is_clicked = 0; 
+		m_is_clicked = 0;
 	}
 
 	CDialogEx::OnLButtonUp(nFlags, point);
@@ -218,8 +232,48 @@ void CELCProjectDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	if (m_is_clicked) {
-		// 33분
+		point.x -= m_rect.left;
+		point.y -= m_rect.top;
+		int cx = point.x - m_prev_position.x;
+		int cy = point.y - m_prev_position.y;
+		mp_selected_gate->pos.x += cx;
+		mp_selected_gate->pos.y += cy;
+		DrawBoard();
+		InvalidateRect(m_rect, 0);
+
+		m_prev_position = point;
 	}
 
 	CDialogEx::OnMouseMove(nFlags, point);
+}
+
+
+BOOL CELCProjectDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (mp_selected_gate && pMsg->message == WM_KEYDOWN) {
+		if (pMsg->wParam >= VK_LEFT && pMsg->wParam <= VK_DOWN) {
+			if (pMsg->wParam == VK_LEFT) {
+				if (mp_selected_gate->pos.x >= GRID_INTERVAL) {
+					mp_selected_gate->pos.x -= GRID_INTERVAL;
+				}
+			}
+			else if (pMsg->wParam == VK_RIGHT) {
+				mp_selected_gate->pos.x += GRID_INTERVAL;
+			}
+			else if (pMsg->wParam == VK_UP) {
+				if (mp_selected_gate->pos.y >= GRID_INTERVAL){
+					mp_selected_gate->pos.y -= GRID_INTERVAL;
+				}
+			}
+			else if (pMsg->wParam == VK_DOWN) {
+				mp_selected_gate->pos.y += GRID_INTERVAL;
+			}
+			DrawBoard();
+			InvalidateRect(m_rect, 0);
+			return TRUE;
+		}
+	}
+
+	return CDialogEx::PreTranslateMessage(pMsg);
 }
