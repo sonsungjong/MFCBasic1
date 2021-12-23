@@ -21,9 +21,14 @@ void DeleteGate(void* ap_data)
 	delete (GateData*)ap_data;
 }
 
+void DeleteWire(void* ap_data)
+{
+	delete (WireData*)ap_data;
+}
+
 // CELCProjectDlg dialog
 CELCProjectDlg::CELCProjectDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_ELCPROJECT_DIALOG, pParent), m_gate_list(DeleteGate)
+	: CDialogEx(IDD_ELCPROJECT_DIALOG, pParent), m_gate_list(DeleteGate), m_wire_list(DeleteWire)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -42,6 +47,8 @@ BEGIN_MESSAGE_MAP(CELCProjectDlg, CDialogEx)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
+	ON_BN_CLICKED(IDC_ADD_H_WIRE_BTN, &CELCProjectDlg::OnBnClickedAddHWireBtn)
+	ON_BN_CLICKED(IDC_ADD_V_WIRE_BTN, &CELCProjectDlg::OnBnClickedAddVWireBtn)
 END_MESSAGE_MAP()
 
 
@@ -82,15 +89,40 @@ void CELCProjectDlg::DrawBoard()
 	int x, y;
 
 	m_dcp.SetDCPenColor(Gdiplus::DashStyleSolid, 1, RGB32(32, 128, 128, 128));
-	for (y = 0; y < y_step; y++)
-	{
-		m_dcp.DrawLine(0, y * GRID_INTERVAL, m_rect.right, y * GRID_INTERVAL);
+	for (x = 0; x < x_step; x++) { m_dcp.DrawLine(x * GRID_INTERVAL, 0, x * GRID_INTERVAL, m_rect.bottom); }
+	for (y = 0; y < y_step; y++) { m_dcp.DrawLine(0, y * GRID_INTERVAL, m_rect.right, y * GRID_INTERVAL); }
+
+	m_dcp.SetDCBrushColor(RGB32(128, 255, 255, 255));
+
+	// 와이어
+	node* p_node = m_wire_list.GetHead();
+	WireData* p_wire;
+	while (p_node) {
+		p_wire = (WireData*)p_node->p_data;
+		if (p_wire->type == H_WIRE) {
+			m_dcp.FillSolidRect(p_wire->start_pos.x, p_wire->start_pos.y, p_wire->start_pos.x + p_wire->length*GRID_INTERVAL, p_wire->start_pos.y + GRID_INTERVAL);
+		}
+		else if (p_wire->type == V_WIRE) {
+			m_dcp.FillSolidRect(p_wire->start_pos.x, p_wire->start_pos.y, p_wire->start_pos.x + GRID_INTERVAL, p_wire->start_pos.y + p_wire->length * GRID_INTERVAL);
+		}
+		
+		p_node = p_node->p_next;				// 다음 노드로 이동
 	}
-	for (x = 0; x < x_step; x++)
-	{
-		m_dcp.DrawLine(x * GRID_INTERVAL, 0, x * GRID_INTERVAL, m_rect.bottom);
+
+	if (mp_selected_wire) {
+		m_dcp.SetDCBrushColor(RGB32(32, 254, 254, 45));
+		if (mp_selected_wire->type == H_WIRE) {
+			m_dcp.FillSolidRect(mp_selected_wire->start_pos.x, mp_selected_wire->start_pos.y, 
+				mp_selected_wire->start_pos.x + mp_selected_wire->length * GRID_INTERVAL, mp_selected_wire->start_pos.y + GRID_INTERVAL);
+		}
+		else if (mp_selected_wire->type == V_WIRE) {
+			m_dcp.FillSolidRect(mp_selected_wire->start_pos.x, mp_selected_wire->start_pos.y, 
+				mp_selected_wire->start_pos.x + GRID_INTERVAL, mp_selected_wire->start_pos.y + mp_selected_wire->length * GRID_INTERVAL);
+		}
 	}
-	node* p_node = m_gate_list.GetHead();
+
+	// 게이트
+	p_node = m_gate_list.GetHead();
 	GateData* p_gate;
 	while (p_node) {
 		p_gate = (GateData*)p_node->p_data;
@@ -159,14 +191,16 @@ void CELCProjectDlg::OnBnClickedAddGateBtn(UINT a_ctrl_id)
 	p_gate->label_index = 0;			// 사용 안함
 	p_gate->state = 0;				// 실행시 사용할 게이트 상태
 	p_gate->contact_count = 0;		// 선과 연결된 위치정보
-	p_gate->pos.x = ((m_rect.Width() - 100)/GRID_INTERVAL) / GRID_INTERVAL;
+
+	// 게이트 생성 위치
+	p_gate->pos.x = ((m_rect.Width() - 100)/GRID_INTERVAL) * GRID_INTERVAL;
 	p_gate->pos.y = GRID_INTERVAL*5;
 
-m_gate_list.AddNode(p_gate);		// 끝에 추가
-DrawBoard();
-//TWAPI_DrawGateImage(&m_dcp, 28, 28, &m_gate_dcp, gate_id, 0);
+	m_gate_list.AddNode(p_gate);		// 끝에 추가
+	DrawBoard();
+	//TWAPI_DrawGateImage(&m_dcp, 28, 28, &m_gate_dcp, gate_id, 0);
 
-InvalidateRect(m_rect, 0);
+	InvalidateRect(m_rect, 0);
 }
 
 void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
@@ -179,6 +213,7 @@ void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		point.y -= m_rect.top;
 
 		mp_selected_gate = nullptr;
+		mp_selected_wire = nullptr;
 		node* p_node = m_gate_list.GetHead();
 		GateData* p_gate;
 		while (p_node) {
@@ -195,12 +230,44 @@ void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
 			}
 			p_node = p_node->p_next;
 		}
+
+		if (mp_selected_gate == nullptr) {
+			p_node = m_wire_list.GetHead();
+			WireData* p_wire;
+			while (p_node) {
+				p_wire = (WireData*)p_node->p_data;
+				// 어떤 와이어가 선택된지 체크
+				if (p_wire->type == H_WIRE) {
+					if (p_wire->start_pos.x <= point.x && p_wire->start_pos.y <= point.y &&
+						point.x <= (p_wire->start_pos.x + p_wire->length * GRID_INTERVAL) && point.y <= (p_wire->start_pos.y + GRID_INTERVAL))
+					{ mp_selected_wire = p_wire; }
+				}
+				else if (p_wire->type == V_WIRE) {
+					if (p_wire->start_pos.x <= point.x && p_wire->start_pos.y <= point.y &&
+						point.x <= (p_wire->start_pos.x + GRID_INTERVAL) && point.y <= (p_wire->start_pos.y + p_wire->length*GRID_INTERVAL))
+					{ mp_selected_wire = p_wire; }
+				}
+
+				if (mp_selected_wire)
+				{
+					m_is_clicked = 1;
+					SetCapture();
+					m_prev_position = point;
+					break;
+				}
+				p_node = p_node->p_next;
+			}
+		}
 		DrawBoard();
 		InvalidateRect(m_rect, 0);
 	}
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
+void CELCProjectDlg::UpdateObjectPosition(POINT* ap_position)
+{
+	// 45:40
+}
 
 void CELCProjectDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
@@ -209,14 +276,12 @@ void CELCProjectDlg::OnLButtonUp(UINT nFlags, CPoint point)
 		point.x -= m_rect.left;
 		point.y -= m_rect.top;
 
-		int cx = point.x - m_prev_position.x;
-		int cy = point.y - m_prev_position.y;
-
-		mp_selected_gate->pos.x += cx;
-		mp_selected_gate->pos.y += cy;
+		if (mp_selected_gate->pos.x < 0) { mp_selected_gate->pos.x = 0; }
+		if (mp_selected_gate->pos.y < 0) { mp_selected_gate->pos.y = 0; }
 
 		mp_selected_gate->pos.x = ((mp_selected_gate->pos.x + GRID_INTERVAL / 2) / GRID_INTERVAL) * GRID_INTERVAL;
 		mp_selected_gate->pos.y = ((mp_selected_gate->pos.y + GRID_INTERVAL / 2) / GRID_INTERVAL) * GRID_INTERVAL;
+
 		DrawBoard();
 		InvalidateRect(m_rect, 0);
 
@@ -234,10 +299,16 @@ void CELCProjectDlg::OnMouseMove(UINT nFlags, CPoint point)
 	if (m_is_clicked) {
 		point.x -= m_rect.left;
 		point.y -= m_rect.top;
-		int cx = point.x - m_prev_position.x;
-		int cy = point.y - m_prev_position.y;
-		mp_selected_gate->pos.x += cx;
-		mp_selected_gate->pos.y += cy;
+
+		if (mp_selected_gate) {
+			mp_selected_gate->pos.x += point.x - m_prev_position.x;
+			mp_selected_gate->pos.y += point.y - m_prev_position.y;
+		}
+		else if (mp_selected_wire) {
+			mp_selected_wire->start_pos.x += point.x - m_prev_position.x;
+			mp_selected_wire->start_pos.y += point.y - m_prev_position.y;
+		}
+		
 		DrawBoard();
 		InvalidateRect(m_rect, 0);
 
@@ -276,4 +347,32 @@ BOOL CELCProjectDlg::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+// 전선추가 함수
+void CELCProjectDlg::AddWire(UINT8 a_wire_type)
+{
+	WireData* p_wire = new WireData;
+	p_wire->type = a_wire_type;				// 수평방향전선
+	p_wire->state = 0;				// 실행시 상태를 기억할 변수
+	p_wire->length = 10;			// 기본크기
+
+	// 게이트 생성 위치
+	p_wire->start_pos.x = ((m_rect.Width() - 100) / GRID_INTERVAL) * GRID_INTERVAL;
+	p_wire->start_pos.y = GRID_INTERVAL * 5;
+
+	m_wire_list.AddNode(p_wire);
+	DrawBoard();
+	InvalidateRect(m_rect, 0);
+}
+
+void CELCProjectDlg::OnBnClickedAddHWireBtn()
+{
+	AddWire(H_WIRE);
+}
+
+
+void CELCProjectDlg::OnBnClickedAddVWireBtn()
+{
+	AddWire(V_WIRE);
 }

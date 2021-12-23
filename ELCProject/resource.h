@@ -12,6 +12,8 @@
 #define IDC_ADD_AND_BTN                 1005
 #define IDC_ADD_NAND_BTN                1006
 #define IDC_ADD_NOT_BTN                 1007
+#define IDC_ADD_H_WIRE_BTN              1008
+#define IDC_ADD_V_WIRE_BTN              1009
 
 // Next default values for new objects
 // 
