@@ -33,7 +33,7 @@ struct WireData
 	UINT8 type;					// 0 : 수평방향전선, 1: 수직방향전선
 	UINT8 state;					// 현재값
 	UINT16 length;				// 선의길이
-	POINT start_pos;						// 선의시작점 (점단위좌표)
+	POINT position;						// 선의시작점 (점단위좌표)
 };
 
 // CELCProjectDlg dialog
@@ -57,6 +57,8 @@ public:
 	CELCProjectDlg(CWnd* pParent = nullptr);	// standard constructor
 	void DrawBoard();
 	void AddWire(UINT8 a_wire_type);
+	// 그리드 간격을 고려해서 아이템 위치를 결정하는 함수
+	void UpdateItemPosition(POINT* ap_position, int a_cx, int a_cy);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

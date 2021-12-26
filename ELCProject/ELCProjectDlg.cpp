@@ -92,7 +92,7 @@ void CELCProjectDlg::DrawBoard()
 	for (x = 0; x < x_step; x++) { m_dcp.DrawLine(x * GRID_INTERVAL, 0, x * GRID_INTERVAL, m_rect.bottom); }
 	for (y = 0; y < y_step; y++) { m_dcp.DrawLine(0, y * GRID_INTERVAL, m_rect.right, y * GRID_INTERVAL); }
 
-	m_dcp.SetDCBrushColor(RGB32(128, 255, 255, 255));
+	m_dcp.SetDCBrushColor(RGB24(168, 168, 168));
 
 	// 와이어
 	node* p_node = m_wire_list.GetHead();
@@ -100,24 +100,25 @@ void CELCProjectDlg::DrawBoard()
 	while (p_node) {
 		p_wire = (WireData*)p_node->p_data;
 		if (p_wire->type == H_WIRE) {
-			m_dcp.FillSolidRect(p_wire->start_pos.x, p_wire->start_pos.y, p_wire->start_pos.x + p_wire->length*GRID_INTERVAL, p_wire->start_pos.y + GRID_INTERVAL);
+			m_dcp.FillSolidRect(p_wire->position.x+2, p_wire->position.y+2,
+				p_wire->position.x + p_wire->length*GRID_INTERVAL-2, p_wire->position.y + GRID_INTERVAL-2);
 		}
 		else if (p_wire->type == V_WIRE) {
-			m_dcp.FillSolidRect(p_wire->start_pos.x, p_wire->start_pos.y, p_wire->start_pos.x + GRID_INTERVAL, p_wire->start_pos.y + p_wire->length * GRID_INTERVAL);
+			m_dcp.FillSolidRect(p_wire->position.x+2, p_wire->position.y+2,
+				p_wire->position.x + GRID_INTERVAL-2, p_wire->position.y + p_wire->length * GRID_INTERVAL-2);
 		}
-		
 		p_node = p_node->p_next;				// 다음 노드로 이동
 	}
 
 	if (mp_selected_wire) {
-		m_dcp.SetDCBrushColor(RGB32(32, 254, 254, 45));
+		m_dcp.SetDCBrushColor(RGB32(128, 254, 254, 45));
 		if (mp_selected_wire->type == H_WIRE) {
-			m_dcp.FillSolidRect(mp_selected_wire->start_pos.x, mp_selected_wire->start_pos.y, 
-				mp_selected_wire->start_pos.x + mp_selected_wire->length * GRID_INTERVAL, mp_selected_wire->start_pos.y + GRID_INTERVAL);
+			m_dcp.FillSolidRect(mp_selected_wire->position.x, mp_selected_wire->position.y, 
+				mp_selected_wire->position.x + mp_selected_wire->length * GRID_INTERVAL, mp_selected_wire->position.y + GRID_INTERVAL);
 		}
 		else if (mp_selected_wire->type == V_WIRE) {
-			m_dcp.FillSolidRect(mp_selected_wire->start_pos.x, mp_selected_wire->start_pos.y, 
-				mp_selected_wire->start_pos.x + GRID_INTERVAL, mp_selected_wire->start_pos.y + mp_selected_wire->length * GRID_INTERVAL);
+			m_dcp.FillSolidRect(mp_selected_wire->position.x, mp_selected_wire->position.y, 
+				mp_selected_wire->position.x + GRID_INTERVAL, mp_selected_wire->position.y + mp_selected_wire->length * GRID_INTERVAL);
 		}
 	}
 
@@ -238,13 +239,13 @@ void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
 				p_wire = (WireData*)p_node->p_data;
 				// 어떤 와이어가 선택된지 체크
 				if (p_wire->type == H_WIRE) {
-					if (p_wire->start_pos.x <= point.x && p_wire->start_pos.y <= point.y &&
-						point.x <= (p_wire->start_pos.x + p_wire->length * GRID_INTERVAL) && point.y <= (p_wire->start_pos.y + GRID_INTERVAL))
+					if (p_wire->position.x <= point.x && p_wire->position.y <= point.y &&
+						point.x <= (p_wire->position.x + p_wire->length * GRID_INTERVAL) && point.y <= (p_wire->position.y + GRID_INTERVAL))
 					{ mp_selected_wire = p_wire; }
 				}
 				else if (p_wire->type == V_WIRE) {
-					if (p_wire->start_pos.x <= point.x && p_wire->start_pos.y <= point.y &&
-						point.x <= (p_wire->start_pos.x + GRID_INTERVAL) && point.y <= (p_wire->start_pos.y + p_wire->length*GRID_INTERVAL))
+					if (p_wire->position.x <= point.x && p_wire->position.y <= point.y &&
+						point.x <= (p_wire->position.x + GRID_INTERVAL) && point.y <= (p_wire->position.y + p_wire->length*GRID_INTERVAL))
 					{ mp_selected_wire = p_wire; }
 				}
 
@@ -264,9 +265,16 @@ void CELCProjectDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
-void CELCProjectDlg::UpdateObjectPosition(POINT* ap_position)
+void CELCProjectDlg::UpdateItemPosition(POINT* ap_position, int a_cx, int a_cy)
 {
-	// 45:40
+	ap_position->x += a_cx;
+	ap_position->y += a_cy;
+
+	if (ap_position->x < 0) { ap_position->x = 0; }
+	if (ap_position->y < 0) { ap_position->y = 0; }
+
+	ap_position->x = ((ap_position->x + GRID_INTERVAL / 2) / GRID_INTERVAL) * GRID_INTERVAL;
+	ap_position->y = ((ap_position->y + GRID_INTERVAL / 2) / GRID_INTERVAL) * GRID_INTERVAL;
 }
 
 void CELCProjectDlg::OnLButtonUp(UINT nFlags, CPoint point)
@@ -276,11 +284,15 @@ void CELCProjectDlg::OnLButtonUp(UINT nFlags, CPoint point)
 		point.x -= m_rect.left;
 		point.y -= m_rect.top;
 
-		if (mp_selected_gate->pos.x < 0) { mp_selected_gate->pos.x = 0; }
-		if (mp_selected_gate->pos.y < 0) { mp_selected_gate->pos.y = 0; }
-
-		mp_selected_gate->pos.x = ((mp_selected_gate->pos.x + GRID_INTERVAL / 2) / GRID_INTERVAL) * GRID_INTERVAL;
-		mp_selected_gate->pos.y = ((mp_selected_gate->pos.y + GRID_INTERVAL / 2) / GRID_INTERVAL) * GRID_INTERVAL;
+		// 이동거리 반영
+		if (mp_selected_gate) {
+			UpdateItemPosition(&mp_selected_gate->pos, 
+				point.x - m_prev_position.x, point.y - m_prev_position.y);
+		}
+		else if (mp_selected_wire) {
+			UpdateItemPosition(&mp_selected_wire->position, 
+				point.x - m_prev_position.x, point.y - m_prev_position.y);
+		}
 
 		DrawBoard();
 		InvalidateRect(m_rect, 0);
@@ -305,8 +317,8 @@ void CELCProjectDlg::OnMouseMove(UINT nFlags, CPoint point)
 			mp_selected_gate->pos.y += point.y - m_prev_position.y;
 		}
 		else if (mp_selected_wire) {
-			mp_selected_wire->start_pos.x += point.x - m_prev_position.x;
-			mp_selected_wire->start_pos.y += point.y - m_prev_position.y;
+			mp_selected_wire->position.x += point.x - m_prev_position.x;
+			mp_selected_wire->position.y += point.y - m_prev_position.y;
 		}
 		
 		DrawBoard();
@@ -358,8 +370,8 @@ void CELCProjectDlg::AddWire(UINT8 a_wire_type)
 	p_wire->length = 10;			// 기본크기
 
 	// 게이트 생성 위치
-	p_wire->start_pos.x = ((m_rect.Width() - 100) / GRID_INTERVAL) * GRID_INTERVAL;
-	p_wire->start_pos.y = GRID_INTERVAL * 5;
+	p_wire->position.x = ((m_rect.Width() - 100) / GRID_INTERVAL) * GRID_INTERVAL;
+	p_wire->position.y = GRID_INTERVAL * 5;
 
 	m_wire_list.AddNode(p_wire);
 	DrawBoard();
