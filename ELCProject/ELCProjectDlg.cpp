@@ -334,30 +334,22 @@ void CELCProjectDlg::OnMouseMove(UINT nFlags, CPoint point)
 BOOL CELCProjectDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class
-	if (mp_selected_gate && pMsg->message == WM_KEYDOWN) {
+	if ((mp_selected_gate || mp_selected_wire) && pMsg->message == WM_KEYDOWN) {
 		if (pMsg->wParam >= VK_LEFT && pMsg->wParam <= VK_DOWN) {
-			if (pMsg->wParam == VK_LEFT) {
-				if (mp_selected_gate->pos.x >= GRID_INTERVAL) {
-					mp_selected_gate->pos.x -= GRID_INTERVAL;
-				}
-			}
-			else if (pMsg->wParam == VK_RIGHT) {
-				mp_selected_gate->pos.x += GRID_INTERVAL;
-			}
-			else if (pMsg->wParam == VK_UP) {
-				if (mp_selected_gate->pos.y >= GRID_INTERVAL){
-					mp_selected_gate->pos.y -= GRID_INTERVAL;
-				}
-			}
-			else if (pMsg->wParam == VK_DOWN) {
-				mp_selected_gate->pos.y += GRID_INTERVAL;
-			}
+			POINT* p_pos = nullptr;
+			if (mp_selected_gate) { p_pos = &mp_selected_gate->pos; }
+			else if (mp_selected_wire) { p_pos = &mp_selected_wire->position; }
+
+			if (pMsg->wParam == VK_LEFT) { if (p_pos->x >= GRID_INTERVAL) { p_pos->x -= GRID_INTERVAL; } }
+			else if (pMsg->wParam == VK_RIGHT) { p_pos->x += GRID_INTERVAL; }
+			else if (pMsg->wParam == VK_UP) { if (p_pos->y >= GRID_INTERVAL){ p_pos->y -= GRID_INTERVAL; } }
+			else if (pMsg->wParam == VK_DOWN) { p_pos->y += GRID_INTERVAL; }
+
 			DrawBoard();
 			InvalidateRect(m_rect, 0);
 			return TRUE;
 		}
 	}
-
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
