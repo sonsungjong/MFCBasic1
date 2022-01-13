@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+#include "UserProgress.h"
 
 // CMFCL108ProgressCtrlDlg dialog
 class CMFCL108ProgressCtrlDlg : public CDialogEx
@@ -24,6 +24,8 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
+	//CRect m_user_rect;
+	UserProgress m_my_progress;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();

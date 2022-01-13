@@ -49,8 +49,12 @@ BOOL CMFCL108ProgressCtrlDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	//GetDlgItem(IDC_USER_RECT)->GetWindowRect(m_user_rect);
+	//ScreenToClient(m_user_rect);					// 좌표시작점 변경
+	m_my_progress.Create(this, IDC_USER_RECT);
+	m_my_progress.SetColor(RGB(160, 50, 0), RGB(255, 220, 0));
 	SetTimer(1, 50, nullptr);
-
+	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -80,10 +84,15 @@ void CMFCL108ProgressCtrlDlg::OnPaint()
 	else
 	{
 		//CDialogEx::OnPaint();
-		int degree = m_progress1.GetPos() *2;
-		dc.FillSolidRect(degree, 0, 200, 30, RGB(0, 80, 160));
-		dc.FillSolidRect(0, 0, degree, 30, RGB(0, 160, 255));
+		//int degree = m_progress1.GetPos() *200/100;
+		//dc.FillSolidRect(degree, 0, 200, 30, RGB(0, 80, 160));
+		//dc.FillSolidRect(0, 0, degree, 30, RGB(0, 160, 255));
 
+		//degree = m_progress1.GetPos() * m_user_rect.Width()/100;
+
+		//dc.FillSolidRect(m_user_rect.left + degree, m_user_rect.top, m_user_rect.Width(), m_user_rect.Height(), RGB(0, 80, 160));
+		//dc.FillSolidRect(m_user_rect.left, m_user_rect.top, degree, m_user_rect.Height(), RGB(0, 160, 255));
+		m_my_progress.Draw(&dc);
 	}
 }
 
@@ -103,8 +112,9 @@ void CMFCL108ProgressCtrlDlg::OnTimer(UINT_PTR nIDEvent)
 		int degree = m_progress1.GetPos();
 		degree = (degree + 1) % 101;
 		m_progress1.SetPos(degree);
-
-		InvalidateRect(CRect(0, 0, 200, 30));
+		m_my_progress.SetPos(degree);
+		//InvalidateRect(CRect(0, 0, 200, 30), 0);
+		m_my_progress.Update(this);
 	}
 
 	else CDialogEx::OnTimer(nIDEvent);
