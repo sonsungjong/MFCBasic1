@@ -1,18 +1,8 @@
-
-// MFCBasic124MemoryDCDlg.h : header file
-//
-
 #pragma once
 
-#define MAX_COUNT				100
 
-struct Circle
-{
-	int x, y, r;
-	COLORREF color;
-};
-
-class _MemoryDC
+// 메모리DC 클래스
+class SJ_MemDC
 {
 protected:
 	CDC m_memDC;
@@ -21,12 +11,12 @@ protected:
 	int m_height;
 
 public:
-	_MemoryDC() 
+	SJ_MemDC()
 	{
 		m_width = 0;
 		m_height = 0;
 	}
-	~_MemoryDC()
+	~SJ_MemDC()
 	{
 		if (m_memDC.m_hDC != NULL) {
 			m_memBmp.DeleteObject();
@@ -64,49 +54,47 @@ public:
 	{
 		return m_height;
 	}
+
 	void Draw(CDC* ap_dc, int a_x, int a_y)
 	{
 		ap_dc->BitBlt(0, 0, m_width, m_height, &m_memDC, 0, 0, SRCCOPY);
 	}
 };
 
-// CMFCBasic124MemoryDCDlg dialog
-class CMFCBasic124MemoryDCDlg : public CDialogEx
+// Progress컨트롤 Wnd클래스
+class SJ_ProgressCtrl : public CWnd
 {
-protected:
-	int w, h, minR, maxR;
-	Circle m_circleList[MAX_COUNT];
-	Circle* mp;
-	CRect r;
-	CBrush fill_brush;
-	CBrush* p_oldBrush;
-	CDC m_mem_dc;
-	CBitmap m_mem_bmp;
+	DECLARE_DYNAMIC(SJ_ProgressCtrl)
 
-// Construction
 public:
-	CMFCBasic124MemoryDCDlg(CWnd* pParent = nullptr);	// standard constructor
+	SJ_ProgressCtrl();
+	virtual ~SJ_ProgressCtrl();
 
-// Dialog Data
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCBASIC124MEMORYDC_DIALOG };
-#endif
+	void CreateProgress(CWnd* ap_parent, CRect a_rect, int a_ctrl_id);
+	void CreateProgress(CWnd* ap_parent, int a_guide_ctrl_id, int a_ctrl_id);
+	
+	void SetRange(int a_min, int a_max);
+	void SetPos(int a_pos);
+	inline void UpdatePos(int a_pos)
+	{
+		SetPos(a_pos);
+		Invalidate(0);
+	}
+	int GetPos();
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	void SetColor(COLORREF a_bk_color, COLORREF a_fore_color);
 
-
-// Implementation
 protected:
-	HICON m_hIcon;
-
-	// Generated message map functions
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+	int m_pos, m_min, m_max;
+	int m_width, m_height;
+	COLORREF m_bk_color, m_fore_color;
+	SJ_MemDC m_mem_image;
+
 public:
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnDestroy();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnPaint();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
+
+

@@ -4,6 +4,7 @@
 
 #pragma once
 #include "UserProgress.h"
+#include "SJ_ProgressCtrl.h"
 
 // CMFCL108ProgressCtrlDlg dialog
 class CMFCL108ProgressCtrlDlg : public CDialogEx
@@ -20,12 +21,12 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-
 // Implementation
 protected:
 	HICON m_hIcon;
 	//CRect m_user_rect;
 	UserProgress m_my_progress;
+	SJ_ProgressCtrl m_test_progress;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();

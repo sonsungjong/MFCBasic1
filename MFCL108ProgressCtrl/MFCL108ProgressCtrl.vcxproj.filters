@@ -36,6 +36,9 @@
     <ClInclude Include="UserProgress.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SJ_ProgressCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCL108ProgressCtrl.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UserProgress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SJ_ProgressCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

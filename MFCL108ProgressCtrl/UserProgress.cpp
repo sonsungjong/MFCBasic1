@@ -69,6 +69,6 @@ void UserProgress::SetColor(COLORREF a_bk_color, COLORREF a_fore_color)
 void UserProgress::Draw(CDC* ap_dc)
 {
 	int pos = m_pos * m_rect.Width() / (m_max - m_min);
-	ap_dc->FillSolidRect(m_rect.left + pos, m_rect.top, m_rect.Width(), m_rect.Height(), m_bk_color);
+	ap_dc->FillSolidRect(m_rect.left + pos, m_rect.top, m_rect.Width()-pos, m_rect.Height(), m_bk_color);
 	ap_dc->FillSolidRect(m_rect.left, m_rect.top, pos, m_rect.Height(), m_fore_color);
 }

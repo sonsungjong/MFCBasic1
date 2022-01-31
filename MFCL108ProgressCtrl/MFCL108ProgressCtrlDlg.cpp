@@ -51,8 +51,11 @@ BOOL CMFCL108ProgressCtrlDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 	//GetDlgItem(IDC_USER_RECT)->GetWindowRect(m_user_rect);
 	//ScreenToClient(m_user_rect);					// 좌표시작점 변경
-	m_my_progress.Create(this, IDC_USER_RECT);
+	m_my_progress.Create(this, IDC_USER_RECT1);
 	m_my_progress.SetColor(RGB(160, 50, 0), RGB(255, 220, 0));
+
+	m_test_progress.CreateProgress(this, IDC_USER_RECT2, 44401);
+	
 	SetTimer(1, 50, nullptr);
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -109,12 +112,13 @@ void CMFCL108ProgressCtrlDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
 	if (nIDEvent == 1) {
-		int degree = m_progress1.GetPos();
+		int degree = m_test_progress.GetPos();
 		degree = (degree + 1) % 101;
-		m_progress1.SetPos(degree);
-		m_my_progress.SetPos(degree);
-		//InvalidateRect(CRect(0, 0, 200, 30), 0);
-		m_my_progress.Update(this);
+		
+		//m_my_progress.SetPos(degree);
+		
+		//m_my_progress.Update(this);
+		m_test_progress.UpdatePos(degree);
 	}
 
 	else CDialogEx::OnTimer(nIDEvent);
