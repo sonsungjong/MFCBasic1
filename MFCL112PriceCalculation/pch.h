@@ -10,4 +10,10 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 
+struct ItemInfo
+{
+	int price;
+	int count;
+};
+
 #endif //PCH_H

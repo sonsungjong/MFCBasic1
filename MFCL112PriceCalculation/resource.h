@@ -5,8 +5,6 @@
 #define IDD_MFCL112PRICECALCULATION_DIALOG 102
 #define IDR_MAINFRAME                   128
 #define IDC_ITEM_LIST                   1000
-#define IDC_COUNT_LIST                  1001
-#define IDC_SPIN1                       1002
 #define IDC_COUNT_SPIN                  1002
 #define IDC_TOTAL_PRICE_EDIT            1003
 

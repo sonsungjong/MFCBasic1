@@ -26,7 +26,6 @@ CMFCL112PriceCalculationDlg::CMFCL112PriceCalculationDlg(CWnd* pParent /*=nullpt
 void CMFCL112PriceCalculationDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_COUNT_LIST, m_count_list);
 	DDX_Control(pDX, IDC_COUNT_SPIN, m_count_spin);
 }
 
@@ -35,6 +34,7 @@ BEGIN_MESSAGE_MAP(CMFCL112PriceCalculationDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_LBN_SELCHANGE(IDC_ITEM_LIST, &CMFCL112PriceCalculationDlg::OnLbnSelchangeItemList)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_COUNT_SPIN, &CMFCL112PriceCalculationDlg::OnDeltaposCountSpin)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -54,28 +54,34 @@ BOOL CMFCL112PriceCalculationDlg::OnInitDialog()
 	ScreenToClient(&m_spin_rect);							// 좌표기준을 클라이언트로 설정
 
 	TCHAR* p_item_name[MAX_COUNT] = {
-		_T("아메리카노    1900원"),
-		_T("카페라떼    2500원"),
-		_T("카페모카    2800원"),
-		_T("카라멜마끼아또    3200원"),
-		_T("에스프레소    1800원"),
-		_T("바닐라라떼    3500원"),
-		_T("카푸치노    3300원"),
-		_T("비엔나    3500원"),
+		_T("아메리카노            1900원"),
+		_T("카페라떼              2500원"),
+		_T("카페모카              2800원"),
+		_T("카라멜마끼아또        3200원"),
+		_T("에스프레소            1800원"),
+		_T("바닐라라떼            3500원"),
+		_T("카푸치노              3300원"),
+		_T("비엔나                3500원"),
 	};
 
 	int price[MAX_COUNT] = {
 		1900, 2500, 2800, 3200, 1800, 3500, 3300, 3500
 	};
-
 	m_item_list.SubclassDlgItem(IDC_ITEM_LIST, this);
+
+	m_font.CreatePointFont(96, _T("굴림체"));
+	m_item_list.SetFont(&m_font);
+
 	m_item_list.SetItemHeight(0, 24);				// 요소의 높이
-	m_count_list.SetItemHeight(0, 24);				// 요소의 높이
+
+	ItemInfo* p;
 
 	for (int i = 0; i < MAX_COUNT; i++) {
 		m_item_list.InsertString(i, p_item_name[i]);
-		m_item_list.SetItemData(i, price[i]);
-		m_count_list.InsertString(i, _T("0"));
+		p = new ItemInfo;
+		p->price = price[i];
+		p->count = 0;
+		m_item_list.SetItemDataPtr(i, p);
 	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -121,39 +127,37 @@ void CMFCL112PriceCalculationDlg::CalcTotalPrice()
 {
 	int total_price = 0;
 	int count = m_item_list.GetCount();
-	CString str;
+	ItemInfo* p;
 
 	for (int i = 0; i < count; i++) {
 		if (m_item_list.GetCheck(i)) {
-			m_count_list.GetText(i, str);
-			total_price += m_item_list.GetItemData(i) * _ttoi(str);
+			p = (ItemInfo*)m_item_list.GetItemDataPtr(i);
+			total_price += p->price * p->count;
 		}
 	}
 	::SetDlgItemInt(m_hWnd, IDC_TOTAL_PRICE_EDIT, total_price, FALSE);
 }
 
-void CMFCL112PriceCalculationDlg::ChangeText(CListBox* ap_list_box, int a_index, const TCHAR* ap_string)
-{
-	ap_list_box->DeleteString(a_index);
-	ap_list_box->InsertString(a_index, ap_string);
-	ap_list_box->SetCurSel(a_index);
-}
+//void CMFCL112PriceCalculationDlg::ChangeText(CListBox* ap_list_box, int a_index, const TCHAR* ap_string)
+//{
+//	ap_list_box->DeleteString(a_index);
+//	ap_list_box->InsertString(a_index, ap_string);
+//	ap_list_box->SetCurSel(a_index);
+//}
 
 void CMFCL112PriceCalculationDlg::OnLbnSelchangeItemList()
 {
 	// TODO: Add your control notification handler code here
 	int index = m_item_list.GetCurSel();
-	CString str;
-	m_count_list.GetText(index, str);
-	int item_count = _ttoi(str);
-	// 항목 선택시
-	if (m_item_list.GetCheck(index)) {
-		if (item_count == 0) { ChangeText(&m_count_list, index, _T("1")); }
-	} else {
-		if (item_count != 0) { ChangeText(&m_count_list, index, _T("0")); }
-	}
+	ItemInfo* p = (ItemInfo*)m_item_list.GetItemDataPtr(index);
 
-	m_count_list.SetCurSel(index);
+	if (m_item_list.GetCheck(index)) {					// 항목 선택시
+		if (p->count == 0) { p->count = 1; }
+	} else {															// 선택 해제시
+		if (p->count != 0) { p->count = 0; }
+	}
+	m_item_list.SetCurSel(index);
+
 	// 스핀컨트롤 하나로 셀렉을 따라다니게함
 	m_count_spin.SetWindowPos(nullptr, m_spin_rect.left, m_spin_rect.top + index * 24, 0, 0, SWP_NOSIZE);
 	CalcTotalPrice();
@@ -166,20 +170,30 @@ void CMFCL112PriceCalculationDlg::OnDeltaposCountSpin(NMHDR* pNMHDR, LRESULT* pR
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
 
-	int index = m_count_list.GetCurSel();
+	int index = m_item_list.GetCurSel();
 	if (LB_ERR != index && m_item_list.GetCheck(index)) {
-		CString str;
-		m_count_list.GetText(index, str);
-		int item_count = _ttoi(str);
-
+		ItemInfo* p = (ItemInfo*)m_item_list.GetItemDataPtr(index);
 		if (pNMUpDown->iDelta > 0) {
-			if (item_count > 1) { item_count--; }
+			if (p->count > 1) { p->count--; }
 		}else{
-			if (item_count < 100) { item_count++; }
+			if (p->count < 100) { p->count++; }
 		}
-		str.Format(_T("%d"), item_count);
-		ChangeText(&m_count_list, index, str);
-
+		m_item_list.SetCurSel(index);
 		CalcTotalPrice();						// 스핀컨트롤을 조작해도 계산루틴 사용
 	}
+}
+
+
+void CMFCL112PriceCalculationDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// TODO: Add your message handler code here
+	int count = m_item_list.GetCount();
+	ItemInfo* p;
+	for (int i = 0; i < count; i++) {
+		p = (ItemInfo*)m_item_list.GetItemDataPtr(i);
+		delete p;
+	}
+	m_item_list.ResetContent();
 }
