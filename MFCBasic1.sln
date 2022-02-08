@@ -163,6 +163,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX04", "DirectX04\Dire
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX05", "DirectX05\DirectX05.vcxproj", "{DD45842B-478A-4A68-9C11-21ABE86ECB01}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2DButton1", "D2DButton1\D2DButton1.vcxproj", "{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -811,6 +813,14 @@ Global
 		{DD45842B-478A-4A68-9C11-21ABE86ECB01}.Release|x64.Build.0 = Release|x64
 		{DD45842B-478A-4A68-9C11-21ABE86ECB01}.Release|x86.ActiveCfg = Release|Win32
 		{DD45842B-478A-4A68-9C11-21ABE86ECB01}.Release|x86.Build.0 = Release|Win32
+		{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}.Debug|x64.ActiveCfg = Debug|x64
+		{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}.Debug|x64.Build.0 = Debug|x64
+		{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}.Debug|x86.ActiveCfg = Debug|Win32
+		{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}.Debug|x86.Build.0 = Debug|Win32
+		{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}.Release|x64.ActiveCfg = Release|x64
+		{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}.Release|x64.Build.0 = Release|x64
+		{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}.Release|x86.ActiveCfg = Release|Win32
+		{C707F09F-26EE-4624-9ED1-6BE3AE37A1C1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
