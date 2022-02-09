@@ -167,6 +167,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2DButton1", "D2DButton1\D2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2DText1", "D2DText1\D2DText1.vcxproj", "{379E8533-447D-4F95-A5CE-F831A2FC1EAC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2DClassUse", "D2DClassUse\D2DClassUse.vcxproj", "{01F9DAB0-2F45-40AB-8142-C77D6773D73B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -831,6 +833,14 @@ Global
 		{379E8533-447D-4F95-A5CE-F831A2FC1EAC}.Release|x64.Build.0 = Release|x64
 		{379E8533-447D-4F95-A5CE-F831A2FC1EAC}.Release|x86.ActiveCfg = Release|Win32
 		{379E8533-447D-4F95-A5CE-F831A2FC1EAC}.Release|x86.Build.0 = Release|Win32
+		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Debug|x64.ActiveCfg = Debug|x64
+		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Debug|x64.Build.0 = Debug|x64
+		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Debug|x86.ActiveCfg = Debug|Win32
+		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Debug|x86.Build.0 = Debug|Win32
+		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Release|x64.ActiveCfg = Release|x64
+		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Release|x64.Build.0 = Release|x64
+		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Release|x86.ActiveCfg = Release|Win32
+		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
