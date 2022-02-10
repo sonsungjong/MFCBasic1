@@ -5,10 +5,10 @@
 using namespace D2D1;
 
 // COM으로 생성된 객체를 해제하는 함수
-template<class Interface> void TWD_IRelease(Interface** ap_interface_obect)
+template<class Interface> void TWD_IRelease(Interface **ap_interface_object)
 {
 	if (*ap_interface_object != nullptr) {
-		(*ap_interface_object != nullptr)->Release();
+		(*ap_interface_object)->Release();
 		(*ap_interface_object) = nullptr;
 	}
 }
@@ -50,7 +50,7 @@ public:
 	// WM_PAINT 메시지 처리기에서 호출해야할 함수
 	virtual void OnPaint();
 	// View 그리기 작업을 전담할 함수
-	virtual void OnDraw();
+	virtual void OnDraw() {};
 	// 뷰를 강제로 갱신하는 함수
 	void UpdateView();
 };

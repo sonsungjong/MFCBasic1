@@ -12,6 +12,8 @@
 #define new DEBUG_NEW
 #endif
 
+// 디폴트 D2D 객체를 전역변수로 생성하여 자동초기화
+TWD_Core g_tw_d2d_core;
 
 // CD2DClassUseDlg dialog
 
@@ -47,6 +49,11 @@ BOOL CD2DClassUseDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	// 클라이언트 영역 저장
+	::RECT r;
+	::GetClientRect(m_hWnd, &r);
+	// D2D 영역 구성
+	m_view.Create(m_hWnd, &r);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -76,7 +83,8 @@ void CD2DClassUseDlg::OnPaint()
 	}
 	else
 	{
-		CDialogEx::OnPaint();
+		//CDialogEx::OnPaint();
+		m_view.OnPaint();
 	}
 }
 
