@@ -169,6 +169,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2DText1", "D2DText1\D2DTex
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2DClassUse", "D2DClassUse\D2DClassUse.vcxproj", "{01F9DAB0-2F45-40AB-8142-C77D6773D73B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL114TrueColor", "MFCL114TrueColor\MFCL114TrueColor.vcxproj", "{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -841,6 +843,14 @@ Global
 		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Release|x64.Build.0 = Release|x64
 		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Release|x86.ActiveCfg = Release|Win32
 		{01F9DAB0-2F45-40AB-8142-C77D6773D73B}.Release|x86.Build.0 = Release|Win32
+		{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}.Debug|x64.ActiveCfg = Debug|x64
+		{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}.Debug|x64.Build.0 = Debug|x64
+		{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}.Debug|x86.ActiveCfg = Debug|Win32
+		{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}.Debug|x86.Build.0 = Debug|Win32
+		{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}.Release|x64.ActiveCfg = Release|x64
+		{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}.Release|x64.Build.0 = Release|x64
+		{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}.Release|x86.ActiveCfg = Release|Win32
+		{6B484BEA-B3E8-4C3E-BDE3-4E0191607AE8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
