@@ -27,6 +27,11 @@ void MyClientSocket::ConnectedProcess() {
 int MyClientSocket::ProcessNetMessage()
 {
 	// 여기에 수신된 데이터를 처리
+	// m_net_msg_id == 1이면 채팅정보. 리스트 박스에 문자열 추가처리
+	if (m_net_msg_id == 1) {
+		// 수신된 문자열을 리스트 박스에 출력
+		((CFirstWinSocketClientDlg*)mp_notify_wnd)->AddEventString((TCHAR*)mp_net_body_data);
+	}
 
 	return 1;
 }
@@ -144,12 +149,16 @@ void CFirstWinSocketClientDlg::OnBnClickedSendBtn()
 		CString str;
 		// EditControl에서 문자열을 얻는다.
 		GetDlgItemText(IDC_CHAT_EDIT, str);
-
+		int len = str.GetLength();
 		// 서버로 채팅 문자열을 전송한다.
-		m_client_socket.SendFrameData(1, (const wchar_t*)str, (str.GetLength() + 1) * 2);
-
-		// 전송 결과를 리스트 박스에 보여줌
-		AddEventString(L"서버로 ("+str+L")을 전송했습니다.");
+		if (len > 0) {				// 공백문자면 전송안함
+			// 서버로 전송
+			m_client_socket.SendFrameData(1, (const wchar_t*)str, (len + 1) * 2);
+			// 입력한 문자열을 제거
+			SetDlgItemText(IDC_CHAT_EDIT, _T(""));
+			// 전송 결과를 리스트 박스에 보여줌
+			AddEventString(L"서버로 ("+str+L")을 전송했습니다.");
+		}
 	}
 }
 
@@ -167,7 +176,7 @@ void CFirstWinSocketClientDlg::OnBnClickedConnectBtn()
 {
 	if (!m_client_socket.IsConnect()) {			// 소켓 생성 여부 체크
 		//  지정한 ip와 port를 사용해서 서버에 접속 시도
-		m_client_socket.ConnectToServer(L"192.168.12.21", 1900, this, 26001, 26002);
+		m_client_socket.ConnectToServer(IP, PORT, this, 26001, 26002);
 		AddEventString(L"서버에 접속을 시도합니다.");
 	}
 	else {
@@ -226,6 +235,9 @@ afx_msg LRESULT CFirstWinSocketClientDlg::OnSocketMessage(WPARAM wParam, LPARAM 
 void CFirstWinSocketClientDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
+	// 전송
+	OnBnClickedSendBtn();
+
 	//CDialogEx::OnOK();
 }
 

@@ -32,9 +32,11 @@ int MyServerSocket::ProcessNetMessage()
 	if (m_net_msg_id == 1) {
 		CString str;
 		// 채팅글 앞에 해당 사용자의 IP를 추가함
-		str.Format(L"%s : %s", mp_net_user->ip_address, (wchar_t*)mp_net_body_data);
+		str.Format(_T("%s : %s"), mp_net_user->ip_address, (TCHAR*)mp_net_body_data);
 		// 문자열을 리스트 박스에 출력
 		((CFirstWinSocketServerDlg*)mp_notify_wnd)->AddEventString(str);
+		// 서버에서 클라이언트로부터 받은 메시지를 모든 클라이언트에 전송
+		BroadcastFrameData(1, (const TCHAR*)str, (str.GetLength() + 1) * sizeof(TCHAR));
 	}
 	return 1;
 }
@@ -111,7 +113,7 @@ BOOL CFirstWinSocketServerDlg::OnInitDialog()
 	// 비동기 혹은 쓰레드를 통해 accept를 하면 된다.
 
 	// 클라이언트가 접속할 수 있도록 리슨 작업을 실행
-	m_server_socket.StartListenService(ipconfig, thisPort, this, 25001, 25002);
+	m_server_socket.StartListenService(IP, PORT, this, 25001, 25002);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

@@ -4,6 +4,8 @@
 
 #pragma once
 #include "WinSocketClient.h"
+#define IP						_T("127.0.0.1")
+#define PORT					1900
 
 class MyClientSocket : public WinSocketClient
 {

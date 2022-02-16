@@ -5,6 +5,8 @@
 #include "WinSocketServer.h"
 
 //#define MAX_USER_COUNT			2000		// 서버에 접속 가능한 최대 클라이언트 수
+#define IP				_T("127.0.0.1")
+#define PORT				1900
 
 class MyServerSocket : public WinSocketServer
 {
@@ -32,8 +34,8 @@ class CFirstWinSocketServerDlg : public CDialogEx
 private:
 	MyServerSocket m_server_socket;			// 서버의 소켓 객체 선언
 protected:
-	const wchar_t* ipconfig = L"192.168.12.21";		// 내 IP
-	const int thisPort = 1900;										// 해당 port
+	const wchar_t* ipconfig = IP;		// 내 IP
+	const int thisPort = PORT;										// 해당 port
 	/*
 	SOCKET mh_listen_socket;		// 클라이언트 접속 처리할 때 사용할 소켓
 	UserData m_users[MAX_USER_COUNT];		// 서버에 접속한 전체 사용자 정보
