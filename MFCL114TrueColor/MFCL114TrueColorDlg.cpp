@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CMFCL114TrueColorDlg, CDialogEx)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -51,6 +52,9 @@ BOOL CMFCL114TrueColorDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	m_color_image.Create(4096, 4096, 32);							// 4096*4096, 한 점이 4byte로 32bit
+	m_draw_image.Create(1920, 1080, 32);
+
+	m_draw_dc.Attach(m_draw_image.GetDC());
 
 	BITMAP bmp_info;
 	GetObject((HBITMAP)m_color_image, sizeof(BITMAP), &bmp_info);
@@ -70,7 +74,12 @@ BOOL CMFCL114TrueColorDlg::OnInitDialog()
 		}
 		// *p-- = i;
 	}
+	m_color_image.Draw(m_draw_dc, 0, 0, 512, 512);						// 0,0 위치에 출력
+	m_color_image.Draw(m_draw_dc, 512, 0, 256 * 5, 256 * 4, 0, 0, 256 * 5, 256 * 4);
 
+	m_draw_dc.SelectStockObject(NULL_BRUSH);
+	m_draw_dc.SelectStockObject(WHITE_PEN);
+	m_draw_dc.Rectangle(m_view_rect);
 	// 최대화면으로
 	ShowWindow(SW_SHOWMAXIMIZED);
 
@@ -103,12 +112,7 @@ void CMFCL114TrueColorDlg::OnPaint()
 	else
 	{
 		//CDialogEx::OnPaint();
-		m_color_image.Draw(dc, 0, 0, 512, 512);						// 0,0 위치에 출력
-		m_color_image.Draw(dc, 512, 0, 256*5, 256*4, 0, 0, 256*5, 256*4);
-		
-		dc.SelectStockObject(NULL_BRUSH);
-		dc.SelectStockObject(WHITE_PEN);
-		dc.Rectangle(m_view_rect);
+		m_draw_image.Draw(dc, 0, 0);
 	}
 }
 
@@ -131,6 +135,12 @@ void CMFCL114TrueColorDlg::OnBnClickedOk()
 void CMFCL114TrueColorDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
+	if (m_view_rect.PtInRect(point)) {
+		m_is_clicked = 1;
+		// 현재 클릭한 점을 이전점으로 저장
+		m_prev_pos = point;
+		SetCapture();
+	}
 	
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -139,6 +149,10 @@ void CMFCL114TrueColorDlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CMFCL114TrueColorDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
+	if (m_is_clicked) {
+		m_is_clicked = 0;
+		ReleaseCapture();
+	}
 
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
@@ -147,6 +161,52 @@ void CMFCL114TrueColorDlg::OnLButtonUp(UINT nFlags, CPoint point)
 void CMFCL114TrueColorDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
+	if (m_is_clicked == 1) {
+		// 이동거리 = 나중-처음
+		CPoint pos = point - m_prev_pos;
+		// 이동거리만큼 사각형의 좌표에 더해줌
+		m_view_rect += pos;
+
+		m_prev_pos = point;					// 이동하면서 이전점에 현재점을 저장
+		//Invalidate(FALSE);
+
+		if (m_view_rect.left < 0) {
+			m_view_rect.right -= m_view_rect.left;
+			m_view_rect.left = 0;
+		}
+		else if (m_view_rect.right > 512) {
+			m_view_rect.right = 512;
+			m_view_rect.left = m_view_rect.right - 160;
+		}
+
+		if (m_view_rect.top < 0) {
+			m_view_rect.bottom -= m_view_rect.top;
+			m_view_rect.top = 0;
+		}
+		else if (m_view_rect.bottom > 512) {
+			m_view_rect.bottom = 512;
+			m_view_rect.top = m_view_rect.bottom - 128;
+		}
+
+		m_color_image.Draw(m_draw_dc, 0, 0, 512, 512);
+		m_color_image.Draw(m_draw_dc, 512, 0, 256 * 5, 256 * 4, 0, 0, 256 * 5, 256 * 4);
+		m_draw_dc.SelectStockObject(NULL_BRUSH);
+		m_draw_dc.SelectStockObject(WHITE_PEN);
+		m_draw_dc.Rectangle(m_view_rect);
+
+		CClientDC dc(this);
+		m_draw_image.Draw(dc, 0, 0);
+	}
 
 	CDialogEx::OnMouseMove(nFlags, point);
+}
+
+
+void CMFCL114TrueColorDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// TODO: Add your message handler code here
+	m_draw_dc.Detach();
+	m_draw_image.ReleaseDC();
 }

@@ -24,8 +24,12 @@ public:
 // Implementation
 protected:
 	CImage m_color_image;
+	CImage m_draw_image;				// ±ôºýÀÓÀ» ¾ø¾Ö±âÀ§ÇÑ CImage
+	CDC m_draw_dc;
 	unsigned int* mp_color_pattern;
 	CRect m_view_rect;
+	unsigned char m_is_clicked = 0;
+	CPoint m_prev_pos;
 
 	HICON m_hIcon;
 
@@ -39,4 +43,5 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnDestroy();
 };
