@@ -23,10 +23,10 @@ public:
 
 // Implementation
 protected:
-	CImage m_color_image;
+	CImage m_color_image, m_pick_image;
 	CImage m_draw_image;				// ±ôºıÀÓÀ» ¾ø¾Ö±âÀ§ÇÑ CImage
 	CDC m_draw_dc;
-	unsigned int* mp_color_pattern;
+	unsigned int *mp_color_pattern, *mp_pick_pattern;
 	CRect m_view_rect;
 	unsigned char m_is_clicked = 0;
 	CPoint m_prev_pos;

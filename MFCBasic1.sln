@@ -173,6 +173,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL114TrueColor", "MFCL114
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2DButton2", "D2DButton2\D2DButton2.vcxproj", "{68EA0797-4389-4655-97A6-DFC85F33DE5B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL115PictureFilter", "MFCL115PictureFilter\MFCL115PictureFilter.vcxproj", "{00EBE584-F52E-4DDA-874A-2779B2399E49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -861,6 +863,14 @@ Global
 		{68EA0797-4389-4655-97A6-DFC85F33DE5B}.Release|x64.Build.0 = Release|x64
 		{68EA0797-4389-4655-97A6-DFC85F33DE5B}.Release|x86.ActiveCfg = Release|Win32
 		{68EA0797-4389-4655-97A6-DFC85F33DE5B}.Release|x86.Build.0 = Release|Win32
+		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Debug|x64.ActiveCfg = Debug|x64
+		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Debug|x64.Build.0 = Debug|x64
+		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Debug|x86.ActiveCfg = Debug|Win32
+		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Debug|x86.Build.0 = Debug|Win32
+		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Release|x64.ActiveCfg = Release|x64
+		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Release|x64.Build.0 = Release|x64
+		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Release|x86.ActiveCfg = Release|Win32
+		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

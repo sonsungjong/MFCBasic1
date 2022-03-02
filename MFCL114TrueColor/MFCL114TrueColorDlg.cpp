@@ -53,6 +53,7 @@ BOOL CMFCL114TrueColorDlg::OnInitDialog()
 	// TODO: Add extra initialization here
 	m_color_image.Create(4096, 4096, 32);							// 4096*4096, 한 점이 4byte로 32bit
 	m_draw_image.Create(1920, 1080, 32);
+	m_pick_image.Create(16, 16, 32);
 
 	m_draw_dc.Attach(m_draw_image.GetDC());
 
@@ -60,6 +61,10 @@ BOOL CMFCL114TrueColorDlg::OnInitDialog()
 	GetObject((HBITMAP)m_color_image, sizeof(BITMAP), &bmp_info);
 	mp_color_pattern = (unsigned int*)m_color_image.GetBits();
 	mp_color_pattern += bmp_info.bmWidthBytes/sizeof(unsigned int) -1;
+
+	GetObject((HBITMAP)m_pick_image, sizeof(BITMAP), &bmp_info);
+	mp_pick_pattern = (unsigned int*)m_pick_image.GetBits();
+	mp_pick_pattern += bmp_info.bmWidthBytes / sizeof(unsigned int) - 1;
 
 	unsigned int* p = mp_color_pattern;
 	int x = 0, y = 0, step = 0;
@@ -74,8 +79,20 @@ BOOL CMFCL114TrueColorDlg::OnInitDialog()
 		}
 		// *p-- = i;
 	}
+
+	unsigned int* p_src = mp_color_pattern;
+	unsigned int* p_dest = mp_pick_pattern;
+	for (int i = 0; i < 256; i++) {
+		if (i && !(i % 16)) { p_src -= 4096 * 255; }				// 줄바꿈
+
+		*p_dest = *p_src;
+		p_src -= 256;
+		p_dest--;
+	}
+
 	m_color_image.Draw(m_draw_dc, 0, 0, 512, 512);						// 0,0 위치에 출력
 	m_color_image.Draw(m_draw_dc, 512, 0, 256 * 5, 256 * 4, 0, 0, 256 * 5, 256 * 4);
+	m_pick_image.Draw(m_draw_dc, 0, 512, 512, 512);
 
 	m_draw_dc.SelectStockObject(NULL_BRUSH);
 	m_draw_dc.SelectStockObject(WHITE_PEN);
@@ -141,6 +158,9 @@ void CMFCL114TrueColorDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		m_prev_pos = point;
 		SetCapture();
 	}
+	else if (CRect(512, 0, 512 + 256, 256).PtInRect(point)) {
+		m_is_clicked = 2;
+	}
 	
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
@@ -149,11 +169,11 @@ void CMFCL114TrueColorDlg::OnLButtonDown(UINT nFlags, CPoint point)
 void CMFCL114TrueColorDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	if (m_is_clicked) {
-		m_is_clicked = 0;
+	if (m_is_clicked == 1) {
 		ReleaseCapture();
 	}
-
+	m_is_clicked = 0;
+	
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
 
@@ -189,11 +209,26 @@ void CMFCL114TrueColorDlg::OnMouseMove(UINT nFlags, CPoint point)
 		}
 
 		m_color_image.Draw(m_draw_dc, 0, 0, 512, 512);
-		m_color_image.Draw(m_draw_dc, 512, 0, 256 * 5, 256 * 4, 0, 0, 256 * 5, 256 * 4);
+		m_color_image.Draw(m_draw_dc, 512, 0, 256 * 5, 256 * 4, m_view_rect.left *8, m_view_rect.top *8, 256 * 5, 256 * 4);
+		m_pick_image.Draw(m_draw_dc, 0, 512, 512, 512);
 		m_draw_dc.SelectStockObject(NULL_BRUSH);
 		m_draw_dc.SelectStockObject(WHITE_PEN);
 		m_draw_dc.Rectangle(m_view_rect);
 
+		CClientDC dc(this);
+		m_draw_image.Draw(dc, 0, 0);
+	}
+	else if (m_is_clicked == 2 && CRect(512, 0, 512 + 256, 256).PtInRect(point)) {
+		unsigned int *p_src = mp_color_pattern - point.y * 4096 - (255 - (point.x - 512));
+		unsigned int* p_dest = mp_pick_pattern;
+
+		for (int i = 0; i < 256; i++) {
+			if (i && !(i % 16)) { p_src -= 4096 * 255; }
+			*p_dest = *p_src;
+			p_src -= 256;
+			p_dest--;
+		}
+		m_pick_image.Draw(m_draw_dc, 0, 512, 512, 512);
 		CClientDC dc(this);
 		m_draw_image.Draw(dc, 0, 0);
 	}
