@@ -11,7 +11,7 @@ class CMFCL115PictureFilterDlg : public CDialogEx
 protected:
 	CImage m_image, m_commit_image;				// 사진 출력을 위한 CImage
 	BITMAP m_bmp_info;				// 사진크기 조정을 위한 비트맵
-	unsigned char* mp_image_pattern, *mp_commit_pattern;				// 24bit
+	unsigned char *mp_image_pattern, *mp_commit_pattern;				// 24bit
 
 // Construction
 public:
@@ -45,4 +45,5 @@ public:
 	afx_msg void OnBnClickedRestoreBtn();
 	afx_msg void OnBnClickedCommitBtn();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedFilter4Btn();
 };

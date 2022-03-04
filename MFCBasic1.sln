@@ -175,6 +175,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D2DButton2", "D2DButton2\D2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL115PictureFilter", "MFCL115PictureFilter\MFCL115PictureFilter.vcxproj", "{00EBE584-F52E-4DDA-874A-2779B2399E49}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL116Pen", "MFCL116Pen\MFCL116Pen.vcxproj", "{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL117PaintBrush", "MFCL117PaintBrush\MFCL117PaintBrush.vcxproj", "{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -871,6 +875,22 @@ Global
 		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Release|x64.Build.0 = Release|x64
 		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Release|x86.ActiveCfg = Release|Win32
 		{00EBE584-F52E-4DDA-874A-2779B2399E49}.Release|x86.Build.0 = Release|Win32
+		{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}.Debug|x64.ActiveCfg = Debug|x64
+		{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}.Debug|x64.Build.0 = Debug|x64
+		{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}.Debug|x86.ActiveCfg = Debug|Win32
+		{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}.Debug|x86.Build.0 = Debug|Win32
+		{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}.Release|x64.ActiveCfg = Release|x64
+		{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}.Release|x64.Build.0 = Release|x64
+		{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}.Release|x86.ActiveCfg = Release|Win32
+		{FBFF6CAA-2E30-45B2-9A80-FDDB26B7F9BD}.Release|x86.Build.0 = Release|Win32
+		{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}.Debug|x64.ActiveCfg = Debug|x64
+		{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}.Debug|x64.Build.0 = Debug|x64
+		{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}.Debug|x86.ActiveCfg = Debug|Win32
+		{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}.Debug|x86.Build.0 = Debug|Win32
+		{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}.Release|x64.ActiveCfg = Release|x64
+		{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}.Release|x64.Build.0 = Release|x64
+		{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}.Release|x86.ActiveCfg = Release|Win32
+		{E9F8AEE8-E0EA-4D40-BB75-949EB2BECFC2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

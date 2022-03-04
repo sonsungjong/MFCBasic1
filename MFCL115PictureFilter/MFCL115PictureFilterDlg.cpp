@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CMFCL115PictureFilterDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_RESTORE_BTN, &CMFCL115PictureFilterDlg::OnBnClickedRestoreBtn)
 	ON_BN_CLICKED(IDC_COMMIT_BTN, &CMFCL115PictureFilterDlg::OnBnClickedCommitBtn)
 	ON_WM_LBUTTONDOWN()
+	ON_BN_CLICKED(IDC_FILTER4_BTN, &CMFCL115PictureFilterDlg::OnBnClickedFilter4Btn)
 END_MESSAGE_MAP()
 
 
@@ -59,11 +60,11 @@ BOOL CMFCL115PictureFilterDlg::OnInitDialog()
 	GetObject((HBITMAP)m_image, sizeof(BITMAP), &m_bmp_info);
 
 	mp_image_pattern = (unsigned char*)m_image.GetBits();
-	mp_image_pattern += m_bmp_info.bmWidthBytes - 1;
+	mp_image_pattern += m_bmp_info.bmWidthBytes - 3;
 
 	m_commit_image.Create(m_bmp_info.bmWidth, m_bmp_info.bmHeight, 24);
 	mp_commit_pattern = (unsigned char*)m_commit_image.GetBits();
-	mp_commit_pattern += m_bmp_info.bmWidthBytes - 1;
+	mp_commit_pattern += m_bmp_info.bmWidthBytes - 3;
 
 	int image_size = m_bmp_info.bmWidth * m_bmp_info.bmHeight * 3;
 	memcpy(mp_commit_pattern - image_size +3, mp_image_pattern - image_size + 3, image_size);
@@ -129,7 +130,7 @@ void CMFCL115PictureFilterDlg::OnBnClickedGrayBtn()
 {
 	// TODO: Add your control notification handler code here
 	int dot_count = m_bmp_info.bmWidth * m_bmp_info.bmHeight;
-	unsigned char* p = mp_image_pattern;
+	unsigned char* p = mp_image_pattern +3;
 	int temp;
 	
 	for (int i = 0; i < dot_count; i++) {
@@ -144,7 +145,7 @@ void CMFCL115PictureFilterDlg::OnBnClickedGrayBtn()
 	Invalidate(FALSE);					// 배경은 안지움
 }
 
-inline void IncFixColor(unsigned char* ap_color, int a_value)
+_inline void IncFixColor(unsigned char* ap_color, int a_value)
 {
 	int temp = *ap_color + a_value;
 	if (temp > 255) { *ap_color = 255; }
@@ -166,7 +167,7 @@ void CMFCL115PictureFilterDlg::OnBnClickedFilter1Btn()
 	Invalidate(FALSE);					// 배경은 안지움
 }
 
-inline void IncFixColor2(unsigned char* ap_color, float a_rate)
+_inline void IncFixColor2(unsigned char* ap_color, float a_rate)
 {
 	int index;
 
@@ -263,10 +264,47 @@ void CMFCL115PictureFilterDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		y = cos(radian);
 
 		for (int radius = 1; radius < 50; radius++) {
-			int pos = -(point.y * 4) * m_bmp_info.bmWidth * 3 - (m_bmp_info.bmWidth - (point.x * 4)) * 3;
-
+			pos = -(point.y * 4 - (int)(y*radius)) * m_bmp_info.bmWidth * 3 
+				- (m_bmp_info.bmWidth - point.x * 4 - (int)(x*radius)) * 3;
+			p = mp_image_pattern + pos;
+			p_commit = mp_commit_pattern + pos;
+			if (*p == *p_commit) { IncFixColor2(p, 1.2f); }
 		}
 	}
+	Invalidate(FALSE);
+	//CDialogEx::OnLButtonDown(nFlags, point);
+}
 
-	CDialogEx::OnLButtonDown(nFlags, point);
+
+void CMFCL115PictureFilterDlg::OnBnClickedFilter4Btn()
+{
+	// TODO: Add your control notification handler code here
+	unsigned char* p, *p_temp;
+	unsigned int avr_r, avr_g, avr_b;
+
+	for (int y = 1; y < m_bmp_info.bmHeight -2; y++) {
+		p = mp_image_pattern - y * m_bmp_info.bmWidth * 3;
+		for (int x = 1; x < m_bmp_info.bmWidth - 2; x++) {
+			p_temp = p + m_bmp_info.bmWidth * 3 + 3;
+			avr_r = *p_temp + *(p_temp - 3) + *(p_temp - 6);
+			avr_g = *(p_temp -1) + *(p_temp - 4) + *(p_temp - 7);
+			avr_b = *(p_temp -2) + *(p_temp - 5) + *(p_temp - 8);
+
+			p_temp = p + 3;
+			avr_r += *p_temp + *(p_temp - 3) + *(p_temp - 6);
+			avr_g += *(p_temp - 1) + *(p_temp - 4) + *(p_temp - 7);
+			avr_b += *(p_temp - 2) + *(p_temp - 5) + *(p_temp - 8);
+
+			p_temp = p - m_bmp_info.bmWidth *3 +3;
+			avr_r += *p_temp + *(p_temp - 3) + *(p_temp - 6);
+			avr_g += *(p_temp - 1) + *(p_temp - 4) + *(p_temp - 7);
+			avr_b += *(p_temp - 2) + *(p_temp - 5) + *(p_temp - 8);
+
+			*p = avr_r / 9;
+			*(p-1) = avr_g / 9;
+			*(p-2) = avr_b / 9;
+			p -= 3;
+		}
+	}
+	Invalidate(FALSE);
 }
