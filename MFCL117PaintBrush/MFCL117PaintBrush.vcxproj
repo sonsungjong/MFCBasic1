@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DrawWnd.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MFCL117PaintBrush.h" />
     <ClInclude Include="MFCL117PaintBrushDlg.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DrawWnd.cpp" />
     <ClCompile Include="MFCL117PaintBrush.cpp" />
     <ClCompile Include="MFCL117PaintBrushDlg.cpp" />
     <ClCompile Include="pch.cpp">

@@ -3,11 +3,14 @@
 //
 
 #pragma once
-
+#include "DrawWnd.h"
 
 // CMFCL117PaintBrushDlg dialog
 class CMFCL117PaintBrushDlg : public CDialogEx
 {
+private:
+	DrawWnd m_draw_wnd;
+
 // Construction
 public:
 	CMFCL117PaintBrushDlg(CWnd* pParent = nullptr);	// standard constructor
@@ -32,4 +35,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedCancel();
+	afx_msg void OnClose();
+	CButton m_pen_radio;
+	CButton m_line_radio;
+	CButton m_rect_radio;
+	afx_msg void OnBnClickedPenRadio();
+	afx_msg void OnBnClickedLineRadio();
+	afx_msg void OnBnClickedRectRadio();
 };

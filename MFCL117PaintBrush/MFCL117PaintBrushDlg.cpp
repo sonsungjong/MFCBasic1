@@ -26,12 +26,20 @@ CMFCL117PaintBrushDlg::CMFCL117PaintBrushDlg(CWnd* pParent /*=nullptr*/)
 void CMFCL117PaintBrushDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_PEN_RADIO, m_pen_radio);
+	DDX_Control(pDX, IDC_LINE_RADIO, m_line_radio);
+	DDX_Control(pDX, IDC_RECT_RADIO, m_rect_radio);
 }
 
 BEGIN_MESSAGE_MAP(CMFCL117PaintBrushDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CMFCL117PaintBrushDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &CMFCL117PaintBrushDlg::OnBnClickedCancel)
+	ON_WM_CLOSE()
+	ON_BN_CLICKED(IDC_PEN_RADIO, &CMFCL117PaintBrushDlg::OnBnClickedPenRadio)
+	ON_BN_CLICKED(IDC_LINE_RADIO, &CMFCL117PaintBrushDlg::OnBnClickedLineRadio)
+	ON_BN_CLICKED(IDC_RECT_RADIO, &CMFCL117PaintBrushDlg::OnBnClickedRectRadio)
 END_MESSAGE_MAP()
 
 
@@ -47,6 +55,15 @@ BOOL CMFCL117PaintBrushDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	m_pen_radio.SetCheck(1);
+
+	CRect r;
+	CWnd* p = GetDlgItem(IDC_PICTURE_CTRL);
+	p->GetWindowRect(r);
+
+	ScreenToClient(r);
+
+	m_draw_wnd.Create(nullptr, nullptr, WS_CHILD | WS_VISIBLE | WS_BORDER, r, this, 25000);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -93,4 +110,42 @@ void CMFCL117PaintBrushDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	//CDialogEx::OnOK();
+}
+
+
+void CMFCL117PaintBrushDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	//CDialogEx::OnCancel();
+}
+
+
+void CMFCL117PaintBrushDlg::OnClose()
+{
+	// TODO: Add your message handler code here and/or call default
+	// 다이얼로그 종료 Dlg
+	::DestroyWindow(m_hWnd);
+
+	CDialogEx::OnClose();
+}
+
+
+void CMFCL117PaintBrushDlg::OnBnClickedPenRadio()
+{
+	// TODO: Add your control notification handler code here
+	m_draw_wnd.SetDrawType(PEN_MODE);
+}
+
+
+void CMFCL117PaintBrushDlg::OnBnClickedLineRadio()
+{
+	// TODO: Add your control notification handler code here
+	m_draw_wnd.SetDrawType(LINE_MODE);
+}
+
+
+void CMFCL117PaintBrushDlg::OnBnClickedRectRadio()
+{
+	// TODO: Add your control notification handler code here
+	m_draw_wnd.SetDrawType(RECT_MODE);
 }
