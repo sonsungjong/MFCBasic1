@@ -112,3 +112,4 @@ void CMFCL118PaintBrushColorDlg::OnClose()
 
 	CDialogEx::OnClose();
 }
+
