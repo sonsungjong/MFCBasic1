@@ -8,7 +8,7 @@
 // 기본 생성자
 WinSocketClient::WinSocketClient()
 {
-	InitObject(27);		// key = 27
+	InitObject('\0');		// key = 27
 }
 
 // 내부적으로 key를 정의하지않고 외부에서 key를 입력받아 설정하는 생성자

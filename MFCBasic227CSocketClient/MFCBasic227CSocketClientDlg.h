@@ -4,8 +4,8 @@
 
 #pragma once
 #include "SocketClient.h"
-#define IP				_T("172.16.5.143")
-#define PORT			44445
+#define IP				_T("127.0.0.1")
+#define PORT			10005
 
 // CMFCBasic227CSocketClientDlg dialog
 class CMFCBasic227CSocketClientDlg : public CDialogEx

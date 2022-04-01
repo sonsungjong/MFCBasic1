@@ -6,7 +6,7 @@
 
 //#define MAX_USER_COUNT			2000		// 서버에 접속 가능한 최대 클라이언트 수
 #define IP				_T("127.0.0.1")
-#define PORT				1900
+#define PORT				10005
 
 class MyServerSocket : public WinSocketServer
 {

@@ -4,7 +4,7 @@
 
 #pragma once
 #include "SocketServer.h"
-#define PORT							44445
+#define PORT							10005
 
 // CMFCBasic227CSocketServerDlg dialog
 class CMFCBasic227CSocketServerDlg : public CDialogEx

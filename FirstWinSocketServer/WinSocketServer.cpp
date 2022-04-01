@@ -8,7 +8,7 @@
 // 기본 생성자
 WinSocketServer::WinSocketServer()
 {
-	InitObject(27);				// key를 27로 셋팅
+	InitObject('\0');				// key를 27로 셋팅
 }
 // 내부적으로 key를 고정하지 않고 외부에서 셋팅하려면 생성자에서 key값을 받게 만듦
 WinSocketServer::WinSocketServer(unsigned char a_key)
