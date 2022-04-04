@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "NetClient.h"
+#include "NoheaderClient.h"
 #include "NetClientDlg.h"
 #include "afxdialogex.h"
 
@@ -26,6 +27,7 @@ CNetClientDlg::CNetClientDlg(CWnd* pParent /*=nullptr*/)
 void CNetClientDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_EVENT_LIST, m_event_list);
 }
 
 BEGIN_MESSAGE_MAP(CNetClientDlg, CDialogEx)
@@ -34,6 +36,13 @@ BEGIN_MESSAGE_MAP(CNetClientDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CNetClientDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CNetClientDlg::OnBnClickedCancel)
 	ON_WM_CLOSE()
+	ON_MESSAGE(RECV_DATA, &CNetClientDlg::OnRecvData)
+	ON_MESSAGE(CONNECTED, &CNetClientDlg::OnConnectSocket)
+	ON_MESSAGE(DISCONNECTED, &CNetClientDlg::OnDisconnectSocket)
+	ON_BN_CLICKED(IDC_CONNECT_BTN, &CNetClientDlg::OnBnClickedConnectBtn)
+	ON_BN_CLICKED(IDC_DISCONNECT_BTN, &CNetClientDlg::OnBnClickedDisconnectBtn)
+	ON_BN_CLICKED(IDC_SEND_BTN, &CNetClientDlg::OnBnClickedSendBtn)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -111,4 +120,70 @@ void CNetClientDlg::OnClose()
 	::PostQuitMessage(0);
 
 	CDialogEx::OnClose();
+}
+
+// 재정의 : 접속 결과에 따른 처리
+void MyClient::ConnectedProcess()
+{
+	if (m_is_connected) { ((CNetClientDlg*)mp_notify_wnd)->AddEventString(_T("서버 접속 성공")); }
+	else { ((CNetClientDlg*)mp_notify_wnd)->AddEventString(_T("서버 접속 실패")); }
+}
+// 재정의 : 수신된 데이터를 처리
+int MyClient::ProcessNetMessage()
+{
+	return 1;		// 1은 정상수행, 0은 비정상종료
+}
+// 재정의 : 접속 해제에 따른 처리
+void MyClient::ClosedProcess(int a_error_flag)
+{
+	if (!a_error_flag) { ((CNetClientDlg*)mp_notify_wnd)->AddEventString(_T("서버에서 접속을 해제했습니다.")); }
+}
+
+void CNetClientDlg::AddEventString(const TCHAR* ap_string)
+{
+	int index = m_event_list.InsertString(-1, ap_string);
+	m_event_list.SetCurSel(index);
+}
+
+
+void CNetClientDlg::OnBnClickedConnectBtn()
+{
+	// TODO: Add your control notification handler code here
+}
+
+
+void CNetClientDlg::OnBnClickedDisconnectBtn()
+{
+	// TODO: Add your control notification handler code here
+
+}
+
+
+void CNetClientDlg::OnBnClickedSendBtn()
+{
+	// TODO: Add your control notification handler code here
+
+}
+
+
+void CNetClientDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// TODO: Add your message handler code here
+}
+
+LRESULT CNetClientDlg::OnRecvData(WPARAM wParam, LPARAM lParam)
+{
+
+}
+
+LRESULT CNetClientDlg::OnDisconnectSocket(WPARAM wParam, LPARAM lParam)
+{
+
+}
+
+LRESULT CNetClientDlg::OnConnectSocket(WPARAM wParam, LPARAM lParam)
+{
+
 }

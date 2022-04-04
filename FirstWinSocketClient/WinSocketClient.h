@@ -1,4 +1,3 @@
-#pragma once
 
 #ifndef _WIN_SOCKET_CLIENT_H_
 #define _WIN_SOCKET_CLIENT_H_
