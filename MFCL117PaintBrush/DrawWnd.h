@@ -12,7 +12,8 @@ private:
 	char m_draw_type = 1;			// 1:연필, 2:선, 3:사각형
 	char m_is_clicked = 0;
 	CPoint m_prev_point;
-	CImage m_image;
+	CImage m_image, m_temp_image;
+
 public:
 	DrawWnd();
 	virtual ~DrawWnd();

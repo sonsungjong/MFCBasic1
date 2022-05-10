@@ -3,13 +3,33 @@
 //
 
 #pragma once
+#include "SJ_ListBox.h"
 #include "DrawWnd.h"
+
+#ifdef _DEBUG
+#pragma comment(lib, "SJ_ListBoxD.lib")
+#else
+#pragma comment(lib, "SJ_ListBox.lib")
+#endif
+
+class MyColorList : public SJ_ListBox
+{
+public:
+	void DrawUserItem(CDC* ap_dc, RECT* ap_rect, int a_index, void* ap_data,
+		unsigned char a_select_flag, unsigned char a_focus_flag)
+	{
+		COLORREF color = GetItemData(a_index);
+		CRect r(ap_rect->left + 2, ap_rect->top + 2, ap_rect->right - 2, ap_rect->bottom - 2);
+		ap_dc->FillSolidRect(r, color);
+	}
+};
 
 // CMFCL117PaintBrushDlg dialog
 class CMFCL117PaintBrushDlg : public CDialogEx
 {
 private:
 	DrawWnd m_draw_wnd;
+	MyColorList m_color_list;
 
 // Construction
 public:

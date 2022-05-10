@@ -36,6 +36,9 @@
     <ClInclude Include="DrawWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SJ_ListBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCL117PaintBrush.cpp">
@@ -65,5 +68,9 @@
     <Image Include="res\MFCL117PaintBrush.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="SJ_ListBox.lib" />
+    <Library Include="SJ_ListBoxD.lib" />
   </ItemGroup>
 </Project>

@@ -5,12 +5,14 @@
 #include "pch.h"
 #include "framework.h"
 #include "MFCL117PaintBrush.h"
+
 #include "MFCL117PaintBrushDlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
 
 
 // CMFCL117PaintBrushDlg dialog
@@ -64,6 +66,25 @@ BOOL CMFCL117PaintBrushDlg::OnInitDialog()
 	ScreenToClient(r);
 
 	m_draw_wnd.Create(nullptr, nullptr, WS_CHILD | WS_VISIBLE | WS_BORDER, r, this, 25000);
+
+	COLORREF color_table[20] = {
+		RGB(0,0,0), RGB(0,0,255), RGB(0,255,0), RGB(0,255,255), RGB(255,0,0),
+		RGB(255,0,255), RGB(255,255,0), RGB(255,255,255), RGB(0,0,128),
+		RGB(0,128,0), RGB(0,128,128), RGB(128,0,0), RGB(128,0,128), 
+		RGB(128,128,0), RGB(128,128,128), RGB(192,192,192), RGB(192, 220, 192),
+		RGB(166, 202, 240), RGB(255, 251, 240), RGB(160,160,164)
+	};
+
+	m_color_list.SubclassDlgItem(IDC_COLOR_LIST, this);
+	m_color_list.SetColumnWidth(25);		//각 컬럼 폭 25
+	m_color_list.SetItemHeight(0, 25);			// 각 컬럼 높이 25
+
+	for (int i = 0; i < 20; i++) {
+		m_color_list.InsertString(i, _T(""));
+		m_color_list.SetItemData(i, color_table[i]);
+	}
+
+	m_color_list.SetCurSel(0);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
