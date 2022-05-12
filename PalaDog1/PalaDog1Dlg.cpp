@@ -81,9 +81,9 @@ BOOL CPalaDog1Dlg::OnInitDialog()
 
 void CPalaDog1Dlg::OnPaint()
 {
+	CPaintDC dc(this); // device context for painting
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // device context for painting
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
@@ -100,7 +100,9 @@ void CPalaDog1Dlg::OnPaint()
 	}
 	else
 	{
-		CDialogEx::OnPaint();
+		m_mem_image.Draw(dc, 0, 0);
+
+		//CDialogEx::OnPaint();
 	}
 }
 
