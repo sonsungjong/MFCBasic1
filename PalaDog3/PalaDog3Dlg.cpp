@@ -41,7 +41,20 @@ BOOL CPalaDog3Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	// MakeClipImage();
+	// MakeClipImageWait();
+	// MakeClipImageWalk();
+	// MakeClipImageWeapon();
+	
+	//const int img_num = 5;
+	//int position[img_num][2][2] = {
+	//	{{348, 87},{57,46}},
+	//	{{218,166},{58,42}},
+	//	{{277,166},{59,42}},
+	//	{{406,87},{60,46}},
+	//	{{179,87},{60,50}}
+	//};
+	//MakeClipImage(img_num, position, _T("..\\img\\m01_1"), _T("..\\img\\effect_b_weapons"));
+
 	LoadGameImage();
 
 	// 대화상자 영역 좌표 측정
@@ -229,44 +242,6 @@ BOOL CPalaDog3Dlg::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-// 이미지 파일 일부를 잘라서 PNG로 만드는 함수
-void CPalaDog3Dlg::MakeClipImage()
-{
-	// [12개이미지][시작위치x,y][폭과높이]
-	int position[12][2][2] = {
-		{{204,264},{92,92}}, {{590,360},{90,92}}, {{860,384},{90,90}},
-		{{770,474},{90,90}}, {{770,384},{90,90}}, {{680,474},{90,90}},
-		{{680,384},{90,90}}, {{590,452},{90,90}}, {{500,452},{90,90}}, 
-		{{500,360},{90,92}}, {{204,172},{92,92}}, {{106,766},{92,92}}
-	};
-
-	CImage src_image, dest_image;
-	CString file_name;
-	src_image.Load(_T("..\\img\\u_01_1.png"));
-
-	HDC hdc;
-	HBRUSH h_bk_brush = ::CreateSolidBrush(RGB(255, 1, 1));
-	RECT r = { 0, };
-
-	for (int i = 0; i < 12; i++) {
-		// 현재 단계의 이미지 폭과 높이 저장
-		r.right = position[i][1][0];
-		r.bottom = position[i][1][1];
-
-		dest_image.Create(r.right, r.bottom, 32);
-		hdc = dest_image.GetDC();
-		::FillRect(hdc, &r, h_bk_brush);
-		src_image.Draw(hdc, 0, 0, r.right, r.bottom, position[i][0][0], position[i][0][1], r.right, r.bottom);
-		file_name.Format(_T("..\\img\\wait_%02d.png"), i);
-		dest_image.Save(file_name, Gdiplus::ImageFormatPNG);
-
-		// 리소스 반납
-		dest_image.ReleaseDC();
-		dest_image.Destroy();
-	}
-	::DeleteObject(h_bk_brush);
-	src_image.Destroy();
-}
 
 void CPalaDog3Dlg::MakeGameImage()
 {
@@ -332,4 +307,166 @@ void CPalaDog3Dlg::LoadGameImage()
 	m_move_key_image[1].Load(_T("..\\img\\left_up.png"));
 	m_move_key_image[2].Load(_T("..\\img\\right_down.png"));
 	m_move_key_image[3].Load(_T("..\\img\\right_up.png"));
+}
+
+void CPalaDog3Dlg::MakeClipImageWait()
+{
+	// 12개의 이미지를 {{시작x, 시작y}, {가로크기, 세로크기}} 배열로 위치 저장
+	int position[12][2][2] = {
+		{ {606, 98}, { 106,92 } }, { {96, 360}, { 106,94 } }, { {98, 266}, { 106,94 } },
+		{ {98, 172}, { 106,94 } }, { {0, 748}, { 106,96 } }, { {0, 652}, { 106,96 } },
+		{ {0, 556}, { 106,96 } }, { {0, 460}, { 106,96 } }, { {0, 844}, { 106,94 } },
+		{ {110, 930}, { 106,92 } }, { {296, 296}, { 106,90 } }, { {296, 206}, { 106,90 } }
+	};
+
+	// 원본 이미지와 Clip 이미지를 저장할 변수를 선언
+	CImage src_image, dest_image;
+	// 파일 이름
+	CString file_name;
+	// 원본 이미지 파일을 읽음
+	src_image.Load(_T("..\\img\\u_01_1.png"));
+
+	HDC hdc;
+	// 배경색에 적용할 브러시(붉은색) 만들기
+	HBRUSH h_bk_brush = ::CreateSolidBrush(RGB(255, 1, 1));
+	RECT r = { 0, };
+
+	// 12단계를 원본에서 잘라내고 저장
+	for (int i = 0; i < 12; ++i)
+	{
+		r.right = position[i][1][0];
+		r.bottom = position[i][1][1];
+
+		// 이미지 크기만큼 생성
+		dest_image.Create(r.right, r.bottom, 32);
+		hdc = dest_image.GetDC();
+		::FillRect(hdc, &r, h_bk_brush);
+		// 원본 이미지에서 해당 위치를 복사
+		src_image.Draw(hdc, 0, 0, r.right, r.bottom, position[i][0][0], position[i][0][1], r.right, r.bottom);
+		file_name.Format(_T(".\\image\\walk_%02d.png"), i);
+		dest_image.Save(file_name, Gdiplus::ImageFormatPNG);
+
+		// 그리기에 사용한 DC 반납
+		dest_image.ReleaseDC();
+		dest_image.Destroy();
+	}
+	::DeleteObject(h_bk_brush);
+	src_image.Destroy();
+}
+
+// 이미지 파일 일부를 잘라서 PNG로 만드는 함수
+void CPalaDog3Dlg::MakeClipImageWalk()
+{
+	// [12개이미지][시작위치x,y][폭과높이]
+	int position[12][2][2] = {
+		{{204,264},{92,92}}, {{590,360},{90,92}}, {{860,384},{90,90}},
+		{{770,474},{90,90}}, {{770,384},{90,90}}, {{680,474},{90,90}},
+		{{680,384},{90,90}}, {{590,452},{90,90}}, {{500,452},{90,90}}, 
+		{{500,360},{90,92}}, {{204,172},{92,92}}, {{106,766},{92,92}}
+	};
+
+	CImage src_image, dest_image;
+	CString file_name;
+	src_image.Load(_T("..\\img\\u_01_1.png"));
+
+	HDC hdc;
+	HBRUSH h_bk_brush = ::CreateSolidBrush(RGB(255, 1, 1));
+	RECT r = { 0, };
+
+	for (int i = 0; i < 12; i++) {
+		// 현재 단계의 이미지 폭과 높이 저장
+		r.right = position[i][1][0];
+		r.bottom = position[i][1][1];
+
+		dest_image.Create(r.right, r.bottom, 32);
+		hdc = dest_image.GetDC();
+		::FillRect(hdc, &r, h_bk_brush);
+		src_image.Draw(hdc, 0, 0, r.right, r.bottom, position[i][0][0], position[i][0][1], r.right, r.bottom);
+		file_name.Format(_T("..\\img\\wait_%02d.png"), i);
+		dest_image.Save(file_name, Gdiplus::ImageFormatPNG);
+
+		// 리소스 반납
+		dest_image.ReleaseDC();
+		dest_image.Destroy();
+	}
+	::DeleteObject(h_bk_brush);
+	src_image.Destroy();
+}
+
+void CPalaDog3Dlg::MakeClipImageWeapon()
+{
+	const int image_count = 5;
+
+	// [5개이미지][시작위치x,y][폭과높이]
+	int position[image_count][2][2] = {
+		{{348, 87},{57,46}},
+		{{218,166},{58,42}}, 
+		{{277,166},{59,42}}, 
+		{{406,87},{60,46}}, 
+		{{179,87},{60,50}}
+	};
+
+	CImage src_image, dest_image;
+	CString file_name;
+	src_image.Load(_T("..\\img\\m01_1.png"));
+
+	HDC hdc;
+	// 투명화 처리를 위한 RGB(255,1,1)
+	HBRUSH h_bk_brush = ::CreateSolidBrush(RGB(255, 1, 1));
+	RECT r = { 0, };
+
+	for (int i = 0; i < image_count; i++) {
+		// 현재 단계의 이미지 폭과 높이 저장
+		r.right = position[i][1][0];
+		r.bottom = position[i][1][1];
+
+		dest_image.Create(r.right, r.bottom, 32);
+		hdc = dest_image.GetDC();
+		::FillRect(hdc, &r, h_bk_brush);
+		src_image.Draw(hdc, 0, 0, r.right, r.bottom, position[i][0][0], position[i][0][1], r.right, r.bottom);
+		file_name.Format(_T("..\\img\\effect_b_weapons_%02d.png"), i);
+		dest_image.Save(file_name, Gdiplus::ImageFormatPNG);
+
+		// 리소스 반납
+		dest_image.ReleaseDC();
+		dest_image.Destroy();
+	}
+	::DeleteObject(h_bk_brush);
+	src_image.Destroy();
+}
+
+// 확장자 없이 파라미터 넣을 것
+void CPalaDog3Dlg::MakeClipImage(const int img_num, const int (*a_position)[2][2], TCHAR* a_origin_path, TCHAR* a_crop_path = _T(".\\"))
+{
+	CImage src_image, dest_image;
+	CString file_name;
+	TCHAR add_extension[512];
+	_tcscpy_s(add_extension, sizeof(add_extension) / sizeof(add_extension[0]), a_origin_path);
+	_tcscat_s(add_extension, sizeof(add_extension)/sizeof(add_extension[0]), _T(".png"));
+	src_image.Load(add_extension);
+
+	HDC hdc;
+	// 투명화 처리를 위한 RGB(255,1,1)
+	HBRUSH h_bk_brush = ::CreateSolidBrush(RGB(255, 1, 1));
+	RECT r = { 0, };
+
+	for (int i = 0; i < img_num; i++) {
+		// 현재 단계의 이미지 폭과 높이 저장
+		r.right = a_position[i][1][0];
+		r.bottom = a_position[i][1][1];
+
+		dest_image.Create(r.right, r.bottom, 32);
+		hdc = dest_image.GetDC();
+		::FillRect(hdc, &r, h_bk_brush);
+
+		src_image.Draw(hdc, 0, 0, r.right, r.bottom, a_position[i][0][0], a_position[i][0][1], r.right, r.bottom);
+		file_name.Format(_T("%s_%02d.png"), a_crop_path, i);
+		dest_image.Save(file_name, Gdiplus::ImageFormatPNG);
+
+		// 리소스 반납
+		dest_image.ReleaseDC();
+		dest_image.Destroy();
+	}
+	::DeleteObject(h_bk_brush);
+	src_image.Destroy();
 }

@@ -17,8 +17,7 @@
 
 
 
-CPalaDog1Dlg::CPalaDog1Dlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_PALADOG1_DIALOG, pParent)
+CPalaDog1Dlg::CPalaDog1Dlg(CWnd* pParent) : CDialogEx(IDD_PALADOG1_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }

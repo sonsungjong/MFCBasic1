@@ -32,7 +32,10 @@ public:
 	CPalaDog3Dlg(CWnd* pParent = nullptr);	// standard constructor
 
 	// 이미지의 일부를 잘라서 PNG로 만드는 함수
-	void MakeClipImage();
+	void MakeClipImageWait();
+	void MakeClipImageWalk();
+	void MakeClipImageWeapon();
+	void MakeClipImage(const int img_num, const int(*a_position)[2][2], TCHAR* a_origin_path, TCHAR* a_crop_path);
 	// 이미지 생성 함수
 	void MakeGameImage();
 	// 이동 애니메이션 구현함수
