@@ -131,7 +131,8 @@ void CMoveRectangle1Dlg::OnBnClickedCancel()
 void CMoveRectangle1Dlg::OnClose()
 {
 	// TODO: Add your message handler code here and/or call default
-	::PostQuitMessage(0);
+	//::PostQuitMessage(0);
+	DestroyWindow();
 
 	CDialogEx::OnClose();
 }

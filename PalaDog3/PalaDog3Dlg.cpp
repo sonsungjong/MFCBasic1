@@ -117,7 +117,8 @@ void CPalaDog3Dlg::OnBnClickedCancel()
 void CPalaDog3Dlg::OnClose()
 {
 	// TODO: Add your message handler code here and/or call default
-	::PostQuitMessage(0);
+	//::PostQuitMessage(0);
+	DestroyWindow();
 
 	CDialogEx::OnClose();
 }
