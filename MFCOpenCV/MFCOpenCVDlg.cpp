@@ -144,6 +144,7 @@ void CMFCOpenCVDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 	if (nIDEvent == 1000) {
 		m_capture->read(m_mat_frame);
+		cv::flip(m_mat_frame, m_mat_frame, 1);
 		//cvtColor(m_mat_frame, m_mat_frame, cv::COLOR_BGR2GRAY);
 
 		int bpp = 8 * m_mat_frame.elemSize();
