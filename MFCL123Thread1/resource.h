@@ -1,10 +1,11 @@
 ﻿//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by MFCBasic102BasicClass.rc
+// Microsoft Visual C++에서 생성한 포함 파일입니다.
+// MFCL123Thread1.rc에서 사용되고 있습니다.
 //
-#define IDD_MFCBASIC102BASICCLASS_DIALOG 102
+#define IDD_MFCL123THREAD1_DIALOG       102
 #define IDR_MAINFRAME                   128
-#define IDC_BUTTON1                     1001
+#define IDC_DATA_LIST                   1000
+#define IDC_TEST_BTN                    1001
 
 // Next default values for new objects
 // 
