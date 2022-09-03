@@ -5,9 +5,12 @@
 #pragma once
 struct ThreadData
 {
+	HWND h_wnd;
+	unsigned int step;
 	CListBox* p_list_box;
 	HANDLE h_kill_event;
 	HANDLE h_thread;
+	DWORD thread_id;
 };
 
 
@@ -15,8 +18,9 @@ struct ThreadData
 class CMFCL123Thread1Dlg : public CDialogEx
 {
 private:
-	ThreadData m_thread_data;
+	
 	//HANDLE mh_thread = NULL;
+	unsigned int m_step = 20000;
 // 생성입니다.
 public:
 	CMFCL123Thread1Dlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
@@ -45,4 +49,9 @@ public:
 	CListBox m_data_list;
 	afx_msg void OnBnClickedTestBtn();
 	afx_msg void OnDestroy();
+	afx_msg void OnBnClickedStopBtn();
+	afx_msg void OnBnClickedAllStopBtn();
+	CListBox m_thread_list;
+protected:
+	afx_msg LRESULT On27001(WPARAM wParam, LPARAM lParam);
 };

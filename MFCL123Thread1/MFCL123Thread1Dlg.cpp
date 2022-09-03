@@ -7,6 +7,7 @@
 #include "MFCL123Thread1.h"
 #include "MFCL123Thread1Dlg.h"
 #include "afxdialogex.h"
+#include <string>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,6 +30,7 @@ void CMFCL123Thread1Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_DATA_LIST, m_data_list);
+	DDX_Control(pDX, IDC_DATA_LIST2, m_thread_list);
 }
 
 BEGIN_MESSAGE_MAP(CMFCL123Thread1Dlg, CDialogEx)
@@ -38,6 +40,9 @@ BEGIN_MESSAGE_MAP(CMFCL123Thread1Dlg, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &CMFCL123Thread1Dlg::OnBnClickedCancel)
 	ON_BN_CLICKED(IDC_TEST_BTN, &CMFCL123Thread1Dlg::OnBnClickedTestBtn)
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_STOP_BTN, &CMFCL123Thread1Dlg::OnBnClickedStopBtn)
+	ON_BN_CLICKED(IDC_ALL_STOP_BTN, &CMFCL123Thread1Dlg::OnBnClickedAllStopBtn)
+	ON_MESSAGE(27001, &CMFCL123Thread1Dlg::On27001)
 END_MESSAGE_MAP()
 
 
@@ -53,9 +58,7 @@ BOOL CMFCL123Thread1Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	m_thread_data.p_list_box = &m_data_list;
-	m_thread_data.h_kill_event = CreateEvent(NULL, 1, 0, _T("Sung"));
-	m_thread_data.h_thread = NULL;
+
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -111,25 +114,58 @@ void CMFCL123Thread1Dlg::OnBnClickedCancel()
 	CDialogEx::OnCancel();
 }
 
+/*
+소수를 구하는 함수
+*/
+int IsPrime(int a_num)
+{
+	int i;
+	for (i = 2; i < a_num; i++)
+	{
+		if (a_num % i == 0) { return 0; }
+	}
+	return 1;
+}
+
 DWORD WINAPI ThreadProc1(LPVOID lpParameter)
 {
 	ThreadData* p_data = (ThreadData*)lpParameter;
 	CString str;			// 내부적으로 동적할당, 객체파괴자에서 메모리해제를 해줘야함
 	int index;
+	__int64 sum = 0;
 
-	for (size_t i = 0; i < 10000; i++)
+	str.Format(_T("[%08x] 작업을 시작합니다."), p_data->thread_id);
+	index = p_data->p_list_box->InsertString(-1, str);
+	p_data->p_list_box->SetCurSel(index);
+	int start_tick = GetTickCount64();
+	int kill_flag = 0;
+	unsigned int i = 2;
+	for (i = 2; i < p_data->step; i++)
 	{
 		if (WaitForSingleObject(p_data->h_kill_event, 10) == WAIT_OBJECT_0)		// 20ms마다 h_kill_event 체크
 		{
+			kill_flag = 1;
 			break;
 		}
-		str.Format(_T("Item %05d"), i);
-		index = p_data->p_list_box->InsertString(-1, str);			// 맨뒤에 추가된 문자열의 위치를 저장
-		p_data->p_list_box->SetCurSel(index);						// 커서 이동
+		if (IsPrime(i)) {
+			sum += i;
+		}
+		if (!(i % 100)) {
+			str.Format(_T("작업 진행 중 - %d까지 체크함!"), i);
+			index = p_data->p_list_box->InsertString(-1, str);			// 맨뒤에 추가된 문자열의 위치를 저장
+			p_data->p_list_box->SetCurSel(index);						// 커서 이동
+		}
+
 	}
 
+	str.Format(_T("[%08x] 2~20000까지 소수의 합은 %lld이다 (%dms)"), p_data->thread_id, sum, GetTickCount64() - start_tick);
+	index = p_data->p_list_box->InsertString(-1, str);			// 맨뒤에 추가된 문자열의 위치를 저장
+	p_data->p_list_box->SetCurSel(index);						// 커서 이동
+
 	CloseHandle(p_data->h_thread);
-	p_data->h_thread = NULL;
+//	p_data->h_thread = NULL;
+	if (WaitForSingleObject(p_data->h_kill_event, 10) == WAIT_OBJECT_0) { kill_flag = 1; }
+	::PostMessage(p_data->h_wnd, 27001, kill_flag, reinterpret_cast<LPARAM>(p_data));				// 27001 메시지 발생
 
 	return 0;
 }
@@ -145,8 +181,21 @@ void CMFCL123Thread1Dlg::OnBnClickedTestBtn()
 	//	index = m_data_list.InsertString(-1, str);			// 맨뒤에 추가된 문자열의 위치를 저장
 	//	m_data_list.SetCurSel(index);						// 커서 이동
 	//}
+	ThreadData* p = new ThreadData;
+	p->h_wnd = m_hWnd;
+	p->step = m_step;
+	p->p_list_box = &m_data_list;
+	p->h_kill_event = CreateEvent(NULL, 1, 0, NULL);
 	
-	m_thread_data.h_thread = CreateThread(NULL, 0, ThreadProc1, &m_thread_data, 0, NULL);					// 1MB (1024*1024)
+	p->h_thread = CreateThread(NULL, 0, ThreadProc1, p, 0, &p->thread_id);					// 1MB (1024*1024)
+
+	CString str;
+	str.Format(_T("%08x : %u까지 합산"), p->thread_id, p->step);
+	int index = m_thread_list.InsertString(-1, str);
+	// 지역변수 p가 없어지기 전에 주소값을 전달
+	m_thread_list.SetItemDataPtr(index, p);
+	
+	m_step = m_step * 2;
 }
 
 
@@ -154,22 +203,74 @@ void CMFCL123Thread1Dlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
-	//if (mh_thread != NULL)
-		//TerminateThread(mh_thread, 0);			// 강제로 비정상종료 (동적할당 메모리누수) 예를들어 CString
+	OnBnClickedAllStopBtn();
+}
 
-	// 메인쓰레드와 워크쓰레드가 통신할 수 있게 만들어 동기화를 시키면 정상종료를 할 수 있음
-	if (m_thread_data.h_thread != NULL)
-	{
-		SetEvent(m_thread_data.h_kill_event);			// kill이벤트 활성화 (1)
 
-		MSG msg;
+void CMFCL123Thread1Dlg::OnBnClickedStopBtn()
+{
+	// TODO: Add your control notification handler code here
+	int index = m_thread_list.GetCurSel();
+	if (LB_ERR != index) {
+		ThreadData* p = (ThreadData*)m_thread_list.GetItemDataPtr(index);
+		if (p->h_thread != NULL) {
+			SetEvent(p->h_kill_event);
 
-		while (m_thread_data.h_thread != NULL && GetMessage(&msg, NULL, 0, 0))				// 무한루프로 정상종료될때까지 무한루프
-		{
+			MSG msg;
+			while (p->h_thread != NULL) {
+				if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+					TranslateMessage(&msg);
+					DispatchMessage(&msg);
+				}
+			}
+		}
+		delete p;
+	}
+}
+
+
+void CMFCL123Thread1Dlg::OnBnClickedAllStopBtn()
+{
+	ThreadData* p;
+	int count = m_thread_list.GetCount();
+	for (int i = 0; i < count; i++) {
+		p = (ThreadData*)m_thread_list.GetItemDataPtr(i);
+		SetEvent(p->h_kill_event);
+	}
+	CString str;
+	str.Format(_T("Thread %d개 종료합니다."), count);
+	int index = m_data_list.InsertString(-1, str);
+	m_data_list.SetCurSel(index);
+	
+	MSG msg;
+	while (count) {
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			if(msg.message == 27001) {
+				count--;
+				msg.wParam = 0;
+			}
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-
-		// AfxMessageBox(_T("워크쓰레드 정상 종료 후 메인쓰레드 종료!"));
 	}
+	index = m_data_list.InsertString(-1, _T("모든 메시지가 종료되었음"));
+	m_data_list.SetCurSel(index);
+}
+
+
+afx_msg LRESULT CMFCL123Thread1Dlg::On27001(WPARAM wParam, LPARAM lParam)
+{
+	ThreadData* p = (ThreadData*)lParam;
+	int count = m_thread_list.GetCount();
+	for (int i = 0; i < count; i++) {
+		if (m_thread_list.GetItemDataPtr(i) == p) {
+			m_thread_list.DeleteString(i);
+			CloseHandle(p->h_kill_event);
+
+			if (wParam == 0) { delete p; }
+			else p->h_thread = NULL;
+			break;
+		}
+	}
+	return 0;
 }
