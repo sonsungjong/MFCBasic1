@@ -33,6 +33,8 @@ BEGIN_MESSAGE_MAP(CMFCL203PopupDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CMFCL203PopupDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CMFCL203PopupDlg::OnBnClickedCancel)
+	ON_WM_RBUTTONUP()
+	ON_COMMAND(20005, &CMFCL203PopupDlg::OnMyCommand)			// 커맨드 20005번 추가
 END_MESSAGE_MAP()
 
 
@@ -101,4 +103,74 @@ void CMFCL203PopupDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnCancel();
+}
+
+
+void CMFCL203PopupDlg::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	CMenu menu;
+	menu.CreatePopupMenu();
+	
+	CString str;
+	for (size_t i = 0; i < 6; i++) {
+		str.Format(_T("%lld번 메뉴 항목"), i);
+		menu.AppendMenu(MF_STRING, static_cast<UINT_PTR>(20000) + i, str);
+	}
+
+	CPoint pos;
+	GetCursorPos(&pos);
+
+	menu.TrackPopupMenu(TPM_LEFTALIGN, pos.x, pos.y, this);
+	menu.DestroyMenu();
+
+	CDialogEx::OnRButtonUp(nFlags, point);
+}
+
+
+BOOL CMFCL203PopupDlg::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	int cmd_id = LOWORD(wParam);
+	if (cmd_id == 20000)
+	{
+		CString str;
+		str.Format(_T("%d 항목을 선택했습니다."), cmd_id - 20000);
+		::MessageBox(m_hWnd, str, _T("제목1"), MB_OK|MB_ICONWARNING);
+		return 1;
+	}
+	else if (cmd_id == 20001)
+	{
+		CString str;
+		str.Format(_T("%d 항목을 선택했습니다."), cmd_id - 20000);
+		::MessageBox(m_hWnd, str, _T("제목2"), MB_OK | MB_ICONWARNING);
+		return 1;
+	}
+	else if (cmd_id == 20002)
+	{
+		CString str;
+		str.Format(_T("%d 항목을 선택했습니다."), cmd_id - 20000);
+		::MessageBox(m_hWnd, str, _T("제목3"), MB_OK | MB_ICONWARNING);
+		return 1;
+	}
+	else if (cmd_id == 20003)
+	{
+		CString str;
+		str.Format(_T("%d 항목을 선택했습니다."), cmd_id - 20000);
+		::MessageBox(m_hWnd, str, _T("제목4"), MB_OK | MB_ICONWARNING);
+		return 1;
+	}
+	else if (cmd_id == 20004)
+	{
+		CString str;
+		str.Format(_T("%d 항목을 선택했습니다."), cmd_id - 20000);
+		::MessageBox(m_hWnd, str, _T("제목5"), MB_OK | MB_ICONWARNING);
+		return 1;
+	}
+
+	return CDialogEx::OnCommand(wParam, lParam);
+}
+
+void CMFCL203PopupDlg::OnMyCommand()
+{
+	AfxMessageBox(_T("다섯번째 선택"));
 }
