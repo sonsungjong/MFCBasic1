@@ -27,8 +27,7 @@ CMFCBasic212FileListViewDlg::CMFCBasic212FileListViewDlg(CWnd* pParent /*=nullpt
 void CMFCBasic212FileListViewDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LIST1, m_list1);
-	DDX_Control(pDX, IDC_LIST2, m_list2);
+
 }
 
 BEGIN_MESSAGE_MAP(CMFCBasic212FileListViewDlg, CDialogEx)
@@ -55,14 +54,18 @@ void CMFCBasic212FileListViewDlg::DirToList(CListBox *ap_list_box, CString a_pat
 	WIN32_FIND_DATA file_data;				// 현재 탐색한 파일의 정보를 저장하는 구조체
 	HANDLE h_item_list = FindFirstFile(a_path + _T("*.*"), &file_data);
 	if (h_item_list != INVALID_HANDLE_VALUE) {					// 해당 파일이 있으면
+		int dir_index = 0, file_index = 0;
 		do {
 			// "." 디렉토리 제외
 			if (!(file_data.cFileName[0] == '.' && file_data.cFileName[1] == 0)) {					// memcmp(file_data.cFileName, _T("."), 4); 메모리컴페어
 				name = file_data.cFileName;
 				if (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 					name = _T("[") + name + _T("]");
+					ap_list_box->InsertString(dir_index++, name);
 				}
-				ap_list_box->InsertString(-1, name);
+				else {
+					ap_list_box->InsertString(dir_index + file_index++, name);
+				}
 			}
 		} while (FindNextFile(h_item_list, &file_data));
 
@@ -78,6 +81,9 @@ BOOL CMFCBasic212FileListViewDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+	m_list1.SubclassDlgItem(IDC_LIST1, this);
+	m_list2.SubclassDlgItem(IDC_LIST2, this);
 
 	// TODO: Add extra initialization here
 	//m_list1.Dir(DDL_ARCHIVE | DDL_HIDDEN | DDL_DIRECTORY, _T("C:\\*.*"));						// 파일 | 숨겨진파일 | 폴더
