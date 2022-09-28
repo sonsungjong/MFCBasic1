@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MFCL209DragDrop.h">
+    <ClInclude Include="MFCL126VideoPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MFCL209DragDropDlg.h">
+    <ClInclude Include="MFCL126VideoPlayerDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -33,36 +33,30 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TW_ListBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MFCL209DragDrop.cpp">
+    <ClCompile Include="MFCL126VideoPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MFCL209DragDropDlg.cpp">
+    <ClCompile Include="MFCL126VideoPlayerDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TW_ListBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFCL209DragDrop.rc">
+    <ResourceCompile Include="MFCL126VideoPlayer.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFCL209DragDrop.rc2">
+    <None Include="res\MFCL126VideoPlayer.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MFCL209DragDrop.ico">
+    <Image Include="res\MFCL126VideoPlayer.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

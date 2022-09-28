@@ -26,7 +26,6 @@ CMFCL209DragDropDlg::CMFCL209DragDropDlg(CWnd* pParent /*=nullptr*/)
 void CMFCL209DragDropDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_DROP_LIST, m_drop_list);
 }
 
 BEGIN_MESSAGE_MAP(CMFCL209DragDropDlg, CDialogEx)
@@ -35,6 +34,7 @@ BEGIN_MESSAGE_MAP(CMFCL209DragDropDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CMFCL209DragDropDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CMFCL209DragDropDlg::OnBnClickedCancel)
 	ON_WM_DROPFILES()
+	ON_BN_CLICKED(IDC_HIDE_PATH_CHECK, &CMFCL209DragDropDlg::OnBnClickedHidePathCheck)
 END_MESSAGE_MAP()
 
 
@@ -50,6 +50,7 @@ BOOL CMFCL209DragDropDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	m_drop_list.SubclassDlgItem(IDC_DROP_LIST, this);							// this : 이 대화상자
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -115,9 +116,21 @@ void CMFCL209DragDropDlg::OnDropFiles(HDROP hDropInfo)
 	// TODO: Add your message handler code here and/or call default
 	m_drop_list.ResetContent();
 
-	int count = DragQueryFile(hDropInfo, -1, NULL, 0);
-	
 	TCHAR temp_path[MAX_PATH];
+	int count = DragQueryFile(hDropInfo, -1, NULL, 0);
+	if (count > 0) {
+		int len = DragQueryFile(hDropInfo, 0, temp_path, MAX_PATH);
+		if (len > 3) {
+			TCHAR* p = temp_path + len;
+			while (*p != '\\') {
+				p--;
+				*(p + 1) = 0;
+				SetDlgItemText(IDC_BASE_PATH_EDIT, temp_path);
+				m_drop_list.SetBasePath(temp_path, p - temp_path +1);
+			}
+		}
+	}
+	
 	for (int i = 0; i < count; i++) {
 		DragQueryFile(hDropInfo, i, temp_path, MAX_PATH);
 		m_drop_list.InsertString(i, temp_path);
@@ -191,4 +204,8 @@ void CMFCL209DragDropDlg::GetFilesInDirectory(TCHAR* ap_path, int a_insert_index
 	}
 }
 
-// 15:00
+void CMFCL209DragDropDlg::OnBnClickedHidePathCheck()
+{
+	// TODO: Add your control notification handler code here
+	m_drop_list.SetSimpleMode((static_cast<CButton*>(GetDlgItem(IDC_HIDE_PATH_CHECK))->GetCheck()));
+}
