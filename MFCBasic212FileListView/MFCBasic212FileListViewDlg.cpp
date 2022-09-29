@@ -39,32 +39,55 @@ BEGIN_MESSAGE_MAP(CMFCBasic212FileListViewDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_CREATE_DIR2, &CMFCBasic212FileListViewDlg::OnBnClickedCreateDir2)
 	ON_BN_CLICKED(IDC_OPEN_DIR2, &CMFCBasic212FileListViewDlg::OnBnClickedOpenDir2)
 	ON_BN_CLICKED(IDC_DEL_BTN2, &CMFCBasic212FileListViewDlg::OnBnClickedDelBtn2)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
 // CMFCBasic212FileListViewDlg message handlers
 
+void CMFCBasic212FileListViewDlg::ResetFII(CListBox* ap_list_box)
+{
+	FII* p;
+	int count = ap_list_box->GetCount();
+	for (int i = 0; i < count; i++)
+	{
+		p = static_cast<FII*>(ap_list_box->GetItemDataPtr(i));
+		delete[] p->p_name;
+		delete p;
+	}
+
+	ap_list_box->ResetContent();
+}
+
 // 리스트박스에 출력
 void CMFCBasic212FileListViewDlg::DirToList(CListBox *ap_list_box, CString a_path)
 {
 	// 리스트 박스에 있던 기존 목록은 제거
-	ap_list_box->ResetContent();
+	ResetFII(ap_list_box);
 
-	CString name;
 	WIN32_FIND_DATA file_data;				// 현재 탐색한 파일의 정보를 저장하는 구조체
 	HANDLE h_item_list = FindFirstFile(a_path + _T("*.*"), &file_data);
 	if (h_item_list != INVALID_HANDLE_VALUE) {					// 해당 파일이 있으면
 		int dir_index = 0, file_index = 0;
+		FII* p;
 		do {
 			// "." 디렉토리 제외
 			if (!(file_data.cFileName[0] == '.' && file_data.cFileName[1] == 0)) {					// memcmp(file_data.cFileName, _T("."), 4); 메모리컴페어
-				name = file_data.cFileName;
+				p = new FII;
+				p->attr = file_data.dwFileAttributes;
+				p->h_size = file_data.nFileSizeHigh;
+				p->l_size = file_data.nFileSizeLow;
+				p->name_len = static_cast<unsigned short>(_tcslen(file_data.cFileName));
+				p->p_name = new TCHAR[static_cast<unsigned long long>(p->name_len) +1];
+				memcpy(p->p_name, file_data.cFileName, (static_cast<unsigned long long>(p->name_len) + 1)*sizeof(TCHAR));
+
 				if (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-					name = _T("[") + name + _T("]");
-					ap_list_box->InsertString(dir_index++, name);
+					ap_list_box->InsertString(dir_index, _T(""));
+					ap_list_box->SetItemDataPtr(dir_index++, p);
 				}
 				else {
-					ap_list_box->InsertString(dir_index + file_index++, name);
+					ap_list_box->InsertString(dir_index + file_index, _T(""));
+					ap_list_box->SetItemDataPtr(dir_index + file_index++, p);
 				}
 			}
 		} while (FindNextFile(h_item_list, &file_data));
@@ -143,21 +166,20 @@ HCURSOR CMFCBasic212FileListViewDlg::OnQueryDragIcon()
 
 void CMFCBasic212FileListViewDlg::ChangeDir(CListBox* ap_list_box, int a_path_ctrl_id)
 {
-	CString str, path;
+	CString path;
 	int index = ap_list_box->GetCurSel();
-	ap_list_box->GetText(index, str);
-	if (str[0] == '[') {
-		GetDlgItemText(a_path_ctrl_id, path);
-		str.TrimLeft('[');
-		str.TrimRight(']');
+	FII* p = (FII*)ap_list_box->GetItemDataPtr(index);
 
-		if (str == _T("..")) {
+	if (p->attr & FILE_ATTRIBUTE_DIRECTORY) {
+		GetDlgItemText(a_path_ctrl_id, path);
+
+		if (p->name_len == 2 && !memcmp(p->p_name, _T(""), 4)) {
 			path.TrimRight('\\');
 			int pos = path.ReverseFind('\\');
 			path.Delete(pos + 1, path.GetLength() - pos - 1);
 		}
 		else {
-			path += str;
+			path += p->p_name;
 			path += _T("\\");
 		}
 		SetDlgItemText(a_path_ctrl_id, path);
@@ -184,15 +206,15 @@ void CMFCBasic212FileListViewDlg::OnBnClickedLeftToRight()
 	// TODO: Add your control notification handler code here
 	int index = m_list1.GetCurSel();
 	if (index != LB_ERR) {
-		CString name, src_path, dest_path;
-		m_list1.GetText(index, name);
-		if (name[0] == '[') {
-			MessageBox(_T("디렉토리는 복사할 수 없습니다!"), _T("복사 실패!"), MB_ICONSTOP | MB_OK);
+		CString src_path, dest_path;
+		FII* p = (FII*)m_list1.GetItemDataPtr(index);
+		if (p->attr & FILE_ATTRIBUTE_DIRECTORY) {
+			MessageBox(_T("디렉토리는 복사할 수 없습니다."), _T("복사 실패"), MB_OK|MB_ICONSTOP);
 		}
 		else {
 			GetDlgItemText(IDC_EDIT1, src_path);
 			GetDlgItemText(IDC_EDIT2, dest_path);
-			CopyFile(src_path + name, dest_path + name, FALSE);
+			CopyFile(src_path + p->p_name, dest_path + p->p_name, FALSE);
 			DirToList(&m_list2, dest_path);
 		}
 	}
@@ -227,18 +249,27 @@ void CMFCBasic212FileListViewDlg::OnBnClickedDelBtn2()
 	// TODO: Add your control notification handler code here
 	int index = m_list2.GetCurSel();				// 리스트박스의 선택항목 위치
 	if (index != LB_ERR) {
-		CString name;
-		m_list2.GetText(index, name);
-		if (name[0] == '[') {
+		FII* p = (FII*)m_list2.GetItemDataPtr(index);
+		if (p->attr & FILE_ATTRIBUTE_DIRECTORY) {
 			MessageBox(_T("디렉토리는 삭제 불가"), _T("삭제 실패"), MB_ICONSTOP | MB_OK);
 		}
 		else {
-			if (IDOK == MessageBox(name, _T("아래의 파일을 삭제하겠습니까?"), MB_ICONQUESTION | MB_OKCANCEL)) {
+			if (IDOK == MessageBox(p->p_name, _T("아래의 파일을 삭제하겠습니까?"), MB_ICONQUESTION | MB_OKCANCEL)) {
 				CString path;
 				GetDlgItemText(IDC_EDIT2, path);			// 경로를 얻어와서
-				DeleteFile(path + name);						// 삭제
+				DeleteFile(path + p->p_name);						// 삭제
 				DirToList(&m_list2, path);				// 리로드
 			}
 		}
 	}
+}
+
+
+void CMFCBasic212FileListViewDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// TODO: Add your message handler code here
+	ResetFII(&m_list1);
+	ResetFII(&m_list2);
 }
