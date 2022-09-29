@@ -27,6 +27,8 @@ BEGIN_MESSAGE_MAP(CMFCBasic104ControlDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_SHOW_MSG_BTN, &CMFCBasic104ControlDlg::OnBnClickedShowMsgBtn)
+	ON_BN_CLICKED(IDOK, &CMFCBasic104ControlDlg::OnBnClickedOk)
+	ON_WM_MBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -102,4 +104,39 @@ void CMFCBasic104ControlDlg::OnBnClickedShowMsgBtn()
 
 	//MessageBox(str);		// Win32
 	AfxMessageBox(show_str);		// MFC
+}
+
+
+void CMFCBasic104ControlDlg::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	//CDialogEx::OnOK();
+	RECT r;
+	CString client_position, wnd_position;
+
+	// 클라이언트 좌표계 (클라이언트 윈도우 기준)
+	GetDlgItem(IDOK)->GetClientRect(&r);
+	client_position.Format(_T("좌%d 우%d 상%d 하%d"), r.left, r.right, r.top, r.bottom);
+	MessageBox(client_position, MB_OK);
+
+	// 윈도우 좌표계 (모니터화면 기준)
+	GetDlgItem(IDOK)->GetWindowRect(&r);
+	wnd_position.Format(_T("좌%d 우%d 상%d 하%d"), r.left, r.right, r.top, r.bottom);
+	MessageBox(wnd_position, MB_OK);
+}
+
+
+void CMFCBasic104ControlDlg::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	CRect r;
+	GetDlgItem(IDOK)->GetWindowRect(r);
+	ScreenToClient(r);				// 윈도우 좌표를 부모 윈도우의 클라이언트 좌표로 변환!
+
+	r.left += 10;
+	r.right += 10;
+
+	GetDlgItem(IDOK)->MoveWindow(r);
+
+	CDialogEx::OnMButtonDown(nFlags, point);
 }

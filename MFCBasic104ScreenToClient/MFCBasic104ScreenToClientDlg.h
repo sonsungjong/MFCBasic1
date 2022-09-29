@@ -1,20 +1,20 @@
 
-// MFCBasic104ControlDlg.h : header file
+// MFCBasic104ScreenToClientDlg.h : header file
 //
 
 #pragma once
 
 
-// CMFCBasic104ControlDlg dialog
-class CMFCBasic104ControlDlg : public CDialogEx
+// CMFCBasic104ScreenToClientDlg dialog
+class CMFCBasic104ScreenToClientDlg : public CDialogEx
 {
 // Construction
 public:
-	CMFCBasic104ControlDlg(CWnd* pParent = nullptr);	// standard constructor
+	CMFCBasic104ScreenToClientDlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MFCBASIC104CONTROL_DIALOG };
+	enum { IDD = IDD_MFCBASIC104SCREENTOCLIENT_DIALOG };
 #endif
 
 	protected:
@@ -31,7 +31,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedShowMsgBtn();
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedCancel();
+	afx_msg void OnMove(int x, int y);
 };
