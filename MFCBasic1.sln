@@ -243,6 +243,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebView", "WebView\WebView.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TableCtrl", "TableCtrl\TableCtrl.vcxproj", "{7C92DF6B-4350-4ADE-991C-54DD646B7A3E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL223GdiPlus2", "MFCL223GdiPlus2\MFCL223GdiPlus2.vcxproj", "{B029300B-D03C-4DC3-8918-A7EDD06FFF03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -1211,6 +1213,14 @@ Global
 		{7C92DF6B-4350-4ADE-991C-54DD646B7A3E}.Release|x64.Build.0 = Release|x64
 		{7C92DF6B-4350-4ADE-991C-54DD646B7A3E}.Release|x86.ActiveCfg = Release|Win32
 		{7C92DF6B-4350-4ADE-991C-54DD646B7A3E}.Release|x86.Build.0 = Release|Win32
+		{B029300B-D03C-4DC3-8918-A7EDD06FFF03}.Debug|x64.ActiveCfg = Debug|x64
+		{B029300B-D03C-4DC3-8918-A7EDD06FFF03}.Debug|x64.Build.0 = Debug|x64
+		{B029300B-D03C-4DC3-8918-A7EDD06FFF03}.Debug|x86.ActiveCfg = Debug|Win32
+		{B029300B-D03C-4DC3-8918-A7EDD06FFF03}.Debug|x86.Build.0 = Debug|Win32
+		{B029300B-D03C-4DC3-8918-A7EDD06FFF03}.Release|x64.ActiveCfg = Release|x64
+		{B029300B-D03C-4DC3-8918-A7EDD06FFF03}.Release|x64.Build.0 = Release|x64
+		{B029300B-D03C-4DC3-8918-A7EDD06FFF03}.Release|x86.ActiveCfg = Release|Win32
+		{B029300B-D03C-4DC3-8918-A7EDD06FFF03}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
