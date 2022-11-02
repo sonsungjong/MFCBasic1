@@ -64,10 +64,10 @@ public:
 	void TextOut(int a_x, int a_y, const TCHAR* ap_str, int a_str_len);
 
 	Image* GetImage() { return mp_bitmap; }
-	Graphics* GetGraphics() { return mp_graphic; }
+	Gdiplus::Graphics* GetGraphics() { return mp_graphic; }
 
 	operator Image* () { return mp_bitmap; }
-	operator Graphics* () { return mp_graphic; }
+	operator Gdiplus::Graphics* () { return mp_graphic; }
 };
 
 #endif
