@@ -249,6 +249,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL225DCPclass", "MFCL225D
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL221LineGraph", "MFCL221LineGraph\MFCL221LineGraph.vcxproj", "{A97A05FB-56DB-422D-A327-16B1CAFDFEB6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCL227PrintOut", "MFCL227PrintOut\MFCL227PrintOut.vcxproj", "{9172CA48-249B-468E-BA2A-33D30969EDD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -1241,6 +1243,14 @@ Global
 		{A97A05FB-56DB-422D-A327-16B1CAFDFEB6}.Release|x64.Build.0 = Release|x64
 		{A97A05FB-56DB-422D-A327-16B1CAFDFEB6}.Release|x86.ActiveCfg = Release|Win32
 		{A97A05FB-56DB-422D-A327-16B1CAFDFEB6}.Release|x86.Build.0 = Release|Win32
+		{9172CA48-249B-468E-BA2A-33D30969EDD4}.Debug|x64.ActiveCfg = Debug|x64
+		{9172CA48-249B-468E-BA2A-33D30969EDD4}.Debug|x64.Build.0 = Debug|x64
+		{9172CA48-249B-468E-BA2A-33D30969EDD4}.Debug|x86.ActiveCfg = Debug|Win32
+		{9172CA48-249B-468E-BA2A-33D30969EDD4}.Debug|x86.Build.0 = Debug|Win32
+		{9172CA48-249B-468E-BA2A-33D30969EDD4}.Release|x64.ActiveCfg = Release|x64
+		{9172CA48-249B-468E-BA2A-33D30969EDD4}.Release|x64.Build.0 = Release|x64
+		{9172CA48-249B-468E-BA2A-33D30969EDD4}.Release|x86.ActiveCfg = Release|Win32
+		{9172CA48-249B-468E-BA2A-33D30969EDD4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
