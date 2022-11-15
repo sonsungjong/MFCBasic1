@@ -4,8 +4,7 @@
 //
 #define IDD_MFCL227PRINTOUT_DIALOG      102
 #define IDR_MAINFRAME                   128
-#define IDC_BUTTON1                     1000
-#define IDC_PRINT_LIST                  1001
+#define IDC_TEST_BTN                    1000
 #define IDC_PRINTER_LIST                1001
 
 // Next default values for new objects
