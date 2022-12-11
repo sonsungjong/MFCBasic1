@@ -20,7 +20,7 @@ protected:
 	CWnd* mp_notify_wnd;					// Socket 메시지를 받을 윈도우 객체의 주소
 
 public:
-	// 기본 생성자 (key == 27)
+	// 기본 생성자 (key == 0)
 	WinSocketClient();
 	// 외부에서 생성자를 통해 key값을 설정할 수 있도록 key값을 입력받음
 	WinSocketClient(unsigned char a_key);

@@ -24,7 +24,7 @@ protected:
 	/*
 	const char* ipconfig = "192.168.219.21";			// 서버의 IP
 	SOCKET mh_socket;			// 서버에 접속해서 통신할 소켓
-	char m_is_connected;			// 접속 상태 ( 0:접속안됨, 1:접속중, 2:접속됨)
+	char m_is_connected;			// 접속 상태 ( 0:접속안됨, 1:접속시도, 2:접속됨)
 	*/
 
 // Construction
