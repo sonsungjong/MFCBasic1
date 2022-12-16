@@ -9,6 +9,10 @@
 #define IDC_CHAR_EDIT                   1003
 #define IDC_CHAT_EDIT                   1003
 #define IDC_ROOM_LIST                   1004
+#define IDC_START_MONITOR_BTN           1006
+#define IDC_STOP_MONITOR_BTN            1007
+#define IDC_DISPLAY_RECT                1008
+#define IDC_EVENT_LIST                  1009
 
 // Next default values for new objects
 // 
@@ -16,7 +20,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
