@@ -3,11 +3,14 @@
 //
 
 #pragma once
-
+#include "BinDataView.h"
 
 // CMFCL232BinaryViewerUpDlg dialog
 class CMFCL232BinaryViewerUpDlg : public CDialogEx
 {
+private:
+	BinDataView m_bin_data_view;
+
 // Construction
 public:
 	CMFCL232BinaryViewerUpDlg(CWnd* pParent = nullptr);	// standard constructor
@@ -33,4 +36,6 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
+	afx_msg void OnDestroy();
+	afx_msg void OnBnClickedSelectBtn();
 };

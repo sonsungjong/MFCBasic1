@@ -38,6 +38,7 @@ public:
 	void ProcessScroll(UINT nSBCode, UINT nPos, int a_scroll_type);
 	void ReDraw();
 	void LoadFile(const TCHAR* ap_path);
+	void DrawOneLine(int a_line_index, int a_scroll_pos, int a_show_count);
 
 protected:
 	DECLARE_MESSAGE_MAP()
