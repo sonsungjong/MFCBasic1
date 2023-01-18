@@ -100,3 +100,4 @@ BOOL CXRayViewerApp::InitInstance()
 	return FALSE;
 }
 
+

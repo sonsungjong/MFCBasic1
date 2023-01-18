@@ -247,9 +247,7 @@ void BinDataView::LoadFile(const TCHAR* ap_path)
 		m_bin_data_size = ftell(p_file);				// 파일의 가리키는 현재 위치값을 얻음
 		mp_bin_data = (unsigned char*)::HeapAlloc(::GetProcessHeap(), HEAP_ZERO_MEMORY, m_bin_data_size);				// new unsigned char[m_bin_data_size];
 		fseek(p_file, 0, SEEK_SET);						// 파일 포인터를 처음으로 이동
-		if(mp_bin_data != NULL){ 
-			fread(mp_bin_data, m_bin_data_size, 1, p_file);						// 할당한 메모리에 파일을 1번만 읽어서 저장
-		}
+		fread(mp_bin_data, m_bin_data_size, 1, p_file);						// 할당한 메모리에 파일을 1번만 읽어서 저장
 		fclose(p_file);						// 파일 닫기
 
 		m_line_count = m_bin_data_size / m_data_count_per_line;						// 24로 나눈 몫이 줄 수가 되고

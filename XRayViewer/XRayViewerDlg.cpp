@@ -1,7 +1,3 @@
-
-// XRayViewerDlg.cpp : implementation file
-//
-
 #include "pch.h"
 #include "framework.h"
 #include "XRayViewer.h"
@@ -17,11 +13,15 @@ CXRayViewerDlg::CXRayViewerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_XRAYVIEWER_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	memset(m_enable_colors, 0, sizeof(m_enable_colors));
 }
 
 void CXRayViewerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_COLOR_LIST, m_color_list);
+	DDX_Control(pDX, IDC_SHOW_SELECT_COLOR, m_show_select_color);
 }
 
 BEGIN_MESSAGE_MAP(CXRayViewerDlg, CDialogEx)
@@ -30,6 +30,10 @@ BEGIN_MESSAGE_MAP(CXRayViewerDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CXRayViewerDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CXRayViewerDlg::OnBnClickedCancel)
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_GET_COLOR_BTN, &CXRayViewerDlg::OnBnClickedGetColorBtn)
+	ON_BN_CLICKED(IDC_SHOW_SELECT_COLOR, &CXRayViewerDlg::OnBnClickedShowSelectColor)
+	ON_LBN_SELCHANGE(IDC_COLOR_LIST, &CXRayViewerDlg::OnLbnSelchangeColorList)
+	ON_LBN_DBLCLK(IDC_COLOR_LIST, &CXRayViewerDlg::OnLbnDblclkColorList)
 END_MESSAGE_MAP()
 
 
@@ -45,51 +49,15 @@ BOOL CXRayViewerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	CClientDC dc(this);
-	m_mem_dc.CreateCompatibleDC(&dc);
-	m_mem_bmp.CreateCompatibleBitmap(&dc, IMG_WIDTH, IMG_HEIGHT);
-	m_mem_dc.SelectObject(&m_mem_bmp);
-
-	FILE* p_file = NULL;
-	// test1.img를 읽기 모드로 연다
-	if (fopen_s(&p_file, "test1.img", "rb") == 0) {
-		fseek(p_file, 0, SEEK_END);				// 파일의 끝으로 이동
-		int image_size = ftell(p_file);				// 크기 얻음
-		fseek(p_file, 0, SEEK_SET);					// 다시 처음으로 이동
-
-		unsigned short* p_16bit_data = new unsigned short[image_size];				// 파일 크기만큼 메모리 할당
-		fread(p_16bit_data, 1, image_size, p_file);					// 파일 1번 복사
-		fclose(p_file);
-
-		// 이미지 패턴 구성
-		unsigned char* p_image_pattern = new unsigned char[IMG_WIDTH * IMG_HEIGHT * 4];
-		unsigned short* p_src = p_16bit_data, color;
-		unsigned char* p_dest = p_image_pattern;
-		unsigned short int min = 0xFFFF, max = 0x0000, range;
-
-		// 16비트 이미지를 탐색하면서 색상의 최솟값과 최댓값 계산
-		for (int i = 0; i < image_size / 2; i++, p_src++) {
-			if (*p_src >= 50000) { *p_src = 250; }
-
-			if (min > *p_src) { min = *p_src; }
-			else if (max < *p_src) { max = *p_src; }
-		}
-		range = max - min;
-		p_src = (unsigned short*)p_16bit_data;
-
-		for (int i = 0; i < image_size / 2; i++, p_src++) {
-			color = (*p_src - min)*255 / range;
-			*p_dest++ = (unsigned char)color;					// blue
-			*p_dest++ = (unsigned char)color;					// green
-			*p_dest++ = (unsigned char)color;					// red
-			*p_dest++ = 0xFF;										// alpha
-		}
-
-		// 패턴을 비트맵에 저장
-		m_mem_bmp.SetBitmapBits(IMG_WIDTH * IMG_HEIGHT * 4, p_image_pattern);
-		delete[] p_16bit_data;
-		delete[] p_image_pattern;
-	}
+	CRect r;
+	// Picture Control 좌표를 얻어옴
+	GetDlgItem(IDC_VIEW_RECT)->GetWindowRect(r);
+	// 좌표를 현재 대화상자 기준으로 변환
+	ScreenToClient(r);
+	// 이미지를 보여줄 객체 생성
+	m_xray_view.Create(NULL, NULL, WS_CHILD | WS_VISIBLE, r, this, 25001);
+	// 'test1.img' 파일을 연다
+	m_xray_view.LoadXRayImage(_T("test1.img"));
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -100,9 +68,9 @@ BOOL CXRayViewerDlg::OnInitDialog()
 
 void CXRayViewerDlg::OnPaint()
 {
-	CPaintDC dc(this); // device context for painting
 	if (IsIconic())
 	{
+		CPaintDC dc(this); // device context for painting
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
@@ -119,23 +87,14 @@ void CXRayViewerDlg::OnPaint()
 	}
 	else
 	{
-		//CDialogEx::OnPaint();
-		CRect r;
-		GetClientRect(r);
-		dc.SetStretchBltMode(COLORONCOLOR);
-		// 이미지를 화면에 맞게 축소해서 출력
-		dc.StretchBlt(0, 0, r.Width(), r.Height(), &m_mem_dc, 0, 0, IMG_WIDTH, IMG_HEIGHT, SRCCOPY);
+		CDialogEx::OnPaint();
 	}
 }
 
-// The system calls this function to obtain the cursor to display while the user drags
-//  the minimized window.
 HCURSOR CXRayViewerDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-
-
 
 void CXRayViewerDlg::OnBnClickedOk()
 {
@@ -143,19 +102,102 @@ void CXRayViewerDlg::OnBnClickedOk()
 	//CDialogEx::OnOK();
 }
 
-
 void CXRayViewerDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnCancel();
 }
 
-
 void CXRayViewerDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
 	// TODO: Add your message handler code here
-	m_mem_bmp.DeleteObject();
-	m_mem_dc.DeleteDC();
+	
+}
+
+// '*' 문자가 붙어있으면 색상 제외
+// '*' 문자로 시작하는 문자열은 0을 대입하고 그렇지 않으면 1을 대입하여 구분
+void CXRayViewerDlg::MakeEnableColorTable()
+{
+	CString str;
+	// 256개의 색상을 모두 체크
+	for (int i = 0; i < 256; i++) {
+		// 실제로 표시된 색상인지 확인
+		if (m_color_list.GetItemData(i)) {
+			// 텍스트를 읽음
+			m_color_list.GetText(i, str);
+			// 이름 앞에 '*' 문자가 있는지 체크
+			if (str[0] == '*') { m_enable_colors[i] = 0; }				// 비활성
+			else { m_enable_colors[i] = 1; }									// 활성
+		}
+		else {
+			m_enable_colors[i] = 0;						// 비활성
+		}
+	}
+}
+
+
+
+void CXRayViewerDlg::OnBnClickedGetColorBtn()
+{
+	// TODO: Add your control notification handler code here
+	// X-Ray 이미지에 사용된 색상의 실제 사용 갯수를 리스트 박에서 출력
+	m_xray_view.SetColorDataToListBox(&m_color_list);
+	// 리스트 박스에 출력된 '*' 문자를 기준으로 색상 비활성화
+	MakeEnableColorTable();
+}
+
+void CXRayViewerDlg::OnBnClickedShowSelectColor()
+{
+	// TODO: Add your control notification handler code here
+	OnLbnSelchangeColorList();
+}
+
+// 리스트박스 : 이벤트 핸들러 추가
+// 선택 인덱스 색상 실시간 갱신
+void CXRayViewerDlg::OnLbnSelchangeColorList()
+{
+	// TODO: Add your control notification handler code here
+	// 선택한 인덱스를 얻음
+	int index = m_color_list.GetCurSel();
+	if (index != LB_ERR) {
+		if (m_show_select_color.GetCheck()) {
+			// 선택 색상을 노란색으로 표시하는 경우
+			m_xray_view.ChangeSelectColorImage(m_enable_colors, index, m_color_list.GetItemData(index));
+		}
+		else {
+			// 선택 색상을 표시하지 않는 경우
+			m_xray_view.UpdateImage(m_enable_colors);
+		}
+	}
+}
+
+// 리스트박스 : 이벤트 핸들러 추가
+void CXRayViewerDlg::OnLbnDblclkColorList()
+{
+	// TODO: Add your control notification handler code here
+		// 선택한 색상의 위치값을 얻어옴
+	int index = m_color_list.GetCurSel();
+	// 실제 이미지에 사용된 색상인지 확인
+	if (index != LB_ERR && m_color_list.GetItemData(index)) {
+		CString str;
+		m_color_list.GetText(index, str);					// 색상 정보를 읽음
+
+		// '*' 문자로 시작하면 '*' 문자를 삭제, '*' 문자가 없으면 '*' 문자 추가
+		if (str[0] == '*') { str.Delete(0, 1); }
+		else { str = '*' + str; }
+
+		// 색상 포함 여부 토글 (사용->사용안함, 사용안함->사용)
+		m_enable_colors[index] = !m_enable_colors[index];
+
+		int color_count = m_color_list.GetItemData(index);
+		m_color_list.DeleteString(index);				// 색상 제거
+		m_color_list.InsertString(index, str);						// 색상 추가
+		m_color_list.SetItemData(index, color_count);				// 색상 갯수 저장
+		m_color_list.SetCurSel(index);						// 추가된 항목을 선택항목으로 갱신
+
+		m_xray_view.UpdateRange(m_enable_colors);
+		OnLbnSelchangeColorList();
+	}
 }
