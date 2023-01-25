@@ -104,6 +104,20 @@ void DCP::Rectangle(INT a_sx, INT a_sy, INT a_ex, INT a_ey)
 	mp_graphic->DrawRectangle(mp_pen, a_sx, a_sy, a_ex - a_sx - 1, a_ey - a_sy - 1);
 }
 
+// 사각형을 그린다 (펜색 지정, 브러시색 지정)
+void DCP::Rectangle(INT a_sx, INT a_sy, INT a_ex, INT a_ey, Gdiplus::ARGB a_pen_color, Gdiplus::ARGB a_fill_color)
+{
+	// 내부 채우기
+	m_temp_color.SetValue(a_fill_color);
+	((Gdiplus::SolidBrush*)mp_brush)->SetColor(m_temp_color);
+	mp_graphic->FillRectangle(mp_brush, a_sx, a_sy, a_ex - a_sx, a_ey - a_sy);
+
+	// 테두리 그리기
+	m_temp_color.SetValue(a_pen_color);
+	mp_pen->SetColor(m_temp_color);
+	mp_graphic->DrawRectangle(mp_pen, a_sx, a_sy, a_ex - a_sx - 1, a_ey - a_sy - 1);
+}
+
 // 지정한 색상으로 사각형을 그린다 (채우기)
 void DCP::FillSolidRect(INT a_sx, INT a_sy, INT a_ex, INT a_ey, Gdiplus::ARGB a_color)
 {
@@ -250,12 +264,19 @@ void DCP::SetTextColor(Gdiplus::ARGB a_color)
 	((Gdiplus::SolidBrush*)mp_font_brush)->SetColor(m_temp_color);
 }
 
-// 폰트 객체 재설정
+// 폰트 글꼴, 크기 재설정
 Gdiplus::Font* DCP::SelectObject(Gdiplus::Font* ap_font)
 {
 	Gdiplus::Font* p_old_font = mp_font;
 	mp_font = ap_font;
 	return p_old_font;					// 이전 폰트 객체의 주소를 반환
+}
+
+// 폰트 글꼴, 크기 재설정
+void DCP::SelectObject(const TCHAR* ap_style, INT a_size)
+{
+	delete mp_font;
+	mp_font = new Gdiplus::Font(ap_style, a_size);
 }
 
 // 문자열 출력 (색상)
@@ -279,12 +300,20 @@ void DCP::Draw(Gdiplus::Image* ap_image, INT a_x, INT a_y)
 	mp_graphic->DrawImage(ap_image, a_x, a_y);
 }
 
-// 경로를 받아 해당 이미지 출력
+// 경로를 받아 해당 이미지 출력 (원본 크기)
 void DCP::Draw(TCHAR* a_file_path, INT a_x, INT a_y)
 {
 	Gdiplus::Image* image = Gdiplus::Image::FromFile(a_file_path);
 	// 이미지 출력
 	mp_graphic->DrawImage(image, a_x, a_y);
+}
+
+// 경로를 받아 원하는 크기로 이미지 출력
+void DCP::Draw(TCHAR* a_file_path, INT a_x, INT a_y, INT a_width, INT a_height)
+{
+	Gdiplus::Image* image = Gdiplus::Image::FromFile(a_file_path);
+	// 이미지 출력
+	mp_graphic->DrawImage(image, Gdiplus::Rect(a_x, a_y, a_width, a_height));
 }
 
 // DC에 현재 이미지를 출력

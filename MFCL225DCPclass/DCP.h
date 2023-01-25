@@ -11,6 +11,10 @@
 // 마지막 변경 날짜 : 2022년 12월 9일 (금요일)
 
 #include <gdiplus.h>
+using namespace Gdiplus;
+
+// MFC는 lib 필요없음
+//#pragma comment(lib, "gdiplus.lib")
 
 #define RGB24(r,g,b)(0xFF000000 | (r << 16) | (g << 8) | b)
 #define RGB32(a,r,g,b)((a<<24)|(r<<16)|(g<<8)|b)
@@ -45,6 +49,7 @@ public:
 
 	// 사각형
 	void Rectangle(INT a_sx, INT a_sy, INT a_ex, INT a_ey);
+	void Rectangle(INT a_sx, INT a_sy, INT a_ex, INT a_ey, Gdiplus::ARGB a_pen_color, Gdiplus::ARGB a_fill_color);
 	void FillSolidRect(INT a_sx, INT a_sy, INT a_ex, INT a_ey, Gdiplus::ARGB a_color);
 	void FillSolidRect(INT a_sx, INT a_sy, INT a_ex, INT a_ey);
 	void DrawRect(INT a_sx, INT a_sy, INT a_ex, INT a_ey, Gdiplus::ARGB a_color);
@@ -73,6 +78,7 @@ public:
 	void SetTextColor(Gdiplus::ARGB a_color);
 	// 폰트 객체 재설정 , 이전 폰트 객체의 주소를 반환함
 	Gdiplus::Font* SelectObject(Gdiplus::Font* ap_font);
+	void SelectObject(const TCHAR* ap_style, INT a_size);
 
 	// 텍스트 출력 (색상부여)
 	void GpTextOut(INT a_x, INT a_y, Gdiplus::ARGB a_color, const TCHAR* ap_str, INT a_str_len);
@@ -81,6 +87,12 @@ public:
 
 	// 이미지 객체 출력
 	void Draw(Gdiplus::Image* ap_image, INT a_x, INT a_y);
+
+	// 경로를 받아 해당 이미지 출력 (원본 크기)
+	void Draw(TCHAR* a_file_path, INT a_x, INT a_y);
+	// 경로를 받아 원하는 크기로 이미지 출력
+	void Draw(TCHAR* a_file_path, INT a_x, INT a_y, INT a_width, INT a_height);
+
 	// DC에 현재 이미지 출력
 	void Draw(HDC ah_dc, INT a_x = 0, INT a_y = 0);
 
@@ -104,9 +116,6 @@ public:
 
 	// Arc 그리기 (테두리)
 	void DrawArc(Gdiplus::REAL a_x, Gdiplus::REAL a_y, Gdiplus::REAL a_cx, Gdiplus::REAL a_cy, Gdiplus::REAL a_start_angle, Gdiplus::REAL a_sweep_angle);
-
-	// 이미지 경로를 넘겨 출력
-	void Draw(TCHAR* a_file_path, INT a_x, INT a_y);
 };
 
 #endif
