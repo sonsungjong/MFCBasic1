@@ -3,6 +3,9 @@
 // X-Ray 이미지를 보여주기 위한 MFC클래스
 #include "XRayView.h"
 
+// 속성
+// Selection : Extend
+
 // CXRayViewerDlg dialog
 class CXRayViewerDlg : public CDialogEx
 {
@@ -16,6 +19,8 @@ public:
 
 	// 사용자가 표시 해제한 색상을 테이블로 구성
 	void MakeEnableColorTable();
+	void ChangeListBoxItemString(int a_index, const TCHAR* ap_string);
+	void ImageUpdateAccordingToColorRangeChange();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -47,4 +52,8 @@ public:
 	afx_msg void OnBnClickedShowSelectColor();
 	afx_msg void OnLbnSelchangeColorList();
 	afx_msg void OnLbnDblclkColorList();
+	afx_msg void OnBnClickedSelectAllBtn();
+	afx_msg void OnBnClickedToggleBtn();
+	afx_msg void OnBnClickedColorEnableBtn();
+	afx_msg void OnBnClickedColorDisableBtn();
 };

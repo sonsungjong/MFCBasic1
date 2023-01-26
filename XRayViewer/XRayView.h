@@ -11,6 +11,17 @@ private:
 	CDC m_mem_dc;							// 화면 출력을 위한 DC
 	CBitmap m_mem_bmp;					// Raw파일을 비트맵 이미지로 변경하기 위한 비트맵
 
+	// 확대축소 깜빡임을 제거
+	CImage m_draw_image;
+	CDC m_draw_dc;
+
+	CRect m_client_rect;
+	unsigned char m_zoom_level;
+	int m_x, m_y, m_cx, m_cy;
+
+	unsigned char m_is_clicked;
+	CPoint m_clicked_pos;
+
 	// 16비트 이미지패턴을 저장할 메모리 주소의 포인터
 	unsigned short* mp_16bit_data;
 	// 화면 출력용 32비트 이미지 패턴을 저장할 메모리 주소의 포인터
@@ -43,12 +54,22 @@ public:
 	// 노란색 표시
 	void ChangeSelectColorImage(unsigned char a_enable_colors[], int a_color_index, int a_color_count);
 
+	inline void DpToLp(float a_dx, float a_dy, float* ap_lx, float* ap_ly);
+	inline void LpToDp(float a_lx, float a_ly, float* ap_dx, float* ap_dy);
+
+	void MakeDisplayImageFromPattern(unsigned char* ap_pattern);
+	void MakeDisplayImage();
+
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 

@@ -1,12 +1,6 @@
-// XRayView.cpp : implementation file
-//
-
 #include "pch.h"
 #include "XRayViewer.h"
 #include "XRayView.h"
-
-
-// XRayView
 
 IMPLEMENT_DYNAMIC(XRayView, CWnd)
 
@@ -19,6 +13,12 @@ XRayView::XRayView()
 	m_max = 0x0000;
 	m_range = 0;
 	memset(m_color_table, 0, sizeof(m_color_table));
+
+	m_zoom_level = 0;
+	m_x = m_y = 0;
+	m_cx = IMG_WIDTH / 3;
+	m_cy = IMG_HEIGHT / 3;
+	m_is_clicked = 0;
 }
 
 XRayView::~XRayView()
@@ -30,7 +30,33 @@ BEGIN_MESSAGE_MAP(XRayView, CWnd)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_PAINT()
+	ON_WM_MOUSEWHEEL()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
+
+/*
+장치 좌표를 논리 좌표로 변경하는 코드
+logic_width : device_width = lx : dx
+lx = dx * logic_width / device_width
+*/
+void XRayView::DpToLp(float a_dx, float a_dy, float* ap_lx, float* ap_ly)
+{
+	*ap_lx = a_dx * IMG_WIDTH / m_cx;
+	*ap_ly = a_dy * IMG_HEIGHT / m_cy;
+}
+
+/*
+논리 좌표를 장치 좌표로 변경하는 코드
+logic_width : device_width = lx : dx
+dx = lx * device_width / logic_width
+*/
+void XRayView::LpToDp(float a_lx, float a_ly, float* ap_dx, float* ap_dy)
+{
+	*ap_dx = a_lx * m_cx / IMG_WIDTH;
+	*ap_dy = a_ly * m_cy / IMG_HEIGHT;
+}
 
 int XRayView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -38,10 +64,16 @@ int XRayView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// TODO:  Add your specialized creation code here
+	GetClientRect(m_client_rect);
+	m_draw_image.Create(m_client_rect.Width(), m_client_rect.Height(), 32);
+	m_draw_dc.Attach(m_draw_image.GetDC());
+	m_draw_dc.SetStretchBltMode(COLORONCOLOR);
+	m_draw_dc.SelectStockObject(NULL_BRUSH);
+	m_draw_dc.SelectStockObject(DC_PEN);
+	m_draw_dc.SetDCPenColor(RGB(0, 255, 0));
 
 	return 0;
 }
-
 
 void XRayView::OnDestroy()
 {
@@ -55,6 +87,10 @@ void XRayView::OnDestroy()
 		m_mem_bmp.DeleteObject();
 		m_mem_dc.DeleteDC();
 	}
+
+	m_draw_dc.Detach();
+	m_draw_image.ReleaseDC();
+	m_draw_image.Destroy();
 }
 
 
@@ -62,10 +98,7 @@ void XRayView::OnPaint()
 {
 	CPaintDC dc(this);
 
-	CRect r;
-	GetClientRect(r);
-	dc.SetStretchBltMode(COLORONCOLOR);
-	dc.StretchBlt(0, 0, r.Width(), r.Height(), &m_mem_dc, 0, 0, IMG_WIDTH, IMG_HEIGHT, SRCCOPY);
+	m_draw_image.Draw(dc, 0, 0);
 }
 
 int XRayView::LoadXRayImage(const TCHAR* ap_image_path)
@@ -98,7 +131,7 @@ int XRayView::LoadXRayImage(const TCHAR* ap_image_path)
 			*p_dest++ = 0xFF;									// alpha
 		}
 		// 비트맵에 저장
-		m_mem_bmp.SetBitmapBits(IMG_WIDTH * IMG_HEIGHT * 4, mp_image_pattern);
+		MakeDisplayImageFromPattern(mp_image_pattern);
 		return 1;
 	}
 	return 0;
@@ -193,8 +226,7 @@ void XRayView::MakeNormalPattern(unsigned char a_enable_colors[])
 void XRayView::UpdateImage(unsigned char a_enable_colors[])
 {
 	MakeNormalPattern(a_enable_colors);
-	m_mem_bmp.SetBitmapBits(IMG_WIDTH * IMG_HEIGHT * 4, mp_image_pattern);
-	Invalidate(0);
+	MakeDisplayImageFromPattern(mp_image_pattern);
 }
 
 void XRayView::ChangeSelectColorImage(unsigned char a_enable_colors[], int a_color_index, int a_color_count)
@@ -210,9 +242,12 @@ void XRayView::ChangeSelectColorImage(unsigned char a_enable_colors[], int a_col
 				p_dest += 4;				// 한 점을 지나간다
 			}
 			else {
-				if (m_min >= *p_src) { color = 0; }
-				else if (m_max <= *p_src) { color = 255; }
-				else { color = (*p_src - m_min) * 255 / m_range; }
+				if (a_enable_colors[(*p_src) / 256]) {
+					if (m_min >= *p_src) { color = 0; }
+					else if (m_max <= *p_src) { color = 255; }
+					else { color = (*p_src - m_min) * 255 / m_range; }
+				}
+				else { color = 0; }
 
 				// RGB에 모두 같은 색상을 대입하면 흑백이 된다
 				*p_dest++ = (unsigned char)color;						// blue
@@ -226,7 +261,101 @@ void XRayView::ChangeSelectColorImage(unsigned char a_enable_colors[], int a_col
 		MakeNormalPattern(a_enable_colors);
 	}
 
-	// 구성된 비트패턴을 비트맵에 저장
-	m_mem_bmp.SetBitmapBits(IMG_WIDTH * IMG_HEIGHT * 4, mp_image_pattern);
-	Invalidate(0);
+	MakeDisplayImageFromPattern(mp_image_pattern);
+}
+
+
+void XRayView::MakeDisplayImageFromPattern(unsigned char* ap_pattern)
+{
+	// ap_pattern -> m_mem_bmp -> m_draw_image
+	m_mem_bmp.SetBitmapBits(IMG_WIDTH * IMG_HEIGHT * 4, ap_pattern);
+	MakeDisplayImage();
+}
+
+void XRayView::MakeDisplayImage()
+{
+	// 검은색으로 채우고, 이미지를 그린다
+	m_draw_dc.FillSolidRect(m_client_rect, RGB(0, 0, 0));
+	m_draw_dc.StretchBlt(m_x, m_y, m_cx, m_cy, &m_mem_dc, 0, 0, IMG_WIDTH, IMG_HEIGHT, SRCCOPY);
+	m_draw_dc.Rectangle(m_x, m_y, m_x + m_cx, m_y + m_cy);
+	Invalidate(FALSE);
+}
+
+
+BOOL XRayView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: Add your message handler code here and/or call default
+	int old_zoom_level = m_zoom_level;				// 0 ~ 10
+	if (zDelta < 0) {
+		// 축소
+		if (m_zoom_level > 0) { m_zoom_level--; }
+	}
+	else {
+		// 확대
+		if (m_zoom_level < 10) { m_zoom_level++; }
+	}
+
+	if (old_zoom_level != m_zoom_level) {
+		POINT position;
+		GetCursorPos(&position);
+		::ScreenToClient(m_hWnd, &position);
+		float mouse_x = (float)position.x;
+		float mouse_y = (float)position.y;
+		float lx, ly, dx, dy;
+
+		DpToLp(mouse_x - m_x, mouse_y - m_y, &lx, &ly);
+		m_cx = int(IMG_WIDTH / (3 - 0.2f * m_zoom_level));
+		m_cy = int(IMG_HEIGHT / (3 - 0.2f * m_zoom_level));
+		LpToDp(lx, ly, &dx, &dy);
+
+		m_x = int(mouse_x - dx);
+		m_y = int(mouse_y - dy);
+		// 변경된 배율로 다시 그린다
+		MakeDisplayImage();
+	}
+
+	return CWnd::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+
+void XRayView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (!m_is_clicked) {
+		m_clicked_pos = point;
+		m_is_clicked = 1;
+		SetCapture();
+	}
+
+	CWnd::OnLButtonDown(nFlags, point);
+}
+
+
+void XRayView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (m_is_clicked == 1) {
+		ReleaseCapture();
+		m_is_clicked = 0;
+	}
+
+	CWnd::OnLButtonUp(nFlags, point);
+}
+
+
+void XRayView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (m_is_clicked == 1) {
+		// clicked_pos 에 저장된 좌표와 현재 마우스 좌표를 빼서 이동거리를 구한다
+		// 이동거리만큼 출력의 시작위치를 변경한다 (이동)
+		m_x += (short)point.x - (short)m_clicked_pos.x;
+		m_y += (short)point.y - (short)m_clicked_pos.y;
+		m_clicked_pos = point;
+
+		MakeDisplayImage();
+		UpdateWindow();
+	}
+
+	CWnd::OnMouseMove(nFlags, point);
 }
