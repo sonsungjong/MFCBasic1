@@ -46,7 +46,7 @@ public:
 	afx_msg void OnDestroy();
 private:
 	CListBox m_color_list;
-	CButton m_show_select_color;
+//	CButton m_show_select_color;
 public:
 	afx_msg void OnBnClickedGetColorBtn();
 	afx_msg void OnBnClickedShowSelectColor();

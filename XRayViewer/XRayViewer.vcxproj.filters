@@ -36,6 +36,15 @@
     <ClInclude Include="XRayView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TW_Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TW_ToolBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TW_ListBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XRayViewer.cpp">
@@ -48,6 +57,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="XRayView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TW_Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TW_ToolBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TW_ListBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

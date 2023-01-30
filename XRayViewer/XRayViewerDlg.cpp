@@ -21,7 +21,7 @@ void CXRayViewerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COLOR_LIST, m_color_list);
-	DDX_Control(pDX, IDC_SHOW_SELECT_COLOR, m_show_select_color);
+	//DDX_Control(pDX, IDC_SHOW_SELECT_COLOR, m_show_select_color);
 }
 
 BEGIN_MESSAGE_MAP(CXRayViewerDlg, CDialogEx)
@@ -30,11 +30,11 @@ BEGIN_MESSAGE_MAP(CXRayViewerDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CXRayViewerDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CXRayViewerDlg::OnBnClickedCancel)
 	ON_WM_DESTROY()
-	ON_BN_CLICKED(IDC_GET_COLOR_BTN, &CXRayViewerDlg::OnBnClickedGetColorBtn)
-	ON_BN_CLICKED(IDC_SHOW_SELECT_COLOR, &CXRayViewerDlg::OnBnClickedShowSelectColor)
-	ON_LBN_SELCHANGE(IDC_COLOR_LIST, &CXRayViewerDlg::OnLbnSelchangeColorList)
 	ON_LBN_DBLCLK(IDC_COLOR_LIST, &CXRayViewerDlg::OnLbnDblclkColorList)
+	ON_LBN_SELCHANGE(IDC_COLOR_LIST, &CXRayViewerDlg::OnLbnSelchangeColorList)
+	ON_BN_CLICKED(IDC_SHOW_SELECT_COLOR, &CXRayViewerDlg::OnBnClickedShowSelectColor)
 	ON_BN_CLICKED(IDC_SELECT_ALL_BTN, &CXRayViewerDlg::OnBnClickedSelectAllBtn)
+	ON_BN_CLICKED(IDC_GET_COLOR_BTN, &CXRayViewerDlg::OnBnClickedGetColorBtn)
 	ON_BN_CLICKED(IDC_TOGGLE_BTN, &CXRayViewerDlg::OnBnClickedToggleBtn)
 	ON_BN_CLICKED(IDC_COLOR_ENABLE_BTN, &CXRayViewerDlg::OnBnClickedColorEnableBtn)
 	ON_BN_CLICKED(IDC_COLOR_DISABLE_BTN, &CXRayViewerDlg::OnBnClickedColorDisableBtn)
@@ -165,16 +165,16 @@ void CXRayViewerDlg::OnLbnSelchangeColorList()
 	// TODO: Add your control notification handler code here
 	// 선택한 인덱스를 얻음
 	int index = m_color_list.GetCurSel();
-	if (index != LB_ERR) {
-		if (m_show_select_color.GetCheck()) {
-			// 선택 색상을 노란색으로 표시하는 경우
-			m_xray_view.ChangeSelectColorImage(m_enable_colors, index, m_color_list.GetItemData(index));
-		}
-		else {
-			// 선택 색상을 표시하지 않는 경우
-			m_xray_view.UpdateImage(m_enable_colors);
-		}
-	}
+	//if (index != LB_ERR) {
+	//	if (m_show_select_color.GetCheck()) {
+	//		// 선택 색상을 노란색으로 표시하는 경우
+	//		m_xray_view.ChangeSelectColorImage(m_enable_colors, index, m_color_list.GetItemData(index));
+	//	}
+	//	else {
+	//		// 선택 색상을 표시하지 않는 경우
+	//		m_xray_view.UpdateImage(m_enable_colors);
+	//	}
+	//}
 }
 
 // 리스트박스 : 이벤트 핸들러 추가
