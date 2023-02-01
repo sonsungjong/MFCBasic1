@@ -20,16 +20,17 @@ TW_ToolBar::~TW_ToolBar()
 
 void TW_ToolBar::CreateToolBar(int a_rect_id, CWnd* ap_parent, int a_ctrl_id)
 {
-	CRect r;
+	CRect rect;
 
-	// a_rect_id의 컨트롤 위치를 계산
-	ap_parent->GetDlgItem(a_rect_id)->GetWindowRect(r);
-	ap_parent->ScreenToClient(r);
+	// Picture Control 위치를 계산
+	ap_parent->GetDlgItem(a_rect_id)->GetWindowRect(rect);
+	// 클라이언트 다이얼로그 기준으로 좌표를 잡음
+	ap_parent->ScreenToClient(rect);
 
 	// 오른쪽으로 약간의 여백이 생기기 때문에 오른쪽으로 조금 더 크게 보정한다
-	r.right += 2;
+	rect.right += 2;
 	// 생성
-	Create(NULL, NULL, WS_CHILD | WS_VISIBLE, r, ap_parent, a_ctrl_id);
+	Create(NULL, NULL, WS_CHILD | WS_VISIBLE, rect, ap_parent, a_ctrl_id);
 }
 
 void TW_ToolBar::AddButton(const TCHAR* ap_name, int a_command_id, int a_bmp_up_id, int a_bmp_down_id)
@@ -205,56 +206,153 @@ END_MESSAGE_MAP()
 
 
 // TW_ToolBar message handlers
-
-
-
-
-void TW_ToolBar::OnPaint()
-{
-	CPaintDC dc(this); // device context for painting
-					   // TODO: Add your message handler code here
-					   // Do not call CWnd::OnPaint() for painting messages
-}
-
-
 int TW_ToolBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	// TODO:  Add your specialized creation code here
+	CClientDC dc(this);
+	// 버튼용 메모리DC
+	m_mem_dc.CreateCompatibleDC(&dc);
 
+	// 사각형 좌표를 얻는다
+	GetClientRect(m_rect);
+	// 폰트를 정한다
+	m_tool_font.CreateFont(15, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, _T("맑은 고딕"));
+
+	UpdateButtonInfo();					// 등록된 버튼들의 위치 정보 구성
 	return 0;
+}
+
+
+
+
+void TW_ToolBar::OnPaint()
+{
+	CPaintDC dc(this); 
+
+	dc.SelectStockObject(DC_BRUSH);				// 사용자 지정 브러시
+	dc.SetDCBrushColor(m_bk_color);
+	
+	dc.SelectStockObject(DC_PEN);					// 사용자 지정 펜
+	dc.SetDCPenColor(m_bk_color);
+
+	dc.Rectangle(m_rect);				// 영역에 사각형을 그린다
+
+	dc.SelectStockObject(NULL_BRUSH);				// 브러시 사용안함
+	dc.SetDCPenColor(m_border_color);				// 펜 색 변경
+
+	// 안쪽 사각형 (내부 테두리 추가)
+	dc.Rectangle(m_rect.left + 1, m_rect.top + 1, m_rect.right - 1, m_rect.bottom - 1);
+
+	CRect rect;
+	TipsCommandData* p_btn = m_btn_list;				// 첫번째 버튼의 주소를 대입
+
+	dc.SelectObject(&m_tool_font);				// 폰트 변경
+	dc.SetBkMode(TRANSPARENT);				// 폰트 배경 투명처리
+
+	for (int i = 0; i < m_btn_count; i++, p_btn++) {
+		rect.SetRect(p_btn->x, 3, p_btn->x + p_btn->width, m_rect.bottom - 8);				// left,top,right,bottom
+		if (p_btn->p_up_bitmap != NULL) {					// 이미지가 로드된 상태면
+			m_mem_dc.SelectObject(p_btn->p_up_bitmap);				// 메모리DC에 연결
+			dc.BitBlt(p_btn->x + p_btn->width / 2 - 16, 10, 32, 32, &m_mem_dc, 0, 0, SRCCOPY);			// 화면 출력
+		}
+
+		// 문자열을 버튼 위치에 출력
+		dc.SetTextColor(m_text_color);
+		dc.DrawText(p_btn->p_name, rect, DT_CENTER | DT_BOTTOM | DT_SINGLELINE);
+	}
 }
 
 
 void TW_ToolBar::OnDestroy()
 {
-	CWnd::OnDestroy();
 
 	// TODO: Add your message handler code here
+	// 버튼 이름을 저장한 메모리해제
+	for (int i = 0; i < m_btn_count; i++) {
+		delete[] m_btn_list[i].p_name;
+
+		if (m_btn_list[i].p_up_bitmap != NULL) {
+			m_btn_list[i].p_up_bitmap->DeleteObject();				// 비트맵 제거
+			delete m_btn_list[i].p_up_bitmap;
+
+			m_btn_list[i].p_down_bitmap->DeleteObject();
+			delete m_btn_list[i].p_down_bitmap;
+		}
+	}
+	m_tool_font.DeleteObject();			// 폰트 제거
+	m_mem_dc.DeleteDC();					// 메모리DC 제거
+
+	CWnd::OnDestroy();
 }
 
 
 void TW_ToolBar::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
+	if (!m_clicked_flag && m_select_index != -1) {
+		// 클릭된 상태가 아니라면 시작 가능
+		m_clicked_flag = 1;				// 클릭 상태로 변경
+		TipsCommandData* p_btn = m_btn_list + m_select_index;			// 선택 버튼 정보
+
+		// 선택한 버튼의 영역을 계산
+		m_select_rect.SetRect(p_btn->x + 4, 4, p_btn->x + p_btn->width - 4, m_rect.bottom - 4);
+		// 눌러진 모습으로 교체
+		DrawPushButton(p_btn);
+		// 마우스가 영역을 벗어나도 작동할 수 있게
+		SetCapture();
+	}
 
 	CWnd::OnLButtonDown(nFlags, point);
 }
 
+void TW_ToolBar::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (!m_clicked_flag) {
+		// 마우스가 클릭이 안되어 있으면
+		CheckButtonInToolBar(point);				// 버튼의 위치만
+	}
+	else {
+		// 클릭 상태면
+		if (m_select_rect.PtInRect(point)) {
+			if (m_clicked_flag == 2) {
+				m_clicked_flag = 1;				// 영역 밖에 있다가 영역 안으로 들어오면 클릭플래그 변경
+				DrawPushButton(m_btn_list + m_select_index);			// 눌러진 모습으로 교체
+			}
+		}
+		else {
+			if (m_clicked_flag == 1) {
+				m_clicked_flag = 2;				// 클릭 후 버튼 영역을 벗어났을 경우
+				DrawPopButton(m_btn_list + m_select_index);					// 버튼을 기본 모습으로 교체
+			}
+		}
+	}
+
+	CWnd::OnMouseMove(nFlags, point);
+}
 
 void TW_ToolBar::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
+	if (m_clicked_flag) {
+		// 클릭되었다가 띄었을 경우
+		m_clicked_flag = 0;
+		ReleaseCapture();
+
+		TipsCommandData* p_btn = m_btn_list + m_select_index;				// 선택한 버튼의 정보
+		DrawPopButton(p_btn);					// 기본 버튼의 모습으로 교체
+
+		if (m_select_rect.PtInRect(point)) {
+			// 버튼 영역 내에서 마우스를 띄었을 때만
+			// 버튼을 눌렀다는 메시지를 부모 윈도우에 WM_COMMAND로 보낸다
+			GetParent()->PostMessage(WM_COMMAND, MAKEWPARAM(p_btn->command_id, 0), 0);
+		}
+	}
 
 	CWnd::OnLButtonUp(nFlags, point);
 }
 
 
-void TW_ToolBar::OnMouseMove(UINT nFlags, CPoint point)
-{
-	// TODO: Add your message handler code here and/or call default
-
-	CWnd::OnMouseMove(nFlags, point);
-}

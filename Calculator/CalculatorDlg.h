@@ -1,9 +1,4 @@
-
-// CalculatorDlg.h : header file
-//
-
 #pragma once
-
 
 // CCalculatorDlg dialog
 class CCalculatorDlg : public CDialogEx
