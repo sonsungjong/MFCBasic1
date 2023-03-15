@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="XRayViewer.h">
+    <ClInclude Include="GridTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XRayViewerDlg.h">
+    <ClInclude Include="GridTableDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -33,54 +33,30 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XRayView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TW_Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TW_ToolBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TW_ListBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="XRayViewer.cpp">
+    <ClCompile Include="GridTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XRayViewerDlg.cpp">
+    <ClCompile Include="GridTableDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XRayView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TW_Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TW_ToolBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TW_ListBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="XRayViewer.rc">
+    <ResourceCompile Include="GridTable.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\XRayViewer.rc2">
+    <None Include="res\GridTable.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\XRayViewer.ico">
+    <Image Include="res\GridTable.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

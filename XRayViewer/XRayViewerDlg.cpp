@@ -21,7 +21,7 @@ void CXRayViewerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COLOR_LIST, m_color_list);
-	DDX_Control(pDX, IDC_SHOW_SELECT_COLOR, m_show_select_color);
+	//DDX_Control(pDX, IDC_SHOW_SELECT_COLOR, m_show_select_color);
 }
 
 BEGIN_MESSAGE_MAP(CXRayViewerDlg, CDialogEx)
@@ -30,10 +30,14 @@ BEGIN_MESSAGE_MAP(CXRayViewerDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CXRayViewerDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CXRayViewerDlg::OnBnClickedCancel)
 	ON_WM_DESTROY()
-	ON_BN_CLICKED(IDC_GET_COLOR_BTN, &CXRayViewerDlg::OnBnClickedGetColorBtn)
-	ON_BN_CLICKED(IDC_SHOW_SELECT_COLOR, &CXRayViewerDlg::OnBnClickedShowSelectColor)
-	ON_LBN_SELCHANGE(IDC_COLOR_LIST, &CXRayViewerDlg::OnLbnSelchangeColorList)
 	ON_LBN_DBLCLK(IDC_COLOR_LIST, &CXRayViewerDlg::OnLbnDblclkColorList)
+	ON_LBN_SELCHANGE(IDC_COLOR_LIST, &CXRayViewerDlg::OnLbnSelchangeColorList)
+	ON_BN_CLICKED(IDC_SHOW_SELECT_COLOR, &CXRayViewerDlg::OnBnClickedShowSelectColor)
+	ON_BN_CLICKED(IDC_SELECT_ALL_BTN, &CXRayViewerDlg::OnBnClickedSelectAllBtn)
+	ON_BN_CLICKED(IDC_GET_COLOR_BTN, &CXRayViewerDlg::OnBnClickedGetColorBtn)
+	ON_BN_CLICKED(IDC_TOGGLE_BTN, &CXRayViewerDlg::OnBnClickedToggleBtn)
+	ON_BN_CLICKED(IDC_COLOR_ENABLE_BTN, &CXRayViewerDlg::OnBnClickedColorEnableBtn)
+	ON_BN_CLICKED(IDC_COLOR_DISABLE_BTN, &CXRayViewerDlg::OnBnClickedColorDisableBtn)
 END_MESSAGE_MAP()
 
 
@@ -161,16 +165,16 @@ void CXRayViewerDlg::OnLbnSelchangeColorList()
 	// TODO: Add your control notification handler code here
 	// 선택한 인덱스를 얻음
 	int index = m_color_list.GetCurSel();
-	if (index != LB_ERR) {
-		if (m_show_select_color.GetCheck()) {
-			// 선택 색상을 노란색으로 표시하는 경우
-			m_xray_view.ChangeSelectColorImage(m_enable_colors, index, m_color_list.GetItemData(index));
-		}
-		else {
-			// 선택 색상을 표시하지 않는 경우
-			m_xray_view.UpdateImage(m_enable_colors);
-		}
-	}
+	//if (index != LB_ERR) {
+	//	if (m_show_select_color.GetCheck()) {
+	//		// 선택 색상을 노란색으로 표시하는 경우
+	//		m_xray_view.ChangeSelectColorImage(m_enable_colors, index, m_color_list.GetItemData(index));
+	//	}
+	//	else {
+	//		// 선택 색상을 표시하지 않는 경우
+	//		m_xray_view.UpdateImage(m_enable_colors);
+	//	}
+	//}
 }
 
 // 리스트박스 : 이벤트 핸들러 추가
@@ -200,4 +204,91 @@ void CXRayViewerDlg::OnLbnDblclkColorList()
 		m_xray_view.UpdateRange(m_enable_colors);
 		OnLbnSelchangeColorList();
 	}
+}
+
+void CXRayViewerDlg::ChangeListBoxItemString(int a_index, const TCHAR* ap_string)
+{
+	// 제거하기 전 색상 사용 갯수를 백업하고
+	// 색상 정보를 제거
+	// 색상 정보 다시 추가
+	// 추가된 위치에 색상 갯수도 다시 저장
+	// 추가된 항목을 선택 항목으로 다시 설정
+	int color_count = m_color_list.GetItemData(a_index);
+	m_color_list.DeleteString(a_index);
+	m_color_list.InsertString(a_index, ap_string);
+	m_color_list.SetItemData(a_index, color_count);
+	m_color_list.SetSel(a_index);
+}
+
+void CXRayViewerDlg::ImageUpdateAccordingToColorRangeChange()
+{
+	// 색상의 최댓값과 최솟값을 다시 계산하여 유효범위를 결정
+	// 색상 사용 여부에 따라 이미지를 출력
+	OnLbnSelchangeColorList();
+}
+
+void CXRayViewerDlg::OnBnClickedSelectAllBtn()
+{
+	// 256개 색상 체크
+	for (int i = 0; i < 256; i++) {
+		// 색상 사용 갯수가 있는 항목만 1로 설정
+		if (m_color_list.GetItemData(i)) {
+			m_color_list.SetSel(i, m_color_list.GetItemData(i) != 0);
+		}
+	}
+}
+
+
+void CXRayViewerDlg::OnBnClickedToggleBtn()
+{
+	CString str;
+	// 256개 색상 모두 체크
+	for (int i = 0; i < 256; i++) {
+		// 선택되어 있고 실제로 표시된 색상인지 확인
+		if (m_color_list.GetSel(i) && m_color_list.GetItemData(i)) {
+			// 색상 정보를 얻는다
+			m_color_list.GetText(i, str);
+			// '*' 로 시작하면 '*' 삭제, '*'로 시작하지 않으면 '*' 붙이기
+			if (str[0] == '*') { str.Delete(0, 1); }
+			else { str = '*' + str; }
+
+			m_enable_colors[i] = !m_enable_colors[i];
+			ChangeListBoxItemString(i, str);
+		}
+	}
+	ImageUpdateAccordingToColorRangeChange();
+}
+
+
+void CXRayViewerDlg::OnBnClickedColorEnableBtn()
+{
+	CString str;
+	for (int i = 0; i < 256; i++) {
+		if (m_color_list.GetSel(i) && m_color_list.GetItemData(i)) {
+			m_color_list.GetText(i, str);
+			if (str[0] == '*') {
+				str.Delete(0, 1);
+				m_enable_colors[i] = 1;
+			}
+			ChangeListBoxItemString(i, str);
+		}
+	}
+	ImageUpdateAccordingToColorRangeChange();
+}
+
+
+void CXRayViewerDlg::OnBnClickedColorDisableBtn()
+{
+	CString str;
+	for (int i = 0; i < 256; i++) {
+		if (m_color_list.GetSel(i) && m_color_list.GetItemData(i)) {
+			m_color_list.GetText(i, str);
+			if (str[0] != '*') {
+				str = '*' + str;
+				m_enable_colors[i] = 0;
+			}
+			ChangeListBoxItemString(i, str);
+		}
+	}
+	ImageUpdateAccordingToColorRangeChange();
 }

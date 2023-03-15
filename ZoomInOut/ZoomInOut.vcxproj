@@ -20,23 +20,23 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{8B2F8020-01F1-49C6-8BFE-BD23AD3CA5CB}</ProjectGuid>
+    <ProjectGuid>{42A3C6FA-4990-43F6-A02E-75AA0001A1AD}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
-    <RootNamespace>XRayViewer</RootNamespace>
+    <RootNamespace>ZoomInOut</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -44,14 +44,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
@@ -187,12 +187,8 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TW_Button.h" />
-    <ClInclude Include="TW_ListBox.h" />
-    <ClInclude Include="TW_ToolBar.h" />
-    <ClInclude Include="XRayView.h" />
-    <ClInclude Include="XRayViewer.h" />
-    <ClInclude Include="XRayViewerDlg.h" />
+    <ClInclude Include="ZoomInOut.h" />
+    <ClInclude Include="ZoomInOutDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -201,21 +197,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TW_Button.cpp" />
-    <ClCompile Include="TW_ListBox.cpp" />
-    <ClCompile Include="TW_ToolBar.cpp" />
-    <ClCompile Include="XRayView.cpp" />
-    <ClCompile Include="XRayViewer.cpp" />
-    <ClCompile Include="XRayViewerDlg.cpp" />
+    <ClCompile Include="ZoomInOut.cpp" />
+    <ClCompile Include="ZoomInOutDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="XRayViewer.rc" />
+    <ResourceCompile Include="ZoomInOut.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\XRayViewer.rc2" />
+    <None Include="res\ZoomInOut.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\XRayViewer.ico" />
+    <Image Include="res\ZoomInOut.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
