@@ -67,8 +67,8 @@ BOOL CGridListCtrlDlg::OnInitDialog()
 	m_list1.InsertColumn(2, _T("Kor"), LVCFMT_LEFT, 60);
 	m_list1.InsertColumn(3, _T("Eng"), LVCFMT_LEFT, 60);
 	m_list1.InsertColumn(4, _T("Math"), LVCFMT_LEFT, 60);
-	m_list1.InsertColumn(5, _T("Sum"), LVCFMT_LEFT, 200);
-	m_list1.InsertColumn(6, _T("Avg"), LVCFMT_LEFT, 60);
+	m_list1.InsertColumn(5, _T("Sum"), LVCFMT_CENTER, 100);
+	m_list1.InsertColumn(6, _T("Avg"), LVCFMT_CENTER, 60);
 	m_list1.ModifyStyle(LVS_TYPEMASK, LVS_REPORT);
 
 	// Ç×¸ñ »ðÀÔ
@@ -76,6 +76,15 @@ BOOL CGridListCtrlDlg::OnInitDialog()
 	for (int i = 1; i <= 30; i++) {
 		strItem.Format(_T("%d"), i);
 		m_list1.InsertItem(i, strItem, i);
+	}
+
+	for (int i = 0; i < 30; i++) {
+		m_list1.SetItem(i, 1, LVIF_TEXT, _T("item"), NULL, NULL, NULL, NULL);
+		m_list1.SetItem(i, 2, LVIF_TEXT, _T("33"), NULL, NULL, NULL, NULL);
+		m_list1.SetItem(i, 3, LVIF_TEXT, _T("44"), NULL, NULL, NULL, NULL);
+		m_list1.SetItem(i, 4, LVIF_TEXT, _T("55"), NULL, NULL, NULL, NULL);
+		m_list1.SetItem(i, 5, LVIF_TEXT, _T("22"), NULL, NULL, NULL, NULL);
+		m_list1.SetItem(i, 6, LVIF_TEXT, _T("10.1"), NULL, NULL, NULL, NULL);
 	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
