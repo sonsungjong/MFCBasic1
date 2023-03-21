@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFCBasic1", "MFCBasic1\MFCBasic1.vcxproj", "{467A35AC-540C-4D2C-892B-32C758749108}"
 EndProject
@@ -280,6 +280,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GridTable2", "GridTable2\GridTable2.vcxproj", "{65F00F50-9880-4291-AA62-BB40D12731A0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Calculator", "Calculator\Calculator.vcxproj", "{85BD24EC-F930-4515-8132-DE7717ADB476}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BinaryWork", "BinaryWork\BinaryWork.vcxproj", "{04F5EAF9-4326-485E-A267-AC5A56F25BF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1401,6 +1403,14 @@ Global
 		{85BD24EC-F930-4515-8132-DE7717ADB476}.Release|x64.Build.0 = Release|x64
 		{85BD24EC-F930-4515-8132-DE7717ADB476}.Release|x86.ActiveCfg = Release|Win32
 		{85BD24EC-F930-4515-8132-DE7717ADB476}.Release|x86.Build.0 = Release|Win32
+		{04F5EAF9-4326-485E-A267-AC5A56F25BF3}.Debug|x64.ActiveCfg = Debug|x64
+		{04F5EAF9-4326-485E-A267-AC5A56F25BF3}.Debug|x64.Build.0 = Debug|x64
+		{04F5EAF9-4326-485E-A267-AC5A56F25BF3}.Debug|x86.ActiveCfg = Debug|Win32
+		{04F5EAF9-4326-485E-A267-AC5A56F25BF3}.Debug|x86.Build.0 = Debug|Win32
+		{04F5EAF9-4326-485E-A267-AC5A56F25BF3}.Release|x64.ActiveCfg = Release|x64
+		{04F5EAF9-4326-485E-A267-AC5A56F25BF3}.Release|x64.Build.0 = Release|x64
+		{04F5EAF9-4326-485E-A267-AC5A56F25BF3}.Release|x86.ActiveCfg = Release|Win32
+		{04F5EAF9-4326-485E-A267-AC5A56F25BF3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
