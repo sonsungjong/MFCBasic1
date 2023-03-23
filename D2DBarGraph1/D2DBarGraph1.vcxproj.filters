@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D2DClassUse.h">
+    <ClInclude Include="D2DBarGraph1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="D2DClassUseDlg.h">
+    <ClInclude Include="D2DBarGraph1Dlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -33,39 +33,30 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TW_Direct2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D2DClassUse.cpp">
+    <ClCompile Include="D2DBarGraph1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D2DClassUseDlg.cpp">
+    <ClCompile Include="D2DBarGraph1Dlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TWD_Core.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TWD_View.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="D2DClassUse.rc">
+    <ResourceCompile Include="D2DBarGraph1.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\D2DClassUse.rc2">
+    <None Include="res\D2DBarGraph1.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\D2DClassUse.ico">
+    <Image Include="res\D2DBarGraph1.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
