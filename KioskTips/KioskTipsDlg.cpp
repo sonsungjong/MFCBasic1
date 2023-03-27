@@ -4,6 +4,8 @@
 #include "KioskTipsDlg.h"
 #include "afxdialogex.h"
 #include "AddItemDlg.h"
+#include <vector>
+#include <string>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -205,7 +207,7 @@ void CKioskTipsDlg::OnDestroy()
 	CDialogEx::OnDestroy();
 
 	// TODO: Add your message handler code here
-	SaveDataToFile(_T("item.kid"));
+	//SaveDataToFile(_T("item.kid"));
 
 	// 판매 항목의 수를 얻는다
 	int count = m_item_list.GetCount();
@@ -526,8 +528,14 @@ void CKioskTipsDlg::SaveDataToFile(const TCHAR* ap_path_name)
 // 지정된 경로에서 데이터 파일을 읽어서 키오스크 정보를 가져옴
 void CKioskTipsDlg::LoadDataFromFile(const TCHAR* ap_path_name)
 {
-	int count = 0;
 	KID* p_data;
+	TCHAR menu_kor[9][64] = { _T("아이스 아메리카노"), _T("딸기 밀크티"), _T("딸기 스무디"), _T("아이스초코 블랜드"), _T("오렌지 라임 에이드"), _T("자몽 에이드"), _T("햄 샌드위치"), _T("크로와상 샌드위치"), _T("치킨 샐러드")};
+	TCHAR menu_eng[9][64] = { _T("iced americano"), _T("strawberry milk tea"), _T("strawberry smoothie"), _T("iced choco bledded"), _T("orange lime ade"), _T("grapefruit ade"), _T("ham sandwich"), _T("croissant sandwich"), _T("chicken salad")};
+	TCHAR menu_image[9][MAX_PATH] = { _T(".\\image\\004.png"), _T(".\\image\\006.png"), _T(".\\image\\007.png"), _T(".\\image\\005.png"), _T(".\\image\\008.png"), _T(".\\image\\009.png"), _T(".\\image\\003.png"), _T(".\\image\\001.png"), _T(".\\image\\002.png")};
+	int menu_price[9] = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000};
+
+
+	/*
 	FILE* p_file = NULL;
 
 	// 지정된 파일을 읽기모드로 오픈
@@ -544,5 +552,33 @@ void CKioskTipsDlg::LoadDataFromFile(const TCHAR* ap_path_name)
 			m_item_list.SetItemDataPtr(i, p_data);			// 추가 항목에 정보 전달
 		}
 		fclose(p_file);				// 파일 종료
+	}
+	*/
+
+	int count = sizeof(menu_price) / sizeof(int);
+	p_data = new KID[count];
+	
+	for (int i = 0; i < count; i++)
+	{		
+		// p_data에 정보 전달
+		KID* pp = p_data+i;
+		_tcscpy_s(pp->name_kor, 64, menu_kor[i]);
+		_tcscpy_s(pp->name_eng, 64, menu_eng[i]);
+		_tcscpy_s(pp->image_path, MAX_PATH, menu_image[i]);
+		pp->price = menu_price[i];
+
+		pp->p_image = new CImage;				// 이미지 객체 생성
+		pp->p_image->Load(pp->image_path);				// 이미지 로드
+	}
+
+	int j = 0;
+	for (int i = 0; i < count; ++i)
+	{
+		if (j >= count) {
+			j = j % (count-1);
+		}
+		m_item_list.InsertString(-1, _T(""));				// 리스트박스에 빈항목 추가
+		m_item_list.SetItemDataPtr(i, p_data+j);			// 빈항목에 정보 적용
+		j += 3;
 	}
 }
