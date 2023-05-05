@@ -3,6 +3,8 @@
 #ifndef LADDER_WND_H_
 #define LADDER_WND_H_
 
+#define MEMBER_COUNT			5			// 사다리 수
+
 class LadderWnd : public CWnd
 {
 	DECLARE_DYNAMIC(LadderWnd)
@@ -10,6 +12,7 @@ protected:
 	CImage m_draw_image;
 	HDC mh_draw_dc;
 	CRect m_rect;
+	HFONT m_font;
 
 public:
 	explicit LadderWnd();						// 생성자
