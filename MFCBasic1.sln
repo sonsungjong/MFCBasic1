@@ -299,6 +299,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BackgroundTransparent1", "B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BackgroundTransparent2", "BackgroundTransparent2\BackgroundTransparent2.vcxproj", "{CB28ADF0-078F-4367-BB94-980B0818D329}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CBMServer", "CBMServer\CBMServer.vcxproj", "{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -1491,6 +1493,14 @@ Global
 		{CB28ADF0-078F-4367-BB94-980B0818D329}.Release|x64.Build.0 = Release|x64
 		{CB28ADF0-078F-4367-BB94-980B0818D329}.Release|x86.ActiveCfg = Release|Win32
 		{CB28ADF0-078F-4367-BB94-980B0818D329}.Release|x86.Build.0 = Release|Win32
+		{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}.Debug|x64.ActiveCfg = Debug|x64
+		{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}.Debug|x64.Build.0 = Debug|x64
+		{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}.Debug|x86.ActiveCfg = Debug|Win32
+		{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}.Debug|x86.Build.0 = Debug|Win32
+		{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}.Release|x64.ActiveCfg = Release|x64
+		{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}.Release|x64.Build.0 = Release|x64
+		{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}.Release|x86.ActiveCfg = Release|Win32
+		{FABF4FF0-50CC-4F78-AF53-B5BCB20F124F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
