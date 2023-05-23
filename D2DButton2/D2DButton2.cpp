@@ -12,8 +12,6 @@
 #endif
 
 
-// CD2DButton2App
-
 BEGIN_MESSAGE_MAP(CD2DButton2App, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()

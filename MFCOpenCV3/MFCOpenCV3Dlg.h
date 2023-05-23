@@ -7,10 +7,8 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-// CMFCOpenCV3Dlg dialog
 class CMFCOpenCV3Dlg : public CDialogEx
 {
-// Construction
 public:
 	CMFCOpenCV3Dlg(CWnd* pParent = nullptr);	// standard constructor
 
