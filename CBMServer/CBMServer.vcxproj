@@ -186,20 +186,28 @@
     <ClInclude Include="CBMServer.h" />
     <ClInclude Include="CBMServerDlg.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="LineGraphWnd.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SensorDataList.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TW_DoubleLinkedList.h" />
+    <ClInclude Include="TW_ListBox.h" />
     <ClInclude Include="WinSocketServer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBMServer.cpp" />
     <ClCompile Include="CBMServerDlg.cpp" />
+    <ClCompile Include="LineGraphWnd.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SensorDataList.cpp" />
+    <ClCompile Include="TW_DoubleLinkedList.cpp" />
+    <ClCompile Include="TW_ListBox.cpp" />
     <ClCompile Include="WinSocketServer.cpp" />
   </ItemGroup>
   <ItemGroup>

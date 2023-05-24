@@ -36,6 +36,18 @@
     <ClInclude Include="WinSocketServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LineGraphWnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorDataList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TW_DoubleLinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TW_ListBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBMServer.cpp">
@@ -48,6 +60,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WinSocketServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineGraphWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorDataList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TW_DoubleLinkedList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TW_ListBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
