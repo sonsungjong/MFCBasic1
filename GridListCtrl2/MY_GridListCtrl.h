@@ -12,17 +12,17 @@ public:
 	virtual ~MY_GridListCtrl();
 
 	void SetGridLine();
+	void SetGridLine2();
+
 protected:
 	DECLARE_MESSAGE_MAP()
 
 protected:
 	HFONT m_font;
-	LPDRAWITEMSTRUCT m_last_lpds;
 
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
-	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 };
 
 

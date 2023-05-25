@@ -14,6 +14,7 @@ public:
 
 private:
 	MY_GridListCtrl grid_view;
+	int m_test = 0;
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -36,4 +37,6 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
+	afx_msg void OnBnClickedSetBtn();
+	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 };
