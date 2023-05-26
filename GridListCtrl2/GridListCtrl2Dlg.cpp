@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(CGridListCtrl2Dlg, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &CGridListCtrl2Dlg::OnBnClickedCancel)
 	ON_BN_CLICKED(IDC_SET_BTN, &CGridListCtrl2Dlg::OnBnClickedSetBtn)
 	ON_WM_DRAWITEM()
+	ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
 
@@ -152,7 +153,7 @@ void CGridListCtrl2Dlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
 			CString str;
 			// 각 컬럼은 앞쪽 5만큼 여백을 갖고 문자열을 출력한다
 			// 리스트 컨트롤이 갖고 있는 헤더 컨트롤의 포인터를 얻어서 컬럼수를 구한다
-			int blank = 5;
+			int blank = 10;
 			int header_count = grid_view.GetHeaderCtrl()->GetItemCount();
 
 			// 반복문을 돌려 TextOut으로 그린다 (만약 마지막 컬럼만 다른 컨트롤로 주고 싶으면 -1)
@@ -164,7 +165,7 @@ void CGridListCtrl2Dlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
 				// 데이터를 얻는다
 				str = grid_view.GetItemText(index, i);
 				if (i == 0) {
-					dc->TextOut(r.left + blank, r.top, str);
+					dc->TextOut(r.left + blank, r.top + blank, str);
 				}
 				else if (i == header_count-1)
 				{
@@ -186,4 +187,16 @@ void CGridListCtrl2Dlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
 	{
 		CDialogEx::OnDrawItem(nIDCtl, lpDrawItemStruct);
 	}
+}
+
+
+void CGridListCtrl2Dlg::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (IDC_LIST1 == nIDCtl)
+	{
+		lpMeasureItemStruct->itemHeight += 15;
+	}
+
+	CDialogEx::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 }

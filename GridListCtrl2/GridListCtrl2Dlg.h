@@ -39,4 +39,5 @@ public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedSetBtn();
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 };
