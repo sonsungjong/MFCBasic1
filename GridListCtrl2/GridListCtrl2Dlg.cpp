@@ -12,11 +12,6 @@
 #define new DEBUG_NEW
 #endif
 
-
-// CGridListCtrl2Dlg dialog
-
-
-
 CGridListCtrl2Dlg::CGridListCtrl2Dlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GRIDLISTCTRL2_DIALOG, pParent)
 {

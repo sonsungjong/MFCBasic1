@@ -41,7 +41,7 @@ void MY_GridListCtrl::SetGridLine()
 	InsertColumn(4, _T("Math"), LVCFMT_CENTER, 60);
 	InsertColumn(5, _T("Sum"), LVCFMT_CENTER, 100);
 	InsertColumn(6, _T("Avg"), LVCFMT_CENTER, 60);
-	InsertColumn(7, _T("상세 보기"), LVCFMT_CENTER, 120);
+	InsertColumn(7, _T("상세 보기"), LVCFMT_CENTER, 100);
 	ModifyStyle(LVS_TYPEMASK, LVS_REPORT);
 
 	CString strItem;
@@ -89,7 +89,7 @@ void MY_GridListCtrl::SetGridLine2()
 	InsertColumn(9, _T("이상여부"), LVCFMT_CENTER, 120);
 	InsertColumn(10, _T("권장점검일"), LVCFMT_CENTER, 180);
 	InsertColumn(11, _T("상태"), LVCFMT_CENTER, 60);
-	InsertColumn(12, _T("상세 보기"), LVCFMT_CENTER, 120);
+	InsertColumn(12, _T("상세 보기"), LVCFMT_CENTER, 100);
 	ModifyStyle(LVS_TYPEMASK, LVS_REPORT);
 
 	CString strItem;
