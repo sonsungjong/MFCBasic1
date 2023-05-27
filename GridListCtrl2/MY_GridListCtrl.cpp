@@ -118,6 +118,7 @@ void MY_GridListCtrl::SetGridLine2()
 BEGIN_MESSAGE_MAP(MY_GridListCtrl, CListCtrl)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
+	ON_WM_MEASUREITEM()
 	ON_WM_DRAWITEM()
 END_MESSAGE_MAP()
 
@@ -146,3 +147,63 @@ void MY_GridListCtrl::OnDestroy()
 	// TODO: Add your message handler code here
 }
 
+
+
+
+void MY_GridListCtrl::MyDraw(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	int index = lpDrawItemStruct->itemID;
+
+	if (index >= 0 && index < GetItemCount())
+	{
+		CDC* dc = CDC::FromHandle(lpDrawItemStruct->hDC);
+		CRect r = lpDrawItemStruct->rcItem;
+
+		if (lpDrawItemStruct->itemState & ODS_SELECTED)
+		{
+			// 선택 라인에 대해 글자색과 영역색
+			dc->SetTextColor(RGB(30, 30, 250));
+			dc->FillSolidRect(r, RGB(188, 231, 241));
+		}
+		else
+		{
+			// 선택이 안된 경우
+			dc->SetTextColor(RGB(0, 0, 0));
+			dc->FillSolidRect(r, RGB(255, 255, 255));
+		}
+
+		LV_COLUMN column_data;
+		column_data.mask = LVCF_WIDTH;
+
+		CString str;
+		// 각 컬럼은 앞쪽 5만큼 여백을 갖고 문자열을 출력한다
+		// 리스트 컨트롤이 갖고 있는 헤더 컨트롤의 포인터를 얻어서 컬럼수를 구한다
+		int blank = 10;
+		int header_count = GetHeaderCtrl()->GetItemCount();
+
+		// 반복문을 돌려 TextOut으로 그린다 (만약 마지막 컬럼만 다른 컨트롤로 주고 싶으면 -1)
+		for (int i = 0; i < header_count; i++)
+		{
+			CRect rcSubItem;
+			GetSubItemRect(index, i, LVIR_BOUNDS, rcSubItem);
+
+			// 데이터를 얻는다
+			str = GetItemText(index, i);
+			if (i == 0) {
+				dc->TextOut(r.left + blank, r.top + blank, str);
+			}
+			else if (i == header_count - 1)
+			{
+				COLORREF old_color = dc->SetTextColor(RGB(255, 255, 255));
+				dc->FillSolidRect(&rcSubItem, RGB(0, 100, 255));
+				dc->DrawText(_T("상세 보기"), &rcSubItem, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+				dc->SetTextColor(old_color);
+			}
+			else {
+				dc->DrawText(str, &rcSubItem, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+			}
+
+
+		}
+	}
+}
