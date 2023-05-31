@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include <tests/shared/common/client_app.h>
+#include <tests/cefclient/browser/client_handler.h>
 #include <include/cef_app.h>
 #include <include/cef_client.h>
 #include <include/cef_browser.h>
@@ -14,9 +16,9 @@ class CMFCwithChromeDlg : public CDialogEx
 private:
 	CRect m_rect;
 	CefRefPtr<CefBrowser> m_browser;
-	CefRefPtr<CefClient> m_client;
 	CefWindowInfo m_window_info;
 	CefBrowserSettings m_browser_settings;
+	
 
 // Construction
 public:

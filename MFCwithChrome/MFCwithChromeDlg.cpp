@@ -29,6 +29,7 @@ cd build
 8. 아래 명령어를 통해 CMake로 .sln 파일을 생성한다.
 cmake -G "Visual Studio 17 2022" -A x64 ..
 cmake --build . --config Release
+cmake --install .
 cmake --build . --config Debug
 
 9. 사용할 프로젝트에 포함시킨다
@@ -85,8 +86,15 @@ BOOL CMFCwithChromeDlg::OnInitDialog()
 	m_rect.SetRect(0, 0, 300, 300);
 	CefRect cef_rect(m_rect.left, m_rect.top, m_rect.Width(), m_rect.Height());
 	
+	CefMainArgs mainArgs(theApp.m_hInstance);
+	CefSettings appSettings;
+	CefRefPtr<ClientApp> app(new ClientApp);
+	appSettings.multi_threaded_message_loop = true;
 	m_window_info.SetAsChild(GetSafeHwnd(), cef_rect);
-	CefBrowserHost::CreateBrowserSync(m_window_info, m_client.get(), _T("https://www.google.com"), m_browser_settings, nullptr, nullptr);
+	CefRefPtr<CefClient> client(new ClientHandler());
+	CefInitialize(mainArgs, appSettings, app.get());
+	
+	CefBrowserHost::CreateBrowserSync(m_window_info, (ClientHandler*)client.get(), _T("https://www.google.com"), m_browser_settings, nullptr, nullptr);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
