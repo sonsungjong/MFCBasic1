@@ -33,9 +33,6 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MFC_D2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="D2D_Range.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,9 +45,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MFC_D2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="D2D_Range.cpp">
