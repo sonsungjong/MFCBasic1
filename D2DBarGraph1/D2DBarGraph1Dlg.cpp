@@ -58,7 +58,7 @@ BOOL CD2DBarGraph1Dlg::OnInitDialog()
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pD2DFactory);
 	if (SUCCEEDED(hr))
 	{
-		RECT rc;
+		CRect rc;
 		GetClientRect(&rc);
 		D2D1_SIZE_U size = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
 
@@ -79,9 +79,9 @@ BOOL CD2DBarGraph1Dlg::OnInitDialog()
 
 void CD2DBarGraph1Dlg::OnPaint()
 {
+	CPaintDC dc(this); // device context for painting
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // device context for painting
 
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
@@ -98,8 +98,8 @@ void CD2DBarGraph1Dlg::OnPaint()
 	}
 	else
 	{
-		D2DRender();
-		CDialogEx::OnPaint();
+		//D2DRender();
+		//CDialogEx::OnPaint();
 	}
 }
 
@@ -127,7 +127,8 @@ void CD2DBarGraph1Dlg::OnBnClickedCancel()
 
 void CD2DBarGraph1Dlg::D2DRender()
 {
-	if (m_pRenderTarget == nullptr) { return; }
+	if (m_pRenderTarget == NULL)
+	{ return; }
 
 	// D2D 그리기 시작
 	m_pRenderTarget->BeginDraw();

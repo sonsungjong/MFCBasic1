@@ -1,8 +1,8 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by D2DButton2.rc
+// Used by D2DClass1.rc
 //
-#define IDD_D2DBUTTON2_DIALOG           102
+#define IDD_D2DCLASS1_DIALOG            102
 #define IDR_MAINFRAME                   128
 #define IDC_BUTTON1                     1000
 

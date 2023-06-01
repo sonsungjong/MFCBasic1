@@ -7,9 +7,9 @@ using namespace D2D1;
 // COM으로 생성된 객체를 해제하는 함수
 template<class Interface> void TWD_IRelease(Interface **ap_interface_object)
 {
-	if (*ap_interface_object != nullptr) {
+	if (*ap_interface_object != NULL) {
 		(*ap_interface_object)->Release();
-		(*ap_interface_object) = nullptr;
+		(*ap_interface_object) = NULL;
 	}
 }
 
@@ -34,7 +34,7 @@ protected:
 	HWND mh_wnd;
 	// 기본 브러시 색상
 	D2D1_COLOR_F m_def_color = { 1.0f, 1.0f, 1.0f, 1.0f };							// RGBA
-	D2D1_COLOR_F m_bk_color = { 0.0f, 0.0f, 0.0f, 1.0f };							// RGBA
+	D2D1_COLOR_F m_bk_color = { 0.0f, 0.5f, 0.0f, 1.0f };							// RGBA
 	// 기본으로 생성되는 글꼴의 이름 (맑은 고딕)
 	TCHAR m_def_font_name[32];
 	// 기본으로 생성되는 글꼴의 크기
