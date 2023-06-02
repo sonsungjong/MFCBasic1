@@ -17,6 +17,7 @@ protected:
 	IDWriteTextFormat* m_text_format;								// 문자열 형식
 	HWND m_wnd;
 	D2D1_RECT_F m_rect;
+	D2D1_COLOR_F m_color = {0.0f, 0.0f, 0.0f, 1.0f};				// RGBA 색상 (검정)
 	float m_font_size;
 
 public:
