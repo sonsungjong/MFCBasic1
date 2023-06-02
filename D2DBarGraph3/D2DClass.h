@@ -1,16 +1,22 @@
-#pragma once
+#ifndef D2D_CLASS_H_
+#define D2D_CLASS_H_
+
+using namespace D2D1;
+
+#define D2D_RGBA(r, g, b, a) ColorF((float)r/255.0f, (float)g/255.0f, (float)b/255.0f, (float)a/255.0f)
+
 class D2DClass
 {
 protected:
 	HRESULT m_hr;
 	D2D1_SIZE_U m_size;
-	ID2D1Factory* m_factory;
-	ID2D1HwndRenderTarget* m_render_target;
+	ID2D1Factory* m_factory;												// D2D의 각종 객체 생성을 위한 팩토리
+	ID2D1RenderTarget* m_render_target;					// 렌더링 타겟
 	ID2D1SolidColorBrush* m_brush;
-	IDWriteFactory* m_write_text;
-	IDWriteTextFormat* m_text_format;
+	IDWriteFactory* m_write_text;										// 문자열 팩토리
+	IDWriteTextFormat* m_text_format;								// 문자열 형식
 	HWND m_wnd;
-	RECT m_rect;
+	D2D1_RECT_F m_rect;
 	float m_font_size;
 
 public:
@@ -18,7 +24,7 @@ public:
 	virtual ~D2DClass();
 
 
-	void SetRect(HWND a_wnd, RECT a_rect);
+	void SetWndTarget(HWND a_wnd, RECT* ap_rect);
 	void D2DRenderBegin();
 	void D2DRenderEnd();
 	void D2DBackground(D2D1_COLOR_F a_color);
@@ -41,3 +47,4 @@ public:
 };
 
 
+#endif

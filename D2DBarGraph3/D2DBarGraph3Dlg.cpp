@@ -62,9 +62,9 @@ BOOL CD2DBarGraph3Dlg::OnInitDialog()
 	m_d2d_wnd[1].Create(NULL, NULL, WS_CHILD | WS_VISIBLE, m_d2d_rect[1], this, 29002);
 	m_d2d_wnd[2].Create(NULL, NULL, WS_CHILD | WS_VISIBLE, m_d2d_rect[2], this, 29003);
 
-	m_d2d[0].SetRect(m_d2d_wnd[0], m_d2d_rect[0]);
-	m_d2d[1].SetRect(m_d2d_wnd[1], m_d2d_rect[1]);
-	m_d2d[2].SetRect(m_d2d_wnd[2], m_d2d_rect[2]);
+	m_d2d[0].SetWndTarget(m_d2d_wnd[0], m_d2d_rect[0]);
+	m_d2d[1].SetWndTarget(m_d2d_wnd[1], m_d2d_rect[1]);
+	m_d2d[2].SetWndTarget(m_d2d_wnd[2], m_d2d_rect[2]);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

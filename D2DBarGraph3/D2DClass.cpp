@@ -4,7 +4,7 @@
 #include <dwrite.h>
 #include <wincodec.h>
 
-using namespace D2D1;
+
 
 #include "D2DClass.h"
 
@@ -46,12 +46,20 @@ D2DClass::~D2DClass()
 
 
 
-void D2DClass::SetRect(HWND a_wnd, RECT a_rect)
+void D2DClass::SetWndTarget(HWND a_wnd, RECT* ap_rect)
 {
 	m_wnd = a_wnd;
-	m_rect = a_rect;
-	m_size = SizeU(a_rect.right - a_rect.left, a_rect.bottom - a_rect.top);
-	m_hr = m_factory->CreateHwndRenderTarget(RenderTargetProperties(), HwndRenderTargetProperties(a_wnd, m_size), &m_render_target);
+	m_rect.left = (float)ap_rect->left;
+	m_rect.top = (float)ap_rect->top;
+	m_rect.right = (float)ap_rect->right;
+	m_rect.bottom = (float)ap_rect->bottom;
+	m_size = SizeU(ap_rect->right - ap_rect->left, ap_rect->bottom - ap_rect->top);
+
+	ID2D1HwndRenderTarget* p_hwnd_target;
+	m_hr = m_factory->CreateHwndRenderTarget(RenderTargetProperties(), HwndRenderTargetProperties(a_wnd, m_size), &p_hwnd_target);
+
+	// 인터페이스로 주소 보관
+	m_render_target = p_hwnd_target;
 }
 
 // WM_PAINT에서 사용
