@@ -35,6 +35,8 @@ BEGIN_MESSAGE_MAP(CSimpleLineGraph1Dlg, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &CSimpleLineGraph1Dlg::OnBnClickedCancel)
 	ON_WM_DESTROY()
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_START_BTN, &CSimpleLineGraph1Dlg::OnBnClickedStartBtn)
+	ON_BN_CLICKED(IDC_STOP_BTN, &CSimpleLineGraph1Dlg::OnBnClickedStopBtn)
 END_MESSAGE_MAP()
 
 
@@ -65,10 +67,17 @@ BOOL CSimpleLineGraph1Dlg::OnInitDialog()
 
 	m_data_limit_count = m_rect.Width() / X_INTERVAL + 1;
 	mp_data_list = new int[m_data_limit_count];
+	mp_pos_list = new POINT[m_data_limit_count];
+
+	int x = m_rect.Width() - 5;					// 시작 위치
+	// x좌표는 고정이기 때문에 미리 계산해놓는다
+	for (int i = 0; i < m_data_limit_count; i++, x -= X_INTERVAL) {
+		mp_pos_list[i].x = x;
+	}
 
 	DrawGraph();
 
-	SetTimer(1, 100, NULL);
+	
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -131,8 +140,9 @@ void CSimpleLineGraph1Dlg::OnDestroy()
 	CDialogEx::OnDestroy();
 
 	// TODO: Add your message handler code here
-	KillTimer(1);
+	OnBnClickedStopBtn();
 	delete[] mp_data_list;
+	delete[] mp_pos_list;
 	m_graph_image.ReleaseDC();
 	m_graph_image.Destroy();
 }
@@ -151,16 +161,34 @@ void CSimpleLineGraph1Dlg::DrawGraph()
 
 	// 데이터가 2개 이상이면 선그래프를 그림
 	if (m_data_count >= 2) {
-		::SetDCPenColor(mh_graph_dc, RGB(0, 228, 0));
+		::SetDCPenColor(mh_graph_dc, RGB(0, 118, 0));
+
+		POINT* p_pos = mp_pos_list;
+		POINT* p_limit = p_pos + m_data_count;
 
 		// 선 시작 위치
-		int x = m_rect.right;				// 오른쪽 시작 (성종)
-		::MoveToEx(mh_graph_dc, x, m_half_cy - *(mp_data_list + 0), NULL);
+		p_pos->y = m_half_cy - *(mp_data_list + m_scroll_index);
+		p_pos++;
 
-		// 그 다음 선들을 이어서 그림
-		for (int i = 1; i < m_data_count; i++) {
-			x -= X_INTERVAL;				// x 위치 변경 (-8만큼 이동) (성종)
-			::LineTo(mh_graph_dc, x, m_half_cy - *(mp_data_list + i));
+		if (m_data_count < m_data_limit_count) {
+			for (int i = 1; i < m_data_count; i++) {
+				p_pos->y = m_half_cy - *(mp_data_list + i);
+				p_pos++;
+			}
+		}
+		else {
+			for (int i = 1; i < m_data_count; i++) {
+				p_pos->y = m_half_cy - *(mp_data_list + (m_scroll_index + i) % m_data_limit_count);
+				p_pos++;
+			}
+		}
+		Polyline(mh_graph_dc, mp_pos_list, m_data_count);
+
+		::SetDCPenColor(mh_graph_dc, RGB(0, 228, 0));
+		p_pos = mp_pos_list;			// 처음 위치로 다시 지정
+		while (p_pos < p_limit) {
+			::Ellipse(mh_graph_dc, p_pos->x - 3, p_pos->y - 3, p_pos->x + 3, p_pos->y + 3);
+			p_pos++;
 		}
 	}
 }
@@ -176,17 +204,37 @@ void CSimpleLineGraph1Dlg::OnTimer(UINT_PTR nIDEvent)
 		else {
 			// 데이터가 가득 찼을 경우
 			// 메모리 이동 (첫번째 메모리부터 시작되는 메모리 사이즈를 0번째로 옮김)
-			memmove(mp_data_list + 0, mp_data_list + 1, sizeof(int) * (m_data_count - 1));
-			*(mp_data_list + m_data_count - 1) = rand() % 201 - 100;
+			*(mp_data_list + m_scroll_index) = rand() % 201 - 100;
+			m_scroll_index = (m_scroll_index + 1) % m_data_limit_count;
 		}
 		DrawGraph();				// dc에 그림
 
 		// WM_PAINT를 안거치고 dc를 생성해서 바로 그림
 		CClientDC dc(this);
 		m_graph_image.Draw(dc, m_rect);
+
 	}
 	else {
 		CDialogEx::OnTimer(nIDEvent);
+	}
+}
+
+
+void CSimpleLineGraph1Dlg::OnBnClickedStartBtn()
+{
+	if (!m_start_flag) {
+		m_start_flag = 1;
+		SetTimer(1, 100, NULL);
+	}
+
+}
+
+
+void CSimpleLineGraph1Dlg::OnBnClickedStopBtn()
+{
+	if (m_start_flag) {
+		m_start_flag = 0;
+		KillTimer(1);
 	}
 
 }
