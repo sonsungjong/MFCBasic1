@@ -9,7 +9,7 @@ public:
 	CResizeMoveWndDlg(CWnd* pParent = nullptr);	// standard constructor
 
 private:
-	// 0: 클릭안됨, 1: 클릭(이동), 2: 클릭(top 크기 변경), 3: 클릭 (right/top 크기 변경), 4:클릭(right 크기 변경)
+	// 0: 클릭안됨, 1: 클릭(이동전용), 2: 클릭(top 크기 변경), 3: 클릭 (right/top 크기 변경), 4:클릭(right 크기 변경)
 	// 5: 클릭(right/bottom 크기 변경), 6:클릭(bottom 크기 변경), 7:클릭(left/bottom 크기 변경)
 	// 8: 클릭(left 크기 변경), 9: 클릭(left/ top 크기 변경)
 	unsigned char m_is_clicked = 0;

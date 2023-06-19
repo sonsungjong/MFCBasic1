@@ -131,8 +131,8 @@ void CResizeMoveWndDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		CRect temp_rect(r.left + 7, r.top + 7, r.right - 7, r.bottom - 7);
 		m_prev_pos = point;					// 이동 및 크기변화 체크하기 위해 현재 위치를 기억
 
-		if (temp_rect.PtInRect(point)) {					// 테두리가 아닌 영역을 클릭 (화면이동)
-			m_is_clicked = 1;				// 윈도우 이동
+		if (temp_rect.PtInRect(point)) {					// 테두리가 아닌 내부 영역을 클릭
+			m_is_clicked = 1;				// 화면 이동 전용
 		}
 		else {				// 테두리 클릭 (크기변경)
 			if (point.x <= 7 && point.y <= 7) {				// 좌측 상단
@@ -235,9 +235,9 @@ void CResizeMoveWndDlg::OnMouseMove(UINT nFlags, CPoint point)
 	}
 	else {
 		GetClientRect(r);				// 클라이언트 좌표를 얻는다
-		CRect temp_rect(r.left + 7, r.top + 7, r.right - 7, r.bottom - 7);
+		CRect temp_rect(r.left + 7, r.top + 7, r.right - 7, r.bottom - 7);				// 내부 (테두리 안쪽)
 
-		if (!temp_rect.PtInRect(point)) {					// 테두리에 마우스 커서가 있으면
+		if (!temp_rect.PtInRect(point)) {					// 테두리에 마우스 커서가 있으면 (내부가 아니면)
 			int index = 0;
 
 			// 상황별 커서 종류를 선택
