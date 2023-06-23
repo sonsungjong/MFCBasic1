@@ -16,8 +16,8 @@ using namespace Gdiplus;
 // MFC는 lib 필요없음
 //#pragma comment(lib, "gdiplus.lib")
 
-#define RGB24(r,g,b)(0xFF000000 | (r << 16) | (g << 8) | b)
-#define RGB32(a,r,g,b)((a<<24)|(r<<16)|(g<<8)|b)
+#define RGB24(r,g,b) (0xFF000000 | ((r) << 16) | ((g) << 8) | (b))					// 0xFFRRGGBB
+#define RGB32(a,r,g,b) (((a)<<24)|((r)<<16)|((g)<<8)|(b))							// 0xAARRGGBB
 
 // DC Plus 클래스, 더블버퍼링 사용
 class DCP
