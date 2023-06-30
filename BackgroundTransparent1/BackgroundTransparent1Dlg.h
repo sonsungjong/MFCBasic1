@@ -10,6 +10,7 @@ public:
 	void ModifyBlue();
 	void ModifyGreen();
 	void ModifyRed();
+	void ExtractGray();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

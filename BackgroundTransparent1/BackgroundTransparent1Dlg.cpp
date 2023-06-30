@@ -120,9 +120,10 @@ void CBackgroundTransparent1Dlg::OnBnClickedCancel()
 
 void CBackgroundTransparent1Dlg::OnBnClickedModifyBtn()
 {
-	ModifyRed();
-	//ModifyGreen();
-	// ModifyBlue();
+	//ModifyRed();						// 빨강을 제외하고 모두 검정처리해서 투명화
+	//ModifyGreen();					// 초록을 제외하고 모두 검정처리해서 투명화
+	//ModifyBlue();						// 파랑을 제외하고 모두 검정처리해서 투명화
+	ExtractGray();						// 회색~검정만 추출 (완전 검정은 안됨)
 }
 
 
@@ -203,6 +204,9 @@ void CBackgroundTransparent1Dlg::CopyImagePattern(CImage* ap_dest, CImage* ap_sr
 	memcpy(p_dest_image, p_src_image, bmp_info.bmHeight * bmp_info.bmWidthBytes);
 }
 
+/*
+파랑을 제외하고 모두 검정처리해서 투명화
+*/
 void CBackgroundTransparent1Dlg::ModifyBlue()
 {
 	// CImage 에 저장된 정보를 얻는다
@@ -240,6 +244,9 @@ void CBackgroundTransparent1Dlg::ModifyBlue()
 	Invalidate(0);
 }
 
+/*
+초록을 제외하고 모두 검정처리해서 투명화
+*/
 void CBackgroundTransparent1Dlg::ModifyGreen()
 {
 	// CImage 에 저장된 정보를 얻는다
@@ -275,6 +282,9 @@ void CBackgroundTransparent1Dlg::ModifyGreen()
 	Invalidate(0);
 }
 
+/*
+빨강을 제외하고 모두 검정처리해서 투명화
+*/
 void CBackgroundTransparent1Dlg::ModifyRed()
 {
 	// CImage 에 저장된 정보를 얻는다
@@ -308,3 +318,40 @@ void CBackgroundTransparent1Dlg::ModifyRed()
 	// WM_PAINT
 	Invalidate(0);
 }
+
+/*
+회색~검정만 추출
+*/
+void CBackgroundTransparent1Dlg::ExtractGray()
+{
+	// CImage 에 저장된 정보를 얻는다
+	BITMAP bmp_info;
+	GetObject((HBITMAP)m_edit_image, sizeof(BITMAP), &bmp_info);
+
+	// CImage의 비트 패턴이 저장된 주소를 얻는다
+	// 마지막 줄을 제외한 나머지 길이만큼 빼서 이미지 패턴이 시작하는 위치로 포인터를 옮긴다
+	unsigned char* p_image = (unsigned char*)m_edit_image.GetBits();
+	p_image -= (bmp_info.bmHeight - 1) * bmp_info.bmWidthBytes;
+
+	// 이미지 패턴의 시작 주소와 끝 주소를 p_pos와 p_limit 변수에 저장한다.
+	unsigned char* p_pos = p_image;
+	unsigned char* p_limit = p_image + bmp_info.bmHeight * bmp_info.bmWidthBytes;
+
+	// 정확도 값을 얻는다.
+	int r, g, b, depth = GetDlgItemInt(IDC_DEPTH_EDIT);
+
+	// 이미지 값의 나열 B(+0), G(+1), R(+2), A(+3) 순서
+	while (p_pos < p_limit) {
+		b = *p_pos;  // blue 값
+		g = *(p_pos + 1);  // green 값
+		r = *(p_pos + 2);  // red 값을 얻는다.
+
+		// 검은색으로 변경한다.
+		if (r > 200 || g > 200 || b > 200) { *(UINT32*)p_pos = 0; }
+		p_pos += 4;					// 다음 색상으로 이동
+	}
+
+	// WM_PAINT
+	Invalidate(0);
+}
+
