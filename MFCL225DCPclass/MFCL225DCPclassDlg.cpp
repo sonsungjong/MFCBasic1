@@ -82,7 +82,7 @@ void CMFCL225DCPclassDlg::OnPaint()
 	{
 		//CDialogEx::OnPaint();
 		m_dcp.FillSolidEllipse(100, 100, 200, 200, RGB24(0, 255, 0));
-		m_dcp.FillSolidEllipse(150, 150, 250, 250, RGB24(100, 0, 0, 255));
+		m_dcp.FillSolidEllipse(150, 150, 250, 250, RGB32(100, 0, 0, 255));
 		m_dcp.Draw(dc);
 	}
 }
