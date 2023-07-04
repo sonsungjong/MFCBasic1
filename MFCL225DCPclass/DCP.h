@@ -12,15 +12,15 @@ class DCP
 protected:
 	Gdiplus::Brush* mp_brush;
 	Gdiplus::Brush* mp_font_brush;
-	Gdiplus::Pen* mp_pen;
+	Gdiplus::Pen* mp_pen = NULL;
 	Gdiplus::Font* mp_font;
 
-	int m_width;				// 출력 폭
-	int m_height;				// 출력 높이
 	int m_last_position_x;
 	int m_last_position_y;
 	Gdiplus::Color m_temp_color;				// 색상 변경을 위한 임시 객체
 
+	int m_width;				// 출력 폭
+	int m_height;				// 출력 높이
 	static ULONG_PTR m_token;				// GDI+ 라이브러리 사용 정보
 	static int m_object_count;					// DCP 객체 갯수 계산
 

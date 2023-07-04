@@ -1,7 +1,9 @@
 #include "pch.h"
-#include "DCP.h"
 
 using namespace Gdiplus;
+using namespace DllExports;
+
+#include "DCP.h"
 #pragma comment(lib, "gdiplus.lib")				// MFC에서는 안해도됨
 
 // static 멤버변수는 전역에서 초기화
