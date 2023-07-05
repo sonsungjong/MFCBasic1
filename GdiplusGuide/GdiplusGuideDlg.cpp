@@ -72,7 +72,7 @@ BOOL CGdiplusGuideDlg::OnInitDialog()
 	Gdiplus::DllExports::GdipSetPenWidth(mp_pen, 10);				// 굵기를 10으로 변경
 	Gdiplus::DllExports::GdipSetPenColor(mp_pen, 0x50600000);				// Red를 255에서 96으로 변경, 투명도를 255에서 80으로 변경
 
-	GdipSetPenMode(mp_pen, PenAlignmentInset);				// 선이 굵어져도 영역 안쪽으로만 그려지게 설정 변경
+	GdipSetPenMode(mp_pen, Gdiplus::PenAlignmentInset);				// 선이 굵어져도 영역 안쪽으로만 그려지게 설정 변경
 
 	GdipDrawRectangleI(mp_graphics, mp_pen, 30, 30, 300, 180);				// 30, 30, 300, 180
 
@@ -83,7 +83,7 @@ BOOL CGdiplusGuideDlg::OnInitDialog()
 		//Gdiplus::DllExports::GdipSetPenEndCap(mp_pen, (LineCap)(0x10 + i));					// 펜의 끝 위치 모양을 지정
 		//Gdiplus::DllExports::GdipSetPenStartCap(mp_pen, (LineCap)(0x10 + i));				// 펜의 시작위치 모양을 지정
 
-		Gdiplus::DllExports::GdipSetPenDashStyle(mp_pen, (DashStyle)i);
+		Gdiplus::DllExports::GdipSetPenDashStyle(mp_pen, (Gdiplus::DashStyle)i);
 		Gdiplus::DllExports::GdipDrawLineI(mp_graphics, mp_pen, 20, 20 + i * 16, 300, 20 + i * 16);				// 선을 그린다
 	}
 
@@ -96,9 +96,9 @@ BOOL CGdiplusGuideDlg::OnInitDialog()
 	//	GdipDrawLineI(mp_graphics, mp_pen, star_pos[i].X, star_pos[i].Y, star_pos[i + 1].X, star_pos[i + 1].Y);
 	//}
 
-	GdipSetPenLineJoin(mp_pen, LineJoinRound);				// 선과 선이 만나는 지점을 LineJoinRound로 변경
-	GdipSetPenStartCap(mp_pen, LineCapRound);				// 선 시작점 둥글게
-	GdipSetPenEndCap(mp_pen, LineCapRound);				// 선 끝점 둥글게
+	GdipSetPenLineJoin(mp_pen, Gdiplus::LineJoinRound);				// 선과 선이 만나는 지점을 LineJoinRound로 변경
+	GdipSetPenStartCap(mp_pen, Gdiplus::LineCapRound);				// 선 시작점 둥글게
+	GdipSetPenEndCap(mp_pen, Gdiplus::LineCapRound);				// 선 끝점 둥글게
 
 	GdipDrawLinesI(mp_graphics, mp_pen, star_pos, 11);
 
@@ -111,7 +111,57 @@ BOOL CGdiplusGuideDlg::OnInitDialog()
 	GdipSetSolidFillColor(mp_brush, 0x30FF00FF);				// 브러시 변경 (알파 0x30 핑크)
 	GdipFillEllipse(mp_graphics, mp_brush, 520, 80, 170, 170);
 
+	// 햇치 브러시
+	Gdiplus::GpHatch* p_brush = NULL;
+	GdipCreateHatchBrush(Gdiplus::HatchStyleHorizontal, 0xFF00FF00, 0xFF009000, &p_brush);
+	GdipFillRectangleI(mp_graphics, p_brush, 30, 230, 150, 150);
+	GdipDeleteBrush(p_brush);
 
+	//// 52가지 Hatch Style 모두 출력
+	//for (int i = 0; i < 52; ++i) {
+	//	GdipCreateHatchBrush((GpHatchStyle)i, 0xFF00FF00, 0xFF009000, &p_brush);
+	//	GdipFillRectangleI(mp_graphics, p_brush, 20 + (i % 8) * 61, 370 + (i / 8) * 41, 60, 40);
+	//	GdipDeleteBrush(p_brush);
+	//}
+	
+	// 문자열 출력
+	Gdiplus::GpFontFamily* p_font_family = NULL;
+	Gdiplus::GpFont* p_font = NULL;
+	Gdiplus::DllExports::GdipCreateFontFamilyFromName(L"맑은 고딕", NULL, &p_font_family);
+	Gdiplus::GpSolidFill* p_font_brush = NULL;
+	Gdiplus::DllExports::GdipCreateSolidFill(0xFF00FF00, &p_font_brush);
+
+	Gdiplus::RectF text_rect(30.0f, 30.0f, 0.0f, 0.0f);
+	FontStyle style_table[6] = {FontStyleRegular, FontStyleBold, FontStyleItalic, FontStyleBoldItalic, FontStyleUnderline, FontStyleStrikeout};
+
+	for (int i = 0; i < 6; ++i) {
+		Gdiplus::DllExports::GdipCreateFont(p_font_family, 20, style_table[i], Gdiplus::UnitPixel, &p_font);
+		GdipDrawString(mp_graphics, L"안녕하세요 반갑습니다 GDI+ 입니다", -1, p_font, &text_rect, NULL, p_font_brush);
+		text_rect.Y += 35.0f;
+		GdipDeleteFont(p_font);
+	}
+
+	text_rect = Gdiplus::RectF(730.0f, 30.0f, 260.0f, 200.0f);
+	GdipDrawRectangle(mp_graphics, mp_pen, text_rect.X, text_rect.Y, text_rect.Width, text_rect.Height);
+
+	// 가운데 정렬 옵션
+	GpStringFormat* p_str_format = NULL;
+	GdipCreateStringFormat(0, LANG_KOREAN, &p_str_format);
+	GdipSetStringFormatAlign(p_str_format, StringAlignmentCenter);
+	GdipSetStringFormatLineAlign(p_str_format, StringAlignmentCenter);
+
+	Gdiplus::DllExports::GdipCreateFont(p_font_family, 20, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel, &p_font);
+	GdipDrawString(mp_graphics, L"사각형 범위를 지정하고 \n그 안에서만 글이 적힙니다. \n가로 범위를 초과하면 \n자동으로 줄바꿈을 해줍니다.", -1, p_font, &text_rect, p_str_format, p_font_brush);
+
+	GdipDeleteStringFormat(p_str_format);
+	GdipDeleteFont(p_font);
+	GdipDeleteBrush(p_font_brush);
+	GdipDeleteFontFamily(p_font_family);
+
+	GdipLoadImageFromFile(L"../photo.jpg", &mp_image);				// GDI+ 전용 이미지 객체를 사용해야 알파값이 정상 적용된다
+	Gdiplus::DllExports::GdipDrawImageRectI(mp_graphics, mp_image, 0, 400, 200, 200);				// 사각형 크기에 맞춰 출력
+	//Gdiplus::DllExports::GdipDrawImageI(mp_graphics, mp_image, 0, 0);				// 0,0 위치에 이미지 출력
+	GdipDisposeImage(mp_image);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

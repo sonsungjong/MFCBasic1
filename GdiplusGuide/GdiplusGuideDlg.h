@@ -18,6 +18,7 @@ private:
 	Gdiplus::GpGraphics* mp_graphics = NULL;				// 연결 후에는 dc 역할
 	Gdiplus::GpPen* mp_pen = NULL;							// 펜
 	Gdiplus::GpSolidFill* mp_brush = NULL;					// 브러시
+	Gdiplus::GpImage* mp_image = NULL;					// 이미지
 
 	// Memory DC 연결 -> GpBitmap 으로 변경
 	//HDC mh_mem_dc = NULL;							// MemDC 핸들값
