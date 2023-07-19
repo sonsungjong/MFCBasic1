@@ -217,7 +217,6 @@ void DCP::DCPText(int a_x, int a_y, const TCHAR* ap_str, Gdiplus::ARGB a_text_co
 		m_temp_color.SetValue(a_text_color);
 		((Gdiplus::SolidBrush*)mp_font_brush)->SetColor(m_temp_color);
 	}
-
 	int str_len = _tcslen(ap_str);
 	mp_graphic->DrawString(ap_str, str_len, mp_font, Gdiplus::PointF(Gdiplus::REAL(a_x), Gdiplus::REAL(a_y)), mp_font_brush);
 }
