@@ -5,6 +5,11 @@
 #pragma once
 #include "DCP.h"
 
+typedef struct Extern {
+	float temp;
+	int humi;
+} Ex;
+
 // CGraphBoxDlg dialog
 class CGraphBoxDlg : public CDialogEx
 {
@@ -13,7 +18,7 @@ private:
 	CRect m_rect1;
 	CRect m_rect2;
 	CRect m_pie_rect;
-
+	Ex* m_ex;
 
 // Construction
 public:

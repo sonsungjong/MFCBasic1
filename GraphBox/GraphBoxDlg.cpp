@@ -23,6 +23,14 @@ CGraphBoxDlg::CGraphBoxDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GRAPHBOX_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	m_ex = new Ex[100000];
+	srand(GetTickCount64());
+	Ex* p = m_ex;
+	for (int i = 0; i < 100000; i++, p++) {
+		p->temp = (float)(rand() % 2000 - 1000 / 100.0);
+		p->humi = rand() % 51+20;
+	}
 }
 
 void CGraphBoxDlg::DoDataExchange(CDataExchange* pDX)
@@ -59,10 +67,18 @@ BOOL CGraphBoxDlg::OnInitDialog()
 
 	SetBackgroundColor(RGB(100, 120, 140));
 
-	m_dcp.DCPTextSetting(_T("¸¼Àº °íµñ"), 14);
-	m_dcp.CreateDCP(m_rect1.Width(), m_rect1.Height());
+	SetWindowPos(NULL, 0, 0, 1920, 1080, NULL);
 
-	
+	m_dcp.DCPTextSetting(_T("¸¼Àº °íµñ"), 14);
+	m_dcp.CreateDCP(1920, 1080);
+
+	m_dcp.SetPenStyle(Gdiplus::DashStyleDash, 5);
+
+	int x = 0;
+	int prev_y = 100 - ((m_ex + 99999)->temp);
+	for (int i = 0; i < 100; i++) {
+
+	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
