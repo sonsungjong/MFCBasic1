@@ -12,7 +12,6 @@ class DCP
 protected:
 	Gdiplus::Brush* mp_brush;
 	Gdiplus::Brush* mp_font_brush;
-	Gdiplus::Pen* mp_pen = NULL;
 	Gdiplus::Font* mp_font;
 
 	int m_last_position_x;
@@ -25,6 +24,7 @@ protected:
 	static int m_object_count;					// DCP 객체 갯수 계산
 
 public:
+	Gdiplus::Pen* mp_pen = NULL;
 	Gdiplus::Bitmap* mp_bitmap;
 	Gdiplus::Graphics* mp_graphic;
 	explicit DCP();
@@ -50,7 +50,7 @@ public:
 	void LineTo(int a_ex, int a_ey, Gdiplus::ARGB a_pen_color = NULL);
 
 	// 펜 변경 (선 스타일과 두께)
-	void SetPenStyle(Gdiplus::DashStyle a_style, Gdiplus::REAL a_thickness);
+	void SetPenStyle(Gdiplus::DashStyle a_style, Gdiplus::REAL a_thickness, Gdiplus::ARGB a_pen_color = NULL);
 
 	// 텍스트 출력
 	void DCPText(int a_x, int a_y, const TCHAR* ap_str, Gdiplus::ARGB a_text_color = NULL);

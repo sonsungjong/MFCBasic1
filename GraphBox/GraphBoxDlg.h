@@ -31,7 +31,7 @@ public:
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-
+	void MyPaint();
 
 // Implementation
 protected:

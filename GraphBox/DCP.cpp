@@ -204,10 +204,14 @@ void DCP::LineTo(int a_ex, int a_ey, Gdiplus::ARGB a_pen_color)
 }
 
 // 선 변경 (선 스타일, 굵기)
-void DCP::SetPenStyle(Gdiplus::DashStyle a_style, Gdiplus::REAL a_thickness)
+void DCP::SetPenStyle(Gdiplus::DashStyle a_style, Gdiplus::REAL a_thickness, Gdiplus::ARGB a_pen_color)
 {
 	mp_pen->SetDashStyle(a_style);
 	mp_pen->SetWidth(a_thickness);
+	if (a_pen_color != NULL) {
+		m_temp_color.SetValue(a_pen_color);
+		mp_pen->SetColor(m_temp_color);
+	}
 }
 
 // Gdiplus TextOut
