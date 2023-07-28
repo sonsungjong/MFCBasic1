@@ -79,8 +79,6 @@ public:
 	// Arc그리기 (테두리)
 	void DrawArc(Gdiplus::REAL a_x, Gdiplus::REAL a_y, Gdiplus::REAL a_cx, Gdiplus::REAL a_cy, Gdiplus::REAL a_start_angle, Gdiplus::REAL a_sweep_angle, Gdiplus::ARGB a_pen_color = NULL);
 
-	// 그래프 그리기
-
 };
 
 #endif

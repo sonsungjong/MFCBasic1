@@ -6,7 +6,8 @@
 #define IDR_MAINFRAME                   128
 #define IDC_GRAPH_RECT                  1000
 #define IDC_SUB_GRAPH_RECT              1001
-#define IDC_PIE_GRAPH_RECT              1002
+#define IDC_PIE1                        1002
+#define IDC_PIE2                        1003
 
 // Next default values for new objects
 // 

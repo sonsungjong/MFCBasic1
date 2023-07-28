@@ -8,6 +8,7 @@
 typedef struct Extern {
 	float temp;
 	int humi;
+	float vib;
 } Ex;
 
 // CGraphBoxDlg dialog
@@ -17,12 +18,17 @@ private:
 	DCP m_dcp;
 	CRect m_rect1;
 	CRect m_rect2;
-	CRect m_pie_rect;
+	CRect m_pie_rect1;
+	CRect m_pie_rect2;
 	Ex* m_ex;
 
 // Construction
 public:
 	CGraphBoxDlg(CWnd* pParent = nullptr);	// standard constructor
+	void MyPaint();
+	void VibPaint();
+	void PiePaint1();
+	void PiePaint2();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -31,7 +37,6 @@ public:
 
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-	void MyPaint();
 
 // Implementation
 protected:
