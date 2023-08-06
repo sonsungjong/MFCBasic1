@@ -325,6 +325,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GdiplusGuide", "GdiplusGuid
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GraphBox", "GraphBox\GraphBox.vcxproj", "{D82571EC-302E-4432-A3EB-E3FEC10FB66D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HTTPRequestGet", "HTTPRequestGet\HTTPRequestGet.vcxproj", "{9419B1F2-EEF0-45EF-BDB6-016081D72C68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -1621,6 +1623,14 @@ Global
 		{D82571EC-302E-4432-A3EB-E3FEC10FB66D}.Release|x64.Build.0 = Release|x64
 		{D82571EC-302E-4432-A3EB-E3FEC10FB66D}.Release|x86.ActiveCfg = Release|Win32
 		{D82571EC-302E-4432-A3EB-E3FEC10FB66D}.Release|x86.Build.0 = Release|Win32
+		{9419B1F2-EEF0-45EF-BDB6-016081D72C68}.Debug|x64.ActiveCfg = Debug|x64
+		{9419B1F2-EEF0-45EF-BDB6-016081D72C68}.Debug|x64.Build.0 = Debug|x64
+		{9419B1F2-EEF0-45EF-BDB6-016081D72C68}.Debug|x86.ActiveCfg = Debug|Win32
+		{9419B1F2-EEF0-45EF-BDB6-016081D72C68}.Debug|x86.Build.0 = Debug|Win32
+		{9419B1F2-EEF0-45EF-BDB6-016081D72C68}.Release|x64.ActiveCfg = Release|x64
+		{9419B1F2-EEF0-45EF-BDB6-016081D72C68}.Release|x64.Build.0 = Release|x64
+		{9419B1F2-EEF0-45EF-BDB6-016081D72C68}.Release|x86.ActiveCfg = Release|Win32
+		{9419B1F2-EEF0-45EF-BDB6-016081D72C68}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
