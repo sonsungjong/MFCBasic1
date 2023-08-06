@@ -8,9 +8,26 @@
 // CHTTPRequestGetDlg dialog
 class CHTTPRequestGetDlg : public CDialogEx
 {
+private:
+
+
 // Construction
 public:
-	CHTTPRequestGetDlg(CWnd* pParent = nullptr);	// standard constructor
+	CHTTPRequestGetDlg(CWnd* pParent = nullptr);				// 생성자
+
+	void WebcamFace(wchar_t* _user_id, wchar_t* _user_pw);
+
+	void MobileAuthPush(wchar_t* _user_id);						//  모바일 인증요청
+	void MobileAuthResult(wchar_t* _user_id, wchar_t* _request_id);				// 모바일 인증결과요청
+
+	void MobileQrGenerate(wchar_t* _user_id);				// 모바일 QR요청
+	void MobileQrImageDraw();										// 전달받은 QR 이미지 출력
+	void MobileQrAuthResult(wchar_t* _user_id);			// QR 인증결과 확인요청
+
+	void MobileOtpSignin(wchar_t* _user_id, wchar_t* _otp_number);				// OTP 인증요청
+
+	void CallToken();				// 인증 완료시 응답받은 인증 Token 정보를 호출하는 함수 (특정 레지스트리에 저장 가능)
+	void LoginLog();					// 인증 로그 전송
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -20,16 +37,6 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-public:
-	void MobileAuthPush();
-	void MobileAuthResult();
-
-	void MobileQrGenerate();
-	void MobileQrAuthResult();
-
-	void MobileOtpSignin();
-
-	void LoginLog();
 
 // Implementation
 protected:
