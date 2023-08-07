@@ -9,7 +9,7 @@
 class CHTTPRequestGetDlg : public CDialogEx
 {
 private:
-
+	wchar_t m_response[8192];
 
 // Construction
 public:
@@ -28,6 +28,8 @@ public:
 
 	void CallToken();				// 인증 완료시 응답받은 인증 Token 정보를 호출하는 함수 (특정 레지스트리에 저장 가능)
 	void LoginLog();					// 인증 로그 전송
+
+	void HttpPostRequest(wchar_t* api_info, wchar_t* headers, wchar_t* body);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

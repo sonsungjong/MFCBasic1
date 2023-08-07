@@ -5,8 +5,6 @@
 #include "pch.h"
 #include "framework.h"
 #include "HTTPRequestGet.h"
-
-#include <string>
 #include <winhttp.h>
 #include "HTTPRequestGetDlg.h"
 #include "afxdialogex.h"
@@ -24,10 +22,6 @@ CHTTPRequestGetDlg::CHTTPRequestGetDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_HTTPREQUESTGET_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-}
-
-void CHTTPRequestGetDlg::WebcamFace(wchar_t* _user_id, wchar_t* _user_pw)
-{
 }
 
 void CHTTPRequestGetDlg::DoDataExchange(CDataExchange* pDX)
@@ -119,271 +113,152 @@ void CHTTPRequestGetDlg::OnBnClickedCancel()
 }
 
 
-
-
-//// Get요청 테스트 https://jsonplaceholder.typicode.com/guide/
-//// 'https://jsonplaceholder.typicode.com/posts/1'
-//void CHTTPRequestGetDlg::OnBnClickedTest()
-//{
-//	TCHAR response_text[1024] = { 0, };				// 충분한 크기로 설정
-//	int response_index = 0;
-//
-//	HINTERNET hSession = WinHttpOpen(L"User Agent/1.0",
-//		WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
-//
-//	if (hSession) {
-//		HINTERNET hConnect = WinHttpConnect(hSession, L"jsonplaceholder.typicode.com", INTERNET_DEFAULT_HTTPS_PORT, 0);
-//
-//		if (hConnect) {
-//			HINTERNET hRequest = WinHttpOpenRequest(hConnect, L"GET", L"/posts/1",
-//				NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE);
-//
-//			if (hRequest) {
-//				BOOL bResults = WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0,
-//					WINHTTP_NO_REQUEST_DATA, 0, 0, 0);
-//
-//				if (bResults) {
-//					bResults = WinHttpReceiveResponse(hRequest, NULL);
-//
-//					if (bResults) {
-//						DWORD dwSize = 0;
-//						DWORD dwDownloaded = 0;
-//
-//						do {
-//							dwSize = 0;
-//							WinHttpQueryDataAvailable(hRequest, &dwSize);
-//							BYTE* pszOutBuffer = new BYTE[dwSize + 1];
-//							ZeroMemory(pszOutBuffer, dwSize + 1);
-//
-//							if (WinHttpReadData(hRequest, (LPVOID)pszOutBuffer, dwSize, &dwDownloaded)) {
-//								TCHAR tempBuffer[1024];
-//								MultiByteToWideChar(CP_UTF8, 0, (char*)pszOutBuffer, -1, tempBuffer, sizeof(tempBuffer) / sizeof(tempBuffer[0]));
-//								// 모든 청크를 하나의 문자열에 누적한다.
-//								_tcscat_s(response_text, sizeof(response_text) / sizeof(response_text[0]), tempBuffer);
-//							}
-//
-//							delete[] pszOutBuffer;
-//						} while (dwSize > 0);
-//
-//						::MessageBox(m_hWnd, response_text, _T("Response"), MB_OK);
-//
-//					}
-//				}
-//
-//				WinHttpCloseHandle(hRequest);
-//			}
-//
-//			WinHttpCloseHandle(hConnect);
-//		}
-//
-//		WinHttpCloseHandle(hSession);
-//	}
-//}
-
-
 void CHTTPRequestGetDlg::OnBnClickedWebcam()
 {
-	
-}
+	wchar_t user_id[512] = { 0, };
+	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 512);
 
+	wchar_t user_pw[512] = { 0, };
+	::GetDlgItemText(m_hWnd, IDC_USERPW, user_pw, 512);
+
+	WebcamFace(user_id, user_pw);
+}
 
 void CHTTPRequestGetDlg::OnBnClickedMobilePush1()
 {
-	TCHAR user_id[20] = { 0, };
-	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 20);
+	wchar_t user_id[512] = { 0, };
+	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 512);
+
 	MobileAuthPush(user_id);
 }
 
 
 void CHTTPRequestGetDlg::OnBnClickedMobilePush2()
 {
-	
+	wchar_t user_id[512] = { 0, };
+	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 512);
+	wchar_t* request_id = L"9KZ2A84EEV6NKWDT";
+
+	MobileAuthResult(user_id, request_id);
 }
 
 
 void CHTTPRequestGetDlg::OnBnClickedMobileQr1()
 {
-	
+	wchar_t user_id[512] = { 0, };
+	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 512);
+
+	MobileQrGenerate(user_id);
 }
 
 
 void CHTTPRequestGetDlg::OnBnClickedMobileQr2()
 {
-	
+	wchar_t user_id[512] = { 0, };
+	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 512);
+
+	MobileQrAuthResult(user_id);
 }
 
 
 void CHTTPRequestGetDlg::OnBnClickedOtp()
 {
-	
+	wchar_t user_id[512] = { 0, };
+	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 512);
+	wchar_t* otp_number = L"123123";
+
+	MobileOtpSignin(user_id, otp_number);
 }
 
 void CHTTPRequestGetDlg::OnBnClickedLoginLog()
 {
-	TCHAR user_id[20] = { 0, };
-	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 20);
+	wchar_t user_id[512] = { 0, };
+	::GetDlgItemText(m_hWnd, IDC_USERID, user_id, 512);
 
 	LoginLog();
 }
 
+// 얼굴(웹캠)
+void CHTTPRequestGetDlg::WebcamFace(wchar_t* _user_id, wchar_t* _user_pw)
+{
 
+}
 
-
+// 모바일(인증요청)
 void CHTTPRequestGetDlg::MobileAuthPush(wchar_t* _user_id)
 {
-	TCHAR status_text[256] = { 0, };
-	TCHAR body_text[8192] = { 0, };
+	wchar_t* api_info = L"/api/v1/auth/face-pattern/auth-push";
+	wchar_t* headers = L"Content-Type: application/json\r\nclient_computer_type: pc\r\n";
+	wchar_t body[512];
+	swprintf_s(body, sizeof(body) / sizeof(wchar_t), L"{\"userId\":\"%s\"}", _user_id);
 
-	HINTERNET hSession = WinHttpOpen(L"User Agent", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
-	if (!hSession) {
-		DWORD err = GetLastError();
-		TCHAR text_err[256];
-		_stprintf_s(text_err, 256, _T("%u"), err);
-		::MessageBox(m_hWnd, text_err, L"WinHttpOpen failed", MB_OK);
-		return;
-	}
-
-	HINTERNET hConnect = WinHttpConnect(hSession, L"118.33.113.122", 9443, 0);
-	if (!hConnect) {
-		DWORD err = GetLastError();
-		TCHAR text_err[256];
-		_stprintf_s(text_err, 256, _T("%u"), err);
-		::MessageBox(m_hWnd, text_err, L"WinHttpConnect failed", MB_OK);
-		WinHttpCloseHandle(hSession);
-		return;
-	}
-
-	HINTERNET hRequest = WinHttpOpenRequest(hConnect, L"POST", L"/api/v1/auth/face-pattern/auth-push", NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE);
-	if (!hRequest) {
-		DWORD err = GetLastError();
-		TCHAR text_err[256];
-		_stprintf_s(text_err, 256, _T("%u"), err);
-		::MessageBox(m_hWnd, text_err, L"WinHttpOpenRequest failed", MB_OK);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		return;
-	}
-
-	// SSL 인증서 검증 무시
-	DWORD dwFlags = SECURITY_FLAG_IGNORE_UNKNOWN_CA | SECURITY_FLAG_IGNORE_CERT_WRONG_USAGE | SECURITY_FLAG_IGNORE_CERT_CN_INVALID | SECURITY_FLAG_IGNORE_CERT_DATE_INVALID;
-	WinHttpSetOption(hRequest, WINHTTP_OPTION_SECURITY_FLAGS, &dwFlags, sizeof(dwFlags));
-
-	LPCWSTR headers = L"Content-Type: application/json\r\nclient_computer_type: pc\r\n";
-	std::string data = "{\"userId\": \"9875587\"}";
-
-	if (!WinHttpSendRequest(hRequest, headers, -1L, (LPVOID)data.c_str(), data.size(), data.size(), 0)) {
-		DWORD err = GetLastError();
-		TCHAR text_err[256];
-		_stprintf_s(text_err, 256, _T("%u"), err);
-		::MessageBox(m_hWnd, text_err, L"WinHttpSendRequest failed", MB_OK);
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		return;
-	}
-
-	if (!WinHttpReceiveResponse(hRequest, NULL)) {
-		DWORD err = GetLastError();
-		TCHAR text_err[256];
-		_stprintf_s(text_err, 256, _T("%u"), err);
-		::MessageBox(m_hWnd, text_err, L"WinHttpReceiveResponse failed", MB_OK);
-		WinHttpCloseHandle(hRequest);
-		WinHttpCloseHandle(hConnect);
-		WinHttpCloseHandle(hSession);
-		return;
-	}
-
-	DWORD statusCode = 0;
-	DWORD statusCodeSize = sizeof(statusCode);
-	WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER, NULL, &statusCode, &statusCodeSize, WINHTTP_NO_HEADER_INDEX);
-
-
-	_stprintf_s(status_text, 256, _T("%u"), statusCode);
-	
-
-	DWORD size = 0;
-	if (WinHttpQueryDataAvailable(hRequest, &size)) {
-		char* buffer = new char[size + 1];
-		DWORD bytesRead;
-		if (WinHttpReadData(hRequest, buffer, size, &bytesRead)) {
-			buffer[bytesRead] = 0;
-
-			// UTF-8에서 유니코드로 변환
-			int unicodeLength = MultiByteToWideChar(CP_UTF8, 0, buffer, -1, NULL, 0);
-			MultiByteToWideChar(CP_UTF8, 0, buffer, -1, body_text, sizeof(body_text)/sizeof(TCHAR));
-
-			::MessageBox(m_hWnd, body_text, status_text, MB_OK);
-		}
-		delete[] buffer;
-	}
-	else {
-		::MessageBox(m_hWnd, status_text, _T("상태코드"), MB_OK);
-	}
-
-	WinHttpCloseHandle(hRequest);
-	WinHttpCloseHandle(hConnect);
-	WinHttpCloseHandle(hSession);
+	HttpPostRequest(api_info, headers, body);
 }
 
+// 모바일(인증결과확인요청)
 void CHTTPRequestGetDlg::MobileAuthResult(wchar_t* _user_id, wchar_t* _request_id)
 {
+	wchar_t* api_info = L"/api/v1/auth/face-pattern/auth-result";
+	wchar_t* headers = L"Content-Type: application/json\r\nclient_computer_type: pc\r\n";
+	wchar_t body[512];
+	swprintf(body, sizeof(body) / sizeof(wchar_t), L"{\n  \"userId\": \"%s\",\n  \"requestId\": \"%s\"\n}", _user_id, _request_id);
+
+	HttpPostRequest(api_info, headers, body);
 }
 
+// 모바일(QR요청)
 void CHTTPRequestGetDlg::MobileQrGenerate(wchar_t* _user_id)
 {
+	wchar_t* api_info = L"/api/v1/auth/qr/_generate";
+	wchar_t* headers = L"Content-Type: application/json\r\nclient_computer_type: pc\r\n";
+	wchar_t body[512];
+	swprintf_s(body, sizeof(body) / sizeof(wchar_t), L"{\"userId\":\"%s\"}", _user_id);
+
+	HttpPostRequest(api_info, headers, body);
 }
 
+// 전달받은 QR 생성 (화면에 QR 이미지 출력)
 void CHTTPRequestGetDlg::MobileQrImageDraw()
 {
+
 }
 
+// 모바일(QR인증 결과확인요청)
 void CHTTPRequestGetDlg::MobileQrAuthResult(wchar_t* _user_id)
 {
+	wchar_t* api_info = L"/api/v1/auth/qr/_auth-result";
+	wchar_t* headers = L"Content-Type: application/json\r\nclient_computer_type: pc\r\n";
+	wchar_t body[512];
+	swprintf_s(body, sizeof(body) / sizeof(wchar_t), L"{\"userId\":\"%s\"}", _user_id);
+
+	HttpPostRequest(api_info, headers, body);
 }
 
+// 모바일(OTP인증요청)
 void CHTTPRequestGetDlg::MobileOtpSignin(wchar_t* _user_id, wchar_t* _otp_number)
 {
+	wchar_t* api_info = L"/api/v1/auth/otp/_signin";
+	wchar_t* headers = L"Content-Type: application/json\r\nclient_computer_type: pc\r\n";
+	wchar_t body[512];
+	swprintf(body, sizeof(body) / sizeof(wchar_t), L"{\"userId\":\"%s\",\"otpNumber\":\"%s\"}", _user_id, _otp_number);
+
+	HttpPostRequest(api_info, headers, body);
 }
 
+
+// 인증 토큰 호출 (인증 완료 시 응답 받은 인증 Token 정보를 호출하는 함수 필요)
+// 특정 레지스트리에 저장 가능
 void CHTTPRequestGetDlg::CallToken()
 {
+	
 }
 
-/*
-POST메시지
-
-{
-  "agentId": "AuthOCX",
-  "clientDt": "2023.07.12 08:45:30",
-  "clientIp": "192.168.30.241",
-  "clientVer": "1.0",
-  "loginType": "FaceSensor",
-  "osType": "Windows 10 x64",
-  "serialNo": "",
-  "status": "Authenfication",
-  "usedSso": true,
-  "userLogin": "9875587",
-  "userName": "김대건"
-}
-*/
+// 내부서버로 인증로그전송
 void CHTTPRequestGetDlg::LoginLog()
 {
-	// 세션 및 연결 핸들 초기화
-	HINTERNET hSession = WinHttpOpen(L"User Agent", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
-
-	if (hSession) {
-		HINTERNET hConnect = WinHttpConnect(hSession, L"118.33.113.122", 9443, 0);					// 서버 IP (URL) 와 포트
-
-		if (hConnect) {
-			// POST 요청 설정
-			HINTERNET hRequest = WinHttpOpenRequest(hConnect, L"POST", L"/api/loginLog", NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE);				// POST형식으로 요청 URL정보
-
-			if (hRequest) {
-				// 헤더 설정
-				WinHttpAddRequestHeaders(hRequest, L"Content-Type: application/json", -1L, WINHTTP_ADDREQ_FLAG_ADD);				// JSON 요청
-
-				// 요청 바디 설정
-				std::wstring body = LR"(
+	wchar_t* api_info = L"/api/loginLog";
+	wchar_t* headers = L"Content-Type: application/json";
+	wchar_t* body = LR"(
 {
   "agentId": "AuthOCX",
   "clientDt": "2023.07.12 08:45:30",
@@ -398,11 +273,31 @@ void CHTTPRequestGetDlg::LoginLog()
   "userName": "김대건"
 }
 )";
-				
+
+	HttpPostRequest(api_info, headers, body);
+}
+
+// POST요청 후 멤버변수에 응답 저장
+void CHTTPRequestGetDlg::HttpPostRequest(wchar_t* api_info, wchar_t* headers, wchar_t* body)
+{
+	// 세션 및 연결 핸들 초기화
+	HINTERNET hSession = WinHttpOpen(L"User Agent", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+
+	if (hSession) {
+		HINTERNET hConnect = WinHttpConnect(hSession, L"118.33.113.122", 9443, 0);					// 서버 IP (URL) 와 포트
+
+		if (hConnect) {
+			// POST 요청 설정
+			HINTERNET hRequest = WinHttpOpenRequest(hConnect, L"POST", api_info, NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE);				// POST형식으로 요청 URL정보
+
+			if (hRequest) {
+				// 헤더 설정
+				WinHttpAddRequestHeaders(hRequest, headers, -1L, WINHTTP_ADDREQ_FLAG_ADD);				// JSON 요청
+
 				// 송신용 메시지 UTF8로 변환
-				int utf8_length = WideCharToMultiByte(CP_UTF8, 0, body.c_str(), -1, NULL, 0, NULL, NULL);
+				int utf8_length = WideCharToMultiByte(CP_UTF8, 0, body, -1, NULL, 0, NULL, NULL);
 				char* utf8body = new char[utf8_length];
-				WideCharToMultiByte(CP_UTF8, 0, body.c_str(), -1, utf8body, utf8_length, NULL, NULL);
+				WideCharToMultiByte(CP_UTF8, 0, body, -1, utf8body, utf8_length, NULL, NULL);
 
 				// 인증서 검증 무시
 				DWORD dwFlags = SECURITY_FLAG_IGNORE_UNKNOWN_CA |
@@ -427,39 +322,31 @@ void CHTTPRequestGetDlg::LoginLog()
 						query_result = WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER, NULL, &dwStatusCode, &dwSize, NULL);
 
 						// 상태메시지 문자열 저장
-						TCHAR status_msg[20];
-						_stprintf_s(status_msg, 20, _T("%d"), dwStatusCode);
+						wchar_t status_msg[20];
+						swprintf_s(status_msg, 20, _T("%d"), dwStatusCode);
 
-						if (dwStatusCode != 200) {
-							// 에러 처리
-							::MessageBox(m_hWnd, L"크기 받을 수 없음", status_msg, MB_OK);
-						}
-						else {
-							// 응답 크기 확인
-							BOOL data_result = WinHttpQueryDataAvailable(hRequest, &dwSize);
-							
-							char* pszOutBuffer = new char[dwSize + 1];				// UTF8 응답
-							DWORD dwDownloaded = 0;
+						// 응답 크기 확인
+						BOOL data_result = WinHttpQueryDataAvailable(hRequest, &dwSize);
 
-							BOOL read_result = WinHttpReadData(hRequest, (LPVOID)pszOutBuffer, dwSize, &dwDownloaded);
+						char* pszOutBuffer = new char[dwSize + 1];				// UTF8 응답
+						DWORD dwDownloaded = 0;
 
-							// 응답 읽기
-							if (read_result) {
-								pszOutBuffer[dwDownloaded] = 0;
+						BOOL read_result = WinHttpReadData(hRequest, (LPVOID)pszOutBuffer, dwSize, &dwDownloaded);
 
-								// UTF-8 문자열을 유니코드로 변환
-								int wSize = MultiByteToWideChar(CP_UTF8, 0, pszOutBuffer, -1, NULL, 0);
-								if (wSize > 0) {
-									wchar_t* pwszBuffer = new wchar_t[wSize];
-									if (MultiByteToWideChar(CP_UTF8, 0, pszOutBuffer, -1, pwszBuffer, wSize)) {
-										::MessageBox(m_hWnd, pwszBuffer, status_msg, MB_OK);
-									}
-									delete[] pwszBuffer;
+						// 응답 읽기
+						if (read_result) {
+							pszOutBuffer[dwDownloaded] = 0;
+
+							// UTF-8 문자열을 유니코드로 변환
+							int wSize = MultiByteToWideChar(CP_UTF8, 0, pszOutBuffer, -1, NULL, 0);
+							if (wSize > 0 && wSize < sizeof(m_response)/sizeof(wchar_t)) {
+								if (MultiByteToWideChar(CP_UTF8, 0, pszOutBuffer, -1, m_response, sizeof(m_response)/sizeof(wchar_t)))
+								{
+									::MessageBox(m_hWnd, m_response, status_msg, MB_OK);
 								}
 							}
-
-							delete[] pszOutBuffer;
 						}
+						delete[] pszOutBuffer;
 					}
 				}
 				else {
