@@ -10,6 +10,8 @@ class CHTTPRequestGetDlg : public CDialogEx
 {
 private:
 	wchar_t m_response[8192];
+	const wchar_t* m_ip = L"118.33.113.122";
+	unsigned short m_port = 9443;
 
 // Construction
 public:
@@ -30,6 +32,7 @@ public:
 	void LoginLog();					// 인증 로그 전송
 
 	void HttpPostRequest(wchar_t* api_info, wchar_t* headers, wchar_t* body);
+	void HttpGetRequest(wchar_t* api_info, wchar_t* headers);
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

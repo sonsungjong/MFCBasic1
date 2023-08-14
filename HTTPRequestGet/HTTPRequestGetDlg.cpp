@@ -1,22 +1,17 @@
-
-// HTTPRequestGetDlg.cpp : implementation file
-//
-
 #include "pch.h"
 #include "framework.h"
 #include "HTTPRequestGet.h"
 #include <winhttp.h>
+#include <json/json.h>
 #include "HTTPRequestGetDlg.h"
 #include "afxdialogex.h"
+
+#pragma comment(lib, "winhttp.lib")
+// #pragma comment(lib, "jsoncpp.lib")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
-#pragma comment(lib, "winhttp.lib")
-
-
 
 CHTTPRequestGetDlg::CHTTPRequestGetDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_HTTPREQUESTGET_DIALOG, pParent)
@@ -56,7 +51,7 @@ BOOL CHTTPRequestGetDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	SetDlgItemText(IDC_USERID, _T("9875587"));
+	SetDlgItemText(IDC_USERID, L"9875587");
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -284,7 +279,7 @@ void CHTTPRequestGetDlg::HttpPostRequest(wchar_t* api_info, wchar_t* headers, wc
 	HINTERNET hSession = WinHttpOpen(L"User Agent", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
 
 	if (hSession) {
-		HINTERNET hConnect = WinHttpConnect(hSession, L"118.33.113.122", 9443, 0);					// 서버 IP (URL) 와 포트
+		HINTERNET hConnect = WinHttpConnect(hSession, m_ip, m_port, 0);					// 서버 IP (URL) 와 포트
 
 		if (hConnect) {
 			// POST 요청 설정
@@ -323,7 +318,7 @@ void CHTTPRequestGetDlg::HttpPostRequest(wchar_t* api_info, wchar_t* headers, wc
 
 						// 상태메시지 문자열 저장
 						wchar_t status_msg[20];
-						swprintf_s(status_msg, 20, _T("%d"), dwStatusCode);
+						swprintf_s(status_msg, 20, L"%d", dwStatusCode);
 
 						// 응답 크기 확인
 						BOOL data_result = WinHttpQueryDataAvailable(hRequest, &dwSize);
@@ -374,3 +369,95 @@ void CHTTPRequestGetDlg::HttpPostRequest(wchar_t* api_info, wchar_t* headers, wc
 	}
 	WinHttpCloseHandle(hSession);
 }
+
+// Http Get요청
+void CHTTPRequestGetDlg::HttpGetRequest(wchar_t* api_info, wchar_t* headers)
+{
+	// 세션 및 연결 핸들 초기화
+	HINTERNET hSession = WinHttpOpen(L"User Agent", WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+
+	if (hSession) {
+		HINTERNET hConnect = WinHttpConnect(hSession, m_ip, m_port, 0); // 서버 IP (URL) 와 포트
+
+		if (hConnect) {
+			// GET 요청 설정
+			HINTERNET hRequest = WinHttpOpenRequest(hConnect, L"GET", api_info, NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE);
+
+			if (hRequest) {
+				// 헤더 설정
+				WinHttpAddRequestHeaders(hRequest, headers, -1L, WINHTTP_ADDREQ_FLAG_ADD); // JSON 요청
+
+				// 인증서 검증 무시
+				DWORD dwFlags = SECURITY_FLAG_IGNORE_UNKNOWN_CA |
+					SECURITY_FLAG_IGNORE_CERT_WRONG_USAGE |
+					SECURITY_FLAG_IGNORE_CERT_CN_INVALID |
+					SECURITY_FLAG_IGNORE_CERT_DATE_INVALID;
+				WinHttpSetOption(hRequest, WINHTTP_OPTION_SECURITY_FLAGS, &dwFlags, sizeof(dwFlags));
+
+				// http전송
+				BOOL b_send_result = WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, WINHTTP_NO_REQUEST_DATA, 0, 0, 0);
+				if (b_send_result) {
+					// http응답 수신
+					BOOL b_recv_result = WinHttpReceiveResponse(hRequest, NULL);
+
+					if (b_recv_result) {
+						DWORD dwStatusCode = 0; // 응답 상태코드
+						DWORD dwSize = sizeof(dwStatusCode); // 응답메시지 사이즈
+
+						BOOL query_result = 0;
+						query_result = WinHttpQueryHeaders(hRequest, WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER, NULL, &dwStatusCode, &dwSize, NULL);
+
+						// 상태메시지 문자열 저장
+						wchar_t status_msg[20];
+						swprintf_s(status_msg, 20, L"%d", dwStatusCode);
+
+						// 응답 크기 확인
+						BOOL data_result = WinHttpQueryDataAvailable(hRequest, &dwSize);
+
+						char* pszOutBuffer = new char[dwSize + 1]; // UTF8 응답
+						DWORD dwDownloaded = 0;
+
+						BOOL read_result = WinHttpReadData(hRequest, (LPVOID)pszOutBuffer, dwSize, &dwDownloaded);
+
+						// 응답 읽기
+						if (read_result) {
+							pszOutBuffer[dwDownloaded] = 0;
+
+							// UTF-8 문자열을 유니코드로 변환
+							int wSize = MultiByteToWideChar(CP_UTF8, 0, pszOutBuffer, -1, NULL, 0);
+							if (wSize > 0 && wSize < sizeof(m_response) / sizeof(wchar_t)) {
+								if (MultiByteToWideChar(CP_UTF8, 0, pszOutBuffer, -1, m_response, sizeof(m_response) / sizeof(wchar_t)))
+								{
+									::MessageBox(m_hWnd, m_response, status_msg, MB_OK);
+								}
+							}
+						}
+						delete[] pszOutBuffer;
+					}
+				}
+				else {
+					// 요청 실패
+					DWORD dwErr = GetLastError();
+					LPVOID lpMsgBuf;
+					FormatMessage(
+						FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+						NULL,
+						dwErr,
+						0,
+						(LPWSTR)&lpMsgBuf,
+						0,
+						NULL
+					);
+					::MessageBox(m_hWnd, (LPCWSTR)lpMsgBuf, L"에러", MB_OK);
+					LocalFree(lpMsgBuf);
+				}
+
+				WinHttpCloseHandle(hRequest);
+			}
+
+			WinHttpCloseHandle(hConnect);
+		}
+		WinHttpCloseHandle(hSession);
+	}
+}
+

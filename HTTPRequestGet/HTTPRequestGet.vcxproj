@@ -76,6 +76,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\jsoncpp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\jsoncpp\build\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -100,6 +102,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>jsoncpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -183,14 +186,24 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="FaceAuthenticator.h" />
+    <ClInclude Include="FaceAuthenticatorException.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="global_struct.h" />
     <ClInclude Include="HTTPRequestGet.h" />
     <ClInclude Include="HTTPRequestGetDlg.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PolicyApi.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ServerApiException.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UserApi.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Common.cpp" />
+    <ClCompile Include="FaceAuthenticator.cpp" />
+    <ClCompile Include="FaceAuthenticatorException.cpp" />
     <ClCompile Include="HTTPRequestGet.cpp" />
     <ClCompile Include="HTTPRequestGetDlg.cpp" />
     <ClCompile Include="pch.cpp">
@@ -199,6 +212,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PolicyApi.cpp" />
+    <ClCompile Include="ServerApiException.cpp" />
+    <ClCompile Include="UserApi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HTTPRequestGet.rc" />
