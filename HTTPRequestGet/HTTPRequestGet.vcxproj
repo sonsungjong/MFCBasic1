@@ -186,24 +186,15 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Common.h" />
-    <ClInclude Include="FaceAuthenticator.h" />
-    <ClInclude Include="FaceAuthenticatorException.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="global_struct.h" />
     <ClInclude Include="HTTPRequestGet.h" />
     <ClInclude Include="HTTPRequestGetDlg.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PolicyApi.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ServerApiException.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="UserApi.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Common.cpp" />
-    <ClCompile Include="FaceAuthenticator.cpp" />
-    <ClCompile Include="FaceAuthenticatorException.cpp" />
     <ClCompile Include="HTTPRequestGet.cpp" />
     <ClCompile Include="HTTPRequestGetDlg.cpp" />
     <ClCompile Include="pch.cpp">
@@ -212,9 +203,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="PolicyApi.cpp" />
-    <ClCompile Include="ServerApiException.cpp" />
-    <ClCompile Include="UserApi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HTTPRequestGet.rc" />
