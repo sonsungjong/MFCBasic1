@@ -67,11 +67,21 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	for (int idx = 0; idx < sizeof(m_menu_btn_rect) / sizeof(m_menu_btn_rect[0]); ++idx) {
 		m_menu_btn_rect[idx].SetRect(0, m_menu_bar.top, m_menu_btn_size*(idx+1), m_menu_bar.bottom);
 	}
+	if (m_full_size.Height() < 800) {
+		m_font_size = 7;
+	}
+	else if (m_full_size.Height() < 1200) {
+		m_font_size = 14;
+	}
+	else {
+		m_font_size = 21;
+	}
 	
 	// GDI+ ¼³Á¤
 	m_dcp.CreateDCP(m_screen_width, m_screen_height);
-	m_dcp.DCPTextSetting(_T("¸¼Àº °íµñ"), 14);
-	m_dcp.Clear(RGB24(0, 0, 180));
+	m_dcp.DCPTextSetting(_T("¸¼Àº °íµñ"), m_font_size);
+	m_dcp.Clear(RGB24(0, 84, 165));
+	// ¿µ¿ª Ç¥½Ã
 
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -99,8 +109,7 @@ void CGdipUserControl1Dlg::OnPaint()
 	}
 	else
 	{
-		// ¿µ¿ª Ç¥½Ã
-		m_dcp.DCPImage(_T("..\\img\\jeju.png"), 0, 0, m_screen_width, m_screen_height);
+		m_dcp.DCPImage(_T("..\\img\\Ãµ±Ã2.png"), 0, 0, m_screen_width, m_screen_height);
 		m_dcp.Rectangle(0, 0, m_screen_width, m_screen_height, RGB24(0, 84, 165), RGB32(220, 0, 84, 165));
 		m_dcp.Rectangle(0, 0, m_top_system_bar.Width(), m_top_system_bar.Height(), RGB24(7, 60, 130), RGB24(7, 60, 130));
 		m_dcp.Rectangle(m_menu_bar.left, m_menu_bar.top, m_menu_bar.right, m_menu_bar.bottom, RGB24(255, 255, 255), RGB24(255, 255, 255));

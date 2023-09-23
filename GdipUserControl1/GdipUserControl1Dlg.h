@@ -4,13 +4,14 @@
 class CGdipUserControl1Dlg : public CDialogEx
 {
 private:
-	// 범위
+	// UI
 	int m_screen_width;
 	int m_screen_height;
 	CRect m_full_size, m_top_system_bar, m_menu_bar, m_search_rect, m_table_rect, m_graph_rect;				// row
 	CRect m_close_rect;				// col
 	CRect m_menu_btn_rect[8];
 	int m_menu_btn_size = 120;
+	int m_font_size = 7;
 	
 private:
 	// 플래그

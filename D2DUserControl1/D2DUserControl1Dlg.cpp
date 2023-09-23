@@ -63,7 +63,7 @@ BOOL CD2DUserControl1Dlg::OnInitDialog()
 	m_d2d[1].SetWndTarget(m_wnd_system_bar, m_top_system_bar);
 	 
 	m_d2d[0].D2DRenderBegin();
-	m_d2d[0].D2DPng(0, 0, m_full_size.Width(), m_full_size.Height(), _T("..\\img\\jeju.png"));
+	m_d2d[0].D2DPng(0, 0, m_full_size.Width(), m_full_size.Height(), _T("..\\img\\Ãµ±Ã2.png"));
 	m_d2d[0].D2DRenderEnd();
 
 
