@@ -23,7 +23,9 @@ CGdipUserControl1Dlg::CGdipUserControl1Dlg(CWnd* pParent /*=nullptr*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
 	memset(m_close_path, 0, MAX_PATH);
+	memset(m_min_path, 0, MAX_PATH);
 	_stprintf_s(m_close_path, MAX_PATH, _T("..\\img\\whiteclose48.png"));
+	_stprintf_s(m_min_path, MAX_PATH, _T("..\\img\\minimize.png"));
 }
 
 void CGdipUserControl1Dlg::DoDataExchange(CDataExchange* pDX)
@@ -36,12 +38,14 @@ BEGIN_MESSAGE_MAP(CGdipUserControl1Dlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CGdipUserControl1Dlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CGdipUserControl1Dlg::OnBnClickedCancel)
+	
 	ON_WM_CTLCOLOR()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_CLOSE()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -58,14 +62,19 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	m_screen_width = GetSystemMetrics(SM_CXSCREEN);
 	m_screen_height = GetSystemMetrics(SM_CYSCREEN);
 	SetWindowPos(NULL, 0, 0, m_screen_width, m_screen_height, SWP_NOZORDER);
+	GetClientRect(&m_full_size);
 
 	// 영역 설정
-	GetClientRect(&m_full_size);
 	m_top_system_bar.SetRect(0, 0, m_full_size.Width(), m_full_size.Height() / 27);
-	m_menu_bar.SetRect(0, m_top_system_bar.bottom, m_full_size.Width(), m_top_system_bar.bottom+m_full_size.Height()/18);
-	m_close_rect.SetRect(m_top_system_bar.right - 35, m_top_system_bar.top + 5, m_top_system_bar.right - 5, m_top_system_bar.bottom - 5);
+	m_menu_bar.SetRect(0, m_full_size.Height() / 27, m_full_size.Width(), m_full_size.Height() / 27 + m_full_size.Height() / 18);
+	m_graph_row1.SetRect(0, m_full_size.Height() * 2 / 4, m_full_size.Width(), m_full_size.Height() *3/4);
+	m_graph_row2.SetRect(0, m_full_size.Height() * 3 / 4, m_full_size.Width(), m_full_size.Height());
+	m_table_rect.SetRect(0, m_menu_bar.bottom, m_full_size.Width(), m_graph_row1.top);
+
+	m_close_rect.SetRect(m_top_system_bar.right - 40, m_top_system_bar.top + 5, m_top_system_bar.right - 5, m_top_system_bar.bottom - 5);
+	m_min_rect.SetRect(m_top_system_bar.right - 75, m_top_system_bar.top + 5, m_top_system_bar.right - 45, m_top_system_bar.bottom - 5);
 	for (int idx = 0; idx < sizeof(m_menu_btn_rect) / sizeof(m_menu_btn_rect[0]); ++idx) {
-		m_menu_btn_rect[idx].SetRect(0, m_menu_bar.top, m_menu_btn_size*(idx+1), m_menu_bar.bottom);
+		m_menu_btn_rect[idx].SetRect(m_menu_btn_size*(idx), m_menu_bar.top, m_menu_btn_size * (idx + 1), m_menu_bar.bottom);
 	}
 	if (m_full_size.Height() < 800) {
 		m_font_size = 7;
@@ -83,6 +92,10 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	m_dcp.Clear(RGB24(0, 84, 165));
 	// 영역 표시
 
+	// 컨트롤
+	m_font_edit = ::CreateFont(24, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, _T("맑은 고딕"));
+	m_edit_ctrl.Create(WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, CRect(m_menu_bar.right - 300, m_menu_bar.top + 25, m_menu_bar.right - 100, m_menu_bar.bottom -25), this, 30001);
+	m_edit_ctrl.SendMessage(WM_SETFONT, (WPARAM)m_font_edit, TRUE);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -93,7 +106,6 @@ void CGdipUserControl1Dlg::OnPaint()
 	CPaintDC dc(this); // device context for painting
 	if (IsIconic())
 	{
-
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
 		// Center icon in client rectangle
@@ -109,19 +121,21 @@ void CGdipUserControl1Dlg::OnPaint()
 	}
 	else
 	{
-		m_dcp.DCPImage(_T("..\\img\\천궁2.png"), 0, 0, m_screen_width, m_screen_height);
-		m_dcp.Rectangle(0, 0, m_screen_width, m_screen_height, RGB24(0, 84, 165), RGB32(220, 0, 84, 165));
 		m_dcp.Rectangle(0, 0, m_top_system_bar.Width(), m_top_system_bar.Height(), RGB24(7, 60, 130), RGB24(7, 60, 130));
-		m_dcp.Rectangle(m_menu_bar.left, m_menu_bar.top, m_menu_bar.right, m_menu_bar.bottom, RGB24(255, 255, 255), RGB24(255, 255, 255));
+		m_dcp.Rectangle(m_menu_bar.left, m_menu_bar.top, m_menu_bar.right, m_menu_bar.bottom, RGB24(192, 192, 192), RGB24(192, 192, 192));
+		m_dcp.DrawRect(m_table_rect.left, m_table_rect.top, m_table_rect.right, m_table_rect.bottom, RGB24(255, 0, 0));
+		m_dcp.DrawRect(m_graph_row1.left, m_graph_row1.top, m_graph_row1.right, m_graph_row1.bottom, RGB24(0, 255, 0));
+		m_dcp.DrawRect(m_graph_row2.left, m_graph_row2.top, m_graph_row2.right, m_graph_row2.bottom, RGB24(0, 0, 255));
+
 		CRect* p = m_menu_btn_rect;
-		for (int idx = 0; idx < sizeof(m_menu_btn_rect) / sizeof(m_menu_btn_rect[0]);++idx) {
-			m_dcp.DrawRect(p->left, p->top, p->right, p->bottom, RGB24(255, 0, 0));
-			p++;
+		for (int idx = 0; idx < sizeof(m_menu_btn_rect) / sizeof(m_menu_btn_rect[0]);++idx, ++p) {
+			m_dcp.DrawRect(p->left, p->top, p->right, p->bottom, RGB24(165, 165, 165));
 		}
 
 		// 제목
 		m_dcp.DCPText(7, 7, _T("상태정보기반 수명주기예측 통합시스템"), RGB24(190, 190, 190));
 		m_dcp.DCPImage(m_close_path, m_close_rect.left, m_close_rect.top, m_close_rect.Width(), m_close_rect.Height());
+		m_dcp.DCPImage(m_min_path, m_min_rect.left, m_min_rect.top, m_min_rect.Width(), m_min_rect.Height());
 		// 끝
 		m_dcp.Draw(dc);
 	}
@@ -173,6 +187,7 @@ void CGdipUserControl1Dlg::OnDestroy()
 	CDialogEx::OnDestroy();
 
 	// TODO: Add your message handler code here
+	::DeleteObject(m_font_edit);
 }
 
 
@@ -183,6 +198,9 @@ void CGdipUserControl1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 		if (m_flag_close_on == 1) {
 			OnClose();
 		}
+	}
+	else if (m_min_rect.PtInRect(point)) {
+			ShowWindow(SW_MINIMIZE);
 	}
 
 	CDialogEx::OnLButtonDown(nFlags, point);
@@ -204,7 +222,7 @@ void CGdipUserControl1Dlg::OnMouseMove(UINT nFlags, CPoint point)
 			m_flag_close_on = 1;
 			memset(m_close_path, 0, MAX_PATH);
 			_stprintf_s(m_close_path, MAX_PATH, _T("..\\img\\close48.png"));
-			Invalidate(0);
+			InvalidateRect(&m_close_rect, 0);
 		}
 	}
 	else {
@@ -212,9 +230,26 @@ void CGdipUserControl1Dlg::OnMouseMove(UINT nFlags, CPoint point)
 			m_flag_close_on = 0;
 			memset(m_close_path, 0, MAX_PATH);
 			_stprintf_s(m_close_path, MAX_PATH, _T("..\\img\\whiteclose48.png"));
-			Invalidate(0);
+			InvalidateRect(&m_close_rect, 0);
 		}
 	}
+
+	//if (m_min_rect.PtInRect(point)) {
+	//	if (m_flag_min_on == 0) {
+	//		m_flag_min_on = 1;
+	//		memset(m_min_path, 0, MAX_PATH);
+	//		_stprintf_s(m_min_path, MAX_PATH, _T("..\\img\\minimize.png"));
+	//		InvalidateRect(&m_min_rect, 0);
+	//	}
+	//}
+	//else {
+	//	if (m_flag_min_on == 1) {
+	//		m_flag_min_on = 0;
+	//		memset(m_min_path, 0, MAX_PATH);
+	//		_stprintf_s(m_min_path, MAX_PATH, _T("..\\img\\minimize.png"));
+	//		InvalidateRect(&m_min_rect, 0);
+	//	}
+	//}
 
 	CDialogEx::OnMouseMove(nFlags, point);
 }
@@ -230,4 +265,14 @@ void CGdipUserControl1Dlg::OnClose()
 	}
 
 	CDialogEx::OnClose();
+}
+
+
+BOOL CGdipUserControl1Dlg::OnEraseBkgnd(CDC* pDC)
+{
+	// 뒷배경
+	m_dcp.DCPImage(_T("..\\img\\천궁2.png"), 0, 0, m_screen_width, m_screen_height);
+	m_dcp.Rectangle(0, 0, m_screen_width, m_screen_height, RGB24(0, 84, 165), RGB32(220, 0, 84, 165));
+
+	return CDialogEx::OnEraseBkgnd(pDC);
 }

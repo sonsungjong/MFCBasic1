@@ -34,6 +34,8 @@ BEGIN_MESSAGE_MAP(CMFCBasic105EditControlDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_READ_BTN, &CMFCBasic105EditControlDlg::OnBnClickedReadBtn)
 	ON_BN_CLICKED(IDC_WRITE_BTN, &CMFCBasic105EditControlDlg::OnBnClickedWriteBtn)
+	ON_BN_CLICKED(IDOK, &CMFCBasic105EditControlDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &CMFCBasic105EditControlDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -111,4 +113,18 @@ void CMFCBasic105EditControlDlg::OnBnClickedWriteBtn()
 {
 	SetDlgItemText(IDC_MSG_EDIT, L"sonsungjong");
 	// SetDlgItemInt(IDC_MSG_EDIT, 5);
+}
+
+
+void CMFCBasic105EditControlDlg::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+	//CDialogEx::OnOK();
+}
+
+
+void CMFCBasic105EditControlDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	CDialogEx::OnCancel();
 }

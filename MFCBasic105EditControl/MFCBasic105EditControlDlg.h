@@ -34,4 +34,6 @@ public:
 	afx_msg void OnBnClickedReadBtn();
 	afx_msg void OnBnClickedWriteBtn();
 
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedCancel();
 };
