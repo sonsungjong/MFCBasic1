@@ -65,16 +65,23 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	GetClientRect(&m_full_size);
 
 	// 영역 설정
-	m_top_system_bar.SetRect(0, 0, m_full_size.Width(), m_full_size.Height() / 27);
-	m_menu_bar.SetRect(0, m_full_size.Height() / 27, m_full_size.Width(), m_full_size.Height() / 27 + m_full_size.Height() / 18);
-	m_graph_row1.SetRect(0, m_full_size.Height() * 2 / 4, m_full_size.Width(), m_full_size.Height() *3/4);
-	m_graph_row2.SetRect(0, m_full_size.Height() * 3 / 4, m_full_size.Width(), m_full_size.Height());
-	m_table_rect.SetRect(0, m_menu_bar.bottom, m_full_size.Width(), m_graph_row1.top);
+	m_row1.SetRect(0, 0, m_full_size.Width(), m_full_size.Height() / 27);
+	m_row2.SetRect(0, m_full_size.Height() / 27, m_full_size.Width(), m_full_size.Height() / 27 + m_full_size.Height() / 18);
+	m_row4.SetRect(0, m_full_size.Height() * 4 / 10, m_full_size.Width(), m_full_size.Height() *7/10);
+	m_row5.SetRect(0, m_full_size.Height() * 7 / 10, m_full_size.Width(), m_full_size.Height());
+	m_row3.SetRect(0, m_row2.bottom, m_full_size.Width(), m_row4.top);
 
-	m_close_rect.SetRect(m_top_system_bar.right - 40, m_top_system_bar.top + 5, m_top_system_bar.right - 5, m_top_system_bar.bottom - 5);
-	m_min_rect.SetRect(m_top_system_bar.right - 75, m_top_system_bar.top + 5, m_top_system_bar.right - 45, m_top_system_bar.bottom - 5);
+	m_close_rect.SetRect(m_row1.right - 40, m_row1.top + 5, m_row1.right - 5, m_row1.bottom - 5);
+	m_min_rect.SetRect(m_row1.right - 75, m_row1.top + 5, m_row1.right - 45, m_row1.bottom - 5);
+	m_search_rect.SetRect(m_full_size.Width() *70/ 100, m_row2.top, m_full_size.Width(), m_row2.bottom);
+	m_listctrl_rect.SetRect(0, m_row3.top, m_full_size.Width() * 70 / 100, m_row3.bottom);
+	m_listbox_rect.SetRect(m_full_size.Width() * 70 / 100, m_row3.top, m_full_size.Width(), m_row3.bottom);
+	m_temp_graph_rect.SetRect(0, m_row4.top, m_full_size.Width() * 70 / 100, m_row4.bottom);
+	m_info_rect1.SetRect(m_full_size.Width() * 70 / 100, m_row4.top, m_full_size.Width(), m_row4.bottom);
+	m_vib_graph_rect.SetRect(0, m_row5.top, m_full_size.Width() * 70 / 100, m_row5.bottom);
+	m_info_rect2.SetRect(m_full_size.Width() * 70 / 100, m_row5.top, m_full_size.Width(), m_row5.bottom);
 	for (int idx = 0; idx < sizeof(m_menu_btn_rect) / sizeof(m_menu_btn_rect[0]); ++idx) {
-		m_menu_btn_rect[idx].SetRect(m_menu_btn_size*(idx), m_menu_bar.top, m_menu_btn_size * (idx + 1), m_menu_bar.bottom);
+		m_menu_btn_rect[idx].SetRect(m_menu_btn_size*(idx), m_row2.top, m_menu_btn_size * (idx + 1), m_row2.bottom);
 	}
 	if (m_full_size.Height() < 800) {
 		m_font_size = 7;
@@ -93,9 +100,9 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	// 영역 표시
 
 	// 컨트롤
-	m_font_edit = ::CreateFont(24, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, _T("맑은 고딕"));
-	m_edit_ctrl.Create(WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, CRect(m_menu_bar.right - 300, m_menu_bar.top + 25, m_menu_bar.right - 100, m_menu_bar.bottom -25), this, 30001);
-	m_edit_ctrl.SendMessage(WM_SETFONT, (WPARAM)m_font_edit, TRUE);
+	//m_font_edit = ::CreateFont(24, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, _T("맑은 고딕"));
+	//m_edit_ctrl.Create(WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, CRect(m_row2.right - 300, m_row2.top + 25, m_row2.right - 100, m_row2.bottom -25), this, 30001);
+	//m_edit_ctrl.SendMessage(WM_SETFONT, (WPARAM)m_font_edit, TRUE);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -121,16 +128,26 @@ void CGdipUserControl1Dlg::OnPaint()
 	}
 	else
 	{
-		m_dcp.Rectangle(0, 0, m_top_system_bar.Width(), m_top_system_bar.Height(), RGB24(7, 60, 130), RGB24(7, 60, 130));
-		m_dcp.Rectangle(m_menu_bar.left, m_menu_bar.top, m_menu_bar.right, m_menu_bar.bottom, RGB24(192, 192, 192), RGB24(192, 192, 192));
-		m_dcp.DrawRect(m_table_rect.left, m_table_rect.top, m_table_rect.right, m_table_rect.bottom, RGB24(255, 0, 0));
-		m_dcp.DrawRect(m_graph_row1.left, m_graph_row1.top, m_graph_row1.right, m_graph_row1.bottom, RGB24(0, 255, 0));
-		m_dcp.DrawRect(m_graph_row2.left, m_graph_row2.top, m_graph_row2.right, m_graph_row2.bottom, RGB24(0, 0, 255));
+		m_dcp.Rectangle(0, 0, m_row1.Width(), m_row1.Height(), RGB24(7, 60, 130), RGB24(7, 60, 130));
+		m_dcp.Rectangle(m_row2.left, m_row2.top, m_row2.right, m_row2.bottom, RGB24(192, 192, 192), RGB24(192, 192, 192));
+		m_dcp.DrawRect(m_row3.left, m_row3.top, m_row3.right, m_row3.bottom, RGB24(255, 0, 0));
+		m_dcp.DrawRect(m_row4.left, m_row4.top, m_row4.right, m_row4.bottom, RGB24(0, 255, 0));
+		m_dcp.DrawRect(m_row5.left, m_row5.top, m_row5.right, m_row5.bottom, RGB24(0, 0, 255));
 
+		// 범위테스트
 		CRect* p = m_menu_btn_rect;
 		for (int idx = 0; idx < sizeof(m_menu_btn_rect) / sizeof(m_menu_btn_rect[0]);++idx, ++p) {
 			m_dcp.DrawRect(p->left, p->top, p->right, p->bottom, RGB24(165, 165, 165));
 		}
+		m_dcp.DCPText(m_search_rect.left, m_search_rect.top, _T("검색란"));
+		m_dcp.DCPText(m_listctrl_rect.left, m_listctrl_rect.top, _T("통합DB란"));
+		m_dcp.DCPText(m_listbox_rect.left, m_listbox_rect.top, _T("리스트박스"));
+		m_dcp.Rectangle(m_temp_graph_rect.left + 7, m_temp_graph_rect.top + 7, m_temp_graph_rect.right - 7, m_temp_graph_rect.bottom - 7, RGB24(0, 0, 0), RGB24(255, 255, 255));
+		m_dcp.DCPText(m_temp_graph_rect.left, m_temp_graph_rect.top, _T("그래프1"));
+		m_dcp.DCPText(m_info_rect1.left, m_info_rect1.top, _T("텍스트1"));
+		m_dcp.Rectangle(m_vib_graph_rect.left + 7, m_vib_graph_rect.top + 7, m_vib_graph_rect.right - 7, m_vib_graph_rect.bottom - 7, RGB24(0, 0, 0), RGB24(255, 255, 255));
+		m_dcp.DCPText(m_vib_graph_rect.left, m_vib_graph_rect.top, _T("그래프2"));
+		m_dcp.DCPText(m_info_rect2.left, m_info_rect2.top, _T("텍스트2"));
 
 		// 제목
 		m_dcp.DCPText(7, 7, _T("상태정보기반 수명주기예측 통합시스템"), RGB24(190, 190, 190));
