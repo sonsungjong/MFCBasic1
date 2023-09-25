@@ -2,6 +2,15 @@
 #include "common_struct.h"
 #include "DBManager.h"
 
+//#pragma comment(lib, "libmysql.lib")
+
+/*
+MySQL include : C:\Program Files\MySQL\MySQL Server 8.0\include
+MySQL lib : C:\Program Files\MySQL\MySQL Server 8.0\lib
+MySQL dll : PATH=C:\Program Files\MySQL\MySQL Server 8.0\lib;%PATH%
+MySQL input : libmysql.lib
+*/
+
 DBManager::DBManager()
 {
 	//mysql_init(&m_conn);

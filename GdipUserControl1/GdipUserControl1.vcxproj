@@ -186,6 +186,7 @@
     <ClInclude Include="common_struct.h" />
     <ClInclude Include="DBManager.h" />
     <ClInclude Include="DCP.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GdipUserControl1.h" />
     <ClInclude Include="GdipUserControl1Dlg.h" />
@@ -197,6 +198,7 @@
   <ItemGroup>
     <ClCompile Include="DBManager.cpp" />
     <ClCompile Include="DCP.cpp" />
+    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GdipUserControl1.cpp" />
     <ClCompile Include="GdipUserControl1Dlg.cpp" />
     <ClCompile Include="InputData.cpp" />
