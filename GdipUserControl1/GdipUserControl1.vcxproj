@@ -183,6 +183,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="common_struct.h" />
+    <ClInclude Include="DBManager.h" />
     <ClInclude Include="DCP.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GdipUserControl1.h" />
@@ -193,6 +195,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DBManager.cpp" />
     <ClCompile Include="DCP.cpp" />
     <ClCompile Include="GdipUserControl1.cpp" />
     <ClCompile Include="GdipUserControl1Dlg.cpp" />

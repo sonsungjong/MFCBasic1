@@ -9,7 +9,8 @@
 #endif
 
 #include "resource.h"		// main symbols
-
+#include "DCP.h"
+#include "common_struct.h"
 
 // CGdipUserControl1App:
 // See GdipUserControl1.cpp for the implementation of this class

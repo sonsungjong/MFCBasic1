@@ -1,5 +1,4 @@
 #pragma once
-#include "DCP.h"
 
 class CGdipUserControl1Dlg : public CDialogEx
 {
@@ -8,7 +7,7 @@ private:
 	int m_screen_width, m_screen_height;
 	CRect m_full_size, m_row1, m_row2, m_row3, m_row4, m_row5;				// row
 	CRect m_min_rect, m_close_rect;											// row1
-	CRect m_menu_btn_rect[6], m_search_rect;							// row2
+	CRect m_menu_btn_rect[2], m_search_rect;							// row2
 	CRect m_listctrl_rect, m_listbox_rect;										// row3
 	CRect m_temp_graph_rect, m_info_rect1;								// row4
 	CRect m_vib_graph_rect, m_info_rect2;									// row5
@@ -17,7 +16,7 @@ private:
 
 private:
 	// 컨트롤
-	CButton m_btn;
+	CButton m_btn_load_data, m_btn_setting;
 	CListCtrl m_listctrl;					// 통합DB 테이블
 	CListBox m_listbox;				// 연동장치 테이블
 	CEdit m_edit_ctrl;
@@ -26,7 +25,7 @@ private:
 private:
 	// 플래그
 	char m_flag_close_on = 0, m_flag_min_on = 0;
-	TCHAR m_close_path[MAX_PATH], m_min_path[MAX_PATH];
+	TCHAR m_close_path[MAX_PATH];
 
 public:
 	// 데이터
@@ -63,5 +62,6 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnClose();
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnBnClickedLoadData();
+	afx_msg void OnBnClickedSetting();
 };

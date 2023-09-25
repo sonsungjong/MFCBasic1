@@ -5,6 +5,9 @@
 #include "pch.h"
 #include "framework.h"
 #include "GdipUserControl1.h"
+
+#include "InputData.h"
+
 #include "GdipUserControl1Dlg.h"
 #include "afxdialogex.h"
 
@@ -23,10 +26,10 @@ CGdipUserControl1Dlg::CGdipUserControl1Dlg(CWnd* pParent /*=nullptr*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
 	memset(m_close_path, 0, MAX_PATH);
-	memset(m_min_path, 0, MAX_PATH);
 	_stprintf_s(m_close_path, MAX_PATH, _T("..\\img\\whiteclose48.png"));
-	_stprintf_s(m_min_path, MAX_PATH, _T("..\\img\\minimize.png"));
 }
+
+
 
 void CGdipUserControl1Dlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -38,14 +41,14 @@ BEGIN_MESSAGE_MAP(CGdipUserControl1Dlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CGdipUserControl1Dlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CGdipUserControl1Dlg::OnBnClickedCancel)
-	
+	ON_BN_CLICKED(30001, &CGdipUserControl1Dlg::OnBnClickedLoadData)
+	ON_BN_CLICKED(30002, &CGdipUserControl1Dlg::OnBnClickedSetting)
 	ON_WM_CTLCOLOR()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_CLOSE()
-	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -72,7 +75,7 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	m_row3.SetRect(0, m_row2.bottom, m_full_size.Width(), m_row4.top);
 
 	m_close_rect.SetRect(m_row1.right - 40, m_row1.top + 5, m_row1.right - 5, m_row1.bottom - 5);
-	m_min_rect.SetRect(m_row1.right - 75, m_row1.top + 5, m_row1.right - 45, m_row1.bottom - 5);
+	m_min_rect.SetRect(m_row1.right - 85, m_row1.top + 5, m_row1.right - 55, m_row1.bottom - 5);
 	m_search_rect.SetRect(m_full_size.Width() *70/ 100, m_row2.top, m_full_size.Width(), m_row2.bottom);
 	m_listctrl_rect.SetRect(0, m_row3.top, m_full_size.Width() * 70 / 100, m_row3.bottom);
 	m_listbox_rect.SetRect(m_full_size.Width() * 70 / 100, m_row3.top, m_full_size.Width(), m_row3.bottom);
@@ -96,13 +99,17 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	// GDI+ 설정
 	m_dcp.CreateDCP(m_screen_width, m_screen_height);
 	m_dcp.DCPTextSetting(_T("맑은 고딕"), m_font_size);
-	m_dcp.Clear(RGB24(0, 84, 165));
+	m_dcp.DCPImage(_T("..\\img\\천궁2.png"), 0, 0, m_screen_width, m_screen_height);
+	m_dcp.FillSolidRect(0, 0, m_screen_width, m_screen_height, RGB32(220, 0, 84, 165));
+
 	// 영역 표시
 
 	// 컨트롤
 	//m_font_edit = ::CreateFont(24, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, _T("맑은 고딕"));
 	//m_edit_ctrl.Create(WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, CRect(m_row2.right - 300, m_row2.top + 25, m_row2.right - 100, m_row2.bottom -25), this, 30001);
 	//m_edit_ctrl.SendMessage(WM_SETFONT, (WPARAM)m_font_edit, TRUE);
+	m_btn_load_data.Create(_T("유도탄 데이터 입력"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CRect(m_menu_btn_rect[0].left, m_menu_btn_rect[0].top, m_menu_btn_rect[0].right, m_menu_btn_rect[0].bottom), this, 30001);
+	m_btn_setting.Create(_T("설정"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CRect(m_menu_btn_rect[1].left, m_menu_btn_rect[1].top, m_menu_btn_rect[1].right, m_menu_btn_rect[1].bottom), this, 30002);
 	
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -140,7 +147,7 @@ void CGdipUserControl1Dlg::OnPaint()
 		for (int idx = 0; idx < sizeof(m_menu_btn_rect) / sizeof(m_menu_btn_rect[0]);++idx, ++p) {
 			m_dcp.DrawRect(p->left, p->top, p->right, p->bottom, RGB24(165, 165, 165));
 		}
-		m_dcp.DCPText(m_search_rect.left, m_search_rect.top, _T("검색란"));
+		m_dcp.DCPText(m_search_rect.left, m_search_rect.top, _T("검색란"), RGB24(0,0,0));
 		m_dcp.DCPText(m_listctrl_rect.left, m_listctrl_rect.top, _T("통합DB란"));
 		m_dcp.DCPText(m_listbox_rect.left, m_listbox_rect.top, _T("리스트박스"));
 		m_dcp.Rectangle(m_temp_graph_rect.left + 7, m_temp_graph_rect.top + 7, m_temp_graph_rect.right - 7, m_temp_graph_rect.bottom - 7, RGB24(0, 0, 0), RGB24(255, 255, 255));
@@ -153,7 +160,13 @@ void CGdipUserControl1Dlg::OnPaint()
 		// 제목
 		m_dcp.DCPText(7, 7, _T("상태정보기반 수명주기예측 통합시스템"), RGB24(190, 190, 190));
 		m_dcp.DCPImage(m_close_path, m_close_rect.left, m_close_rect.top, m_close_rect.Width(), m_close_rect.Height());
-		m_dcp.DCPImage(m_min_path, m_min_rect.left, m_min_rect.top, m_min_rect.Width(), m_min_rect.Height());
+		
+		if (m_flag_min_on == 0) {
+			m_dcp.DrawRect(m_min_rect.left, m_min_rect.top + 15, m_min_rect.right, m_min_rect.bottom - 15, RGB24(0, 0, 0));
+		}
+		else {
+			m_dcp.Rectangle(m_min_rect.left, m_min_rect.top + 15, m_min_rect.right, m_min_rect.bottom - 15, RGB24(0, 0, 255), RGB24(0,0,255));
+		}
 		// 끝
 		m_dcp.Draw(dc);
 	}
@@ -218,7 +231,9 @@ void CGdipUserControl1Dlg::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 	}
 	else if (m_min_rect.PtInRect(point)) {
+		if (m_flag_min_on == 1) {
 			ShowWindow(SW_MINIMIZE);
+		}
 	}
 
 	CDialogEx::OnLButtonDown(nFlags, point);
@@ -252,22 +267,18 @@ void CGdipUserControl1Dlg::OnMouseMove(UINT nFlags, CPoint point)
 		}
 	}
 
-	//if (m_min_rect.PtInRect(point)) {
-	//	if (m_flag_min_on == 0) {
-	//		m_flag_min_on = 1;
-	//		memset(m_min_path, 0, MAX_PATH);
-	//		_stprintf_s(m_min_path, MAX_PATH, _T("..\\img\\minimize.png"));
-	//		InvalidateRect(&m_min_rect, 0);
-	//	}
-	//}
-	//else {
-	//	if (m_flag_min_on == 1) {
-	//		m_flag_min_on = 0;
-	//		memset(m_min_path, 0, MAX_PATH);
-	//		_stprintf_s(m_min_path, MAX_PATH, _T("..\\img\\minimize.png"));
-	//		InvalidateRect(&m_min_rect, 0);
-	//	}
-	//}
+	if (m_min_rect.PtInRect(point)) {
+		if (m_flag_min_on == 0) {
+			m_flag_min_on = 1;
+			InvalidateRect(&m_min_rect, 0);
+		}
+	}
+	else {
+		if (m_flag_min_on == 1) {
+			m_flag_min_on = 0;
+			InvalidateRect(&m_min_rect, 0);
+		}
+	}
 
 	CDialogEx::OnMouseMove(nFlags, point);
 }
@@ -286,11 +297,20 @@ void CGdipUserControl1Dlg::OnClose()
 }
 
 
-BOOL CGdipUserControl1Dlg::OnEraseBkgnd(CDC* pDC)
+void CGdipUserControl1Dlg::OnBnClickedSetting()
 {
-	// 뒷배경
-	m_dcp.DCPImage(_T("..\\img\\천궁2.png"), 0, 0, m_screen_width, m_screen_height);
-	m_dcp.Rectangle(0, 0, m_screen_width, m_screen_height, RGB24(0, 84, 165), RGB32(220, 0, 84, 165));
-
-	return CDialogEx::OnEraseBkgnd(pDC);
+	Invalidate();
+	AfxMessageBox(L"aaa");
 }
+
+void CGdipUserControl1Dlg::OnBnClickedLoadData()
+{
+	InputData dlg;
+	INT_PTR result = dlg.DoModal();
+	if (result == IDOK) {
+		AfxMessageBox(L"hello");
+	}
+}
+
+
+
