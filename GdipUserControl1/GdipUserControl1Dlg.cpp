@@ -103,6 +103,7 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	//m_font_edit = ::CreateFont(24, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, _T("¸¼Àº °íµñ"));
 	//m_edit_ctrl.Create(WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, CRect(m_row2.right - 300, m_row2.top + 25, m_row2.right - 100, m_row2.bottom -25), this, 30001);
 	//m_edit_ctrl.SendMessage(WM_SETFONT, (WPARAM)m_font_edit, TRUE);
+	
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
