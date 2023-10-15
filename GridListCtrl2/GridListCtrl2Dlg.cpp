@@ -109,7 +109,7 @@ void CGridListCtrl2Dlg::OnBnClickedCancel()
 void CGridListCtrl2Dlg::OnBnClickedSetBtn()
 {
 	// TODO: Add your control notification handler code here
-	grid_view.DeleteAllItems();
+	grid_view.DeleteAllItems();				// ÀÌ°Å ¾²¸é ±ôºýÀÓ ¹ß»ý
 	for (int i = grid_view.GetHeaderCtrl()->GetItemCount() - 1; i >= 0; i--) { grid_view.DeleteColumn(i); }
 	if (m_test == 1) {
 		m_test = 2;

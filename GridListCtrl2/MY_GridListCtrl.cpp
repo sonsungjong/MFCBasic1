@@ -33,7 +33,7 @@ void MY_GridListCtrl::SetGridLine()
 	item.state = LVIS_SELECTED | LVIS_FOCUSED;
 
 	// 격자 모양 추가 후 컬럼 추가
-	SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);							// 격자 추가
+	SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);							// 격자 | 행선택 | 더블버퍼
 	InsertColumn(0, _T("No"), LVCFMT_CENTER, 40);
 	InsertColumn(1, _T("Name"), LVCFMT_CENTER, 100);
 	InsertColumn(2, _T("Kor"), LVCFMT_CENTER, 60);
