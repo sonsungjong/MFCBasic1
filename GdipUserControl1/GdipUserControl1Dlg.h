@@ -1,4 +1,5 @@
 #pragma once
+#include "MqttManager.h"
 
 class CGdipUserControl1Dlg : public CDialogEx
 {
@@ -30,10 +31,13 @@ private:
 public:
 	// ตฅภฬลอ
 	DCP m_dcp;
-
+	MqttManager* mp_mqtt;
+	void TestMethod();
 
 public:
 	CGdipUserControl1Dlg(CWnd* pParent = nullptr);	// standard constructor
+
+
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

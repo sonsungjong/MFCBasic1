@@ -76,12 +76,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\paho.mqtt.c\src;C:\paho.mqtt.cpp\src;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\paho.mqtt.c\build\src\Release;C:\paho.mqtt.cpp\build\src\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\paho.mqtt.c\src;C:\paho.mqtt.cpp\src;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\paho.mqtt.c\build\src\Release;C:\paho.mqtt.cpp\build\src\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -100,6 +104,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -144,6 +149,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>paho-mqtt3a.lib;paho-mqtt3c.lib;paho-mqttpp3-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -191,6 +197,7 @@
     <ClInclude Include="GdipUserControl1.h" />
     <ClInclude Include="GdipUserControl1Dlg.h" />
     <ClInclude Include="InputData.h" />
+    <ClInclude Include="MqttManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -202,6 +209,7 @@
     <ClCompile Include="GdipUserControl1.cpp" />
     <ClCompile Include="GdipUserControl1Dlg.cpp" />
     <ClCompile Include="InputData.cpp" />
+    <ClCompile Include="MqttManager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

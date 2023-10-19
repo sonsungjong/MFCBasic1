@@ -8,6 +8,7 @@
 
 #include "InputData.h"
 
+
 #include "GdipUserControl1Dlg.h"
 #include "afxdialogex.h"
 
@@ -27,6 +28,9 @@ CGdipUserControl1Dlg::CGdipUserControl1Dlg(CWnd* pParent /*=nullptr*/)
 
 	memset(m_close_path, 0, MAX_PATH);
 	_stprintf_s(m_close_path, MAX_PATH, _T("..\\img\\whiteclose48.png"));
+
+	mp_mqtt = new MqttManager();
+
 }
 
 
@@ -35,6 +39,8 @@ void CGdipUserControl1Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
+
+
 
 BEGIN_MESSAGE_MAP(CGdipUserControl1Dlg, CDialogEx)
 	ON_WM_PAINT()
@@ -110,7 +116,8 @@ BOOL CGdipUserControl1Dlg::OnInitDialog()
 	//m_edit_ctrl.SendMessage(WM_SETFONT, (WPARAM)m_font_edit, TRUE);
 	m_btn_load_data.Create(_T("유도탄 데이터 입력"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CRect(m_menu_btn_rect[0].left, m_menu_btn_rect[0].top, m_menu_btn_rect[0].right, m_menu_btn_rect[0].bottom), this, 30001);
 	m_btn_setting.Create(_T("설정"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, CRect(m_menu_btn_rect[1].left, m_menu_btn_rect[1].top, m_menu_btn_rect[1].right, m_menu_btn_rect[1].bottom), this, 30002);
-	
+
+
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -299,8 +306,7 @@ void CGdipUserControl1Dlg::OnClose()
 
 void CGdipUserControl1Dlg::OnBnClickedSetting()
 {
-	Invalidate();
-	AfxMessageBox(L"aaa");
+	mp_mqtt->SendMsg("ai", "{\"ai\":\"req\"}");
 }
 
 void CGdipUserControl1Dlg::OnBnClickedLoadData()
@@ -312,5 +318,7 @@ void CGdipUserControl1Dlg::OnBnClickedLoadData()
 	}
 }
 
-
-
+void CGdipUserControl1Dlg::TestMethod()
+{
+	AfxMessageBox(L"메시지 받음");
+}
