@@ -318,7 +318,7 @@ void CGdipUserControl1Dlg::OnBnClickedLoadData()
 	}
 }
 
-void CGdipUserControl1Dlg::TestMethod()
+void CGdipUserControl1Dlg::TestMethod(std::string& a_msg)
 {
-	AfxMessageBox(L"메시지 받음");
+	MessageBoxA(m_hWnd, a_msg.c_str(), "수신", MB_OK);
 }

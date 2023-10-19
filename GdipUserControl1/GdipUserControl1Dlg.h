@@ -32,7 +32,7 @@ public:
 	// ตฅภฬลอ
 	DCP m_dcp;
 	MqttManager* mp_mqtt;
-	void TestMethod();
+	void TestMethod(std::string& a_msg);
 
 public:
 	CGdipUserControl1Dlg(CWnd* pParent = nullptr);	// standard constructor
