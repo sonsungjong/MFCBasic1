@@ -30,7 +30,7 @@ void MqttManager::message_arrived(mqtt::const_message_ptr msg)
 			if (end_pos != std::string::npos) {
 				m_recv_ai_msg = recv_msg_payload.substr(start_pos, end_pos - start_pos);
 				if (m_recv_ai_msg == "res") {
-					MessageBoxA(NULL, m_recv_ai_msg.c_str(), "메시지 받음", MB_OK);
+					MessageBoxA(NULL, m_recv_ai_msg.c_str(), "메시지 받음", MB_OK);			// AI 로부터 메시지 받음
 
 				}
 			}
