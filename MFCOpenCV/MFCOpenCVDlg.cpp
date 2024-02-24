@@ -18,8 +18,7 @@
 dll 설정을 위해
 Project -> Properties -> Configuration Properties -> Debugging -> Environment 에다가
 
-PATH=C:\opencv\build\x64\vc15\bin
-;%PATH%;
+PATH=C:\opencv\build\x64\vc15\bin;%PATH%;
 
 를 추가해줘야함
 */

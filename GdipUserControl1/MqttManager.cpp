@@ -5,6 +5,9 @@
 #pragma comment(lib, "paho-mqtt3c.lib")
 #pragma comment(lib, "paho-mqttpp3-static.lib")
 
+/*
+MQTT 모스키토 수신부
+*/
 void MqttManager::message_arrived(mqtt::const_message_ptr msg)
 {
 	
