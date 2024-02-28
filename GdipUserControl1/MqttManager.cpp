@@ -47,8 +47,8 @@ paho-mqttpp3-static.lib
 <dll 설정>
 Project -> Properties -> Configuration Properties -> Debugging -> Environment 에다가
 
-PATH=C:\paho.mqtt.c\build\src\Release
-;%PATH%;
+PATH=C:\paho.mqtt.c\build\src\Release;
+%PATH%;
 
 <MQTT가이드>
 https://mosquitto.org/download/ 에서 mosquitto 서버(브로커) 를 설치한다.

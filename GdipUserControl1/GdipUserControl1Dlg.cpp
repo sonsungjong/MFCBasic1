@@ -186,20 +186,29 @@ HCURSOR CGdipUserControl1Dlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
 void CGdipUserControl1Dlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	//CDialogEx::OnOK();
 	Invalidate();
 }
 
-
+// ECS종료 제거
 void CGdipUserControl1Dlg::OnBnClickedCancel()
 {
-	// TODO: Add your control notification handler code here
 	//CDialogEx::OnCancel();
+}
+
+// ECS가 아니라 Alt+F4 종료
+void CGdipUserControl1Dlg::OnClose()
+{
+	int result = ::MessageBox(this->GetSafeHwnd(), _T("프로그램이 종료됩니다."), _T("프로그램 종료"), MB_OKCANCEL | MB_ICONINFORMATION);
+	if (result == IDOK) {
+		EndDialog(IDCANCEL);					// 모달 다이얼로그 종료
+		// DestroyWindow();						// 모달리스 다이얼로그 종료
+		// PostMessage(WM_CLOSE);			// WM_CLOSE 메시지 호출
+	}
+
+	CDialogEx::OnClose();
 }
 
 HBRUSH CGdipUserControl1Dlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
@@ -291,17 +300,6 @@ void CGdipUserControl1Dlg::OnMouseMove(UINT nFlags, CPoint point)
 }
 
 
-void CGdipUserControl1Dlg::OnClose()
-{
-	int result = ::MessageBox(this->GetSafeHwnd(), _T("프로그램이 종료됩니다."), _T("프로그램 종료"), MB_OKCANCEL | MB_ICONINFORMATION);
-	if (result == IDOK) {
-		EndDialog(IDCANCEL);					// 모달 다이얼로그 종료
-		// DestroyWindow();						// 모달리스 다이얼로그 종료
-		// PostMessage(WM_CLOSE);			// WM_CLOSE 메시지 호출
-	}
-
-	CDialogEx::OnClose();
-}
 
 
 void CGdipUserControl1Dlg::OnBnClickedSetting()
