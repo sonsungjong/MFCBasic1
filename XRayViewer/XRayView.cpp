@@ -187,18 +187,18 @@ int XRayView::ReadImageDataFromFile(const TCHAR* ap_image_path)
 	return m_pixel_count;
 }
 
-//void XRayView::SetColorDataToListBox(CListBox* ap_list_box)
-//{
-//	if (mp_16bit_data == NULL) { return; }
-//	ap_list_box->ResetContent();
-//
-//	CString str;
-//	for (int i = 0; i < 256; i++) {
-//		str.Format(_T("Èæ¹î ³óµµ [%03d] : %d Á¡"), i, m_color_table[i]);
-//		ap_list_box->InsertString(i, str);
-//		ap_list_box->SetItemData(i, m_color_table[i]);
-//	}
-//}
+void XRayView::SetColorDataToListBox(CListBox* ap_list_box)
+{
+	if (mp_16bit_data == NULL) { return; }
+	ap_list_box->ResetContent();
+
+	CString str;
+	for (int i = 0; i < 256; i++) {
+		str.Format(_T("Èæ¹î ³óµµ [%03d] : %d Á¡"), i, m_color_table[i]);
+		ap_list_box->InsertString(i, str);
+		//ap_list_box->SetItemData(i, (DWORD_PTR)m_color_table[i]);
+	}
+}
 
 void XRayView::UpdateRange()
 {

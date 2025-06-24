@@ -51,7 +51,7 @@ public:
 	int ReadImageDataFromFile(const TCHAR* ap_image_path);
 	// X-Ray 이미지를 읽어 변환과 출력 설정
 	int LoadXRayImage(const TCHAR* ap_image_path);
-	// void SetColorDataToListBox(CListBox* ap_list_box);			// 기본 리스트박스에 색상정보를 추가하는 함수
+	 void SetColorDataToListBox(CListBox* ap_list_box);			// 기본 리스트박스에 색상정보를 추가하는 함수
 	// 유효범위 갱신
 	void UpdateRange();
 	// 이미지 패턴 만들기

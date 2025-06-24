@@ -201,7 +201,7 @@ void CXRayViewerDlg::OnLbnDblclkColorList()
 		m_color_list.SetItemData(index, color_count);				// 색상 갯수 저장
 		m_color_list.SetCurSel(index);						// 추가된 항목을 선택항목으로 갱신
 
-		m_xray_view.UpdateRange(m_enable_colors);
+		m_xray_view.UpdateRange();
 		OnLbnSelchangeColorList();
 	}
 }
