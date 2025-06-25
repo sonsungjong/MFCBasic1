@@ -96,10 +96,10 @@ void CMFCS004LineGraphDlg::OnPaint()
 		path.AddLine(Gdiplus::PointF(200.0f, 100.0f), Gdiplus::PointF(200.0f, 200.0f));		// Right vertical line to the bottom
 		path.AddLine(Gdiplus::PointF(200.0f, 200.0f), Gdiplus::PointF(10.0f, 200.0f));			// Bottom horizontal line
 		path.AddLine(Gdiplus::PointF(10.0f, 200.0f), Gdiplus::PointF(10.0f, 100.0f));			// Left vertical line back to the start
-
+		path.CloseFigure();
 		Gdiplus::SolidBrush backgroundBrush(Gdiplus::Color(128, 200, 200, 255));
 		graphics.FillPath(&backgroundBrush, &path);
-
+		
 		// 둥근 선그리기
 		Gdiplus::Pen pen(Gdiplus::Color(255, 0, 0, 255), 2.0f);
 		graphics.DrawCurve(&pen, points, 5);			// 스플라인 곡선을 5개의 포인트를 펜으로 그림
